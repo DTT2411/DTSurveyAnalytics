@@ -126,7 +126,7 @@ def read_user_data(name):
     worksheet = SHEET.worksheet('survey_results')
     name_cell = worksheet.find(name)
     user_data = worksheet.row_values(name_cell.row)
-    user_name = user_data.pop(0)
+    user_name = user_data.pop(0) #removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Results for {user_name} are as follows:")
     q_counter = 0
     for datum in user_data:
@@ -134,7 +134,15 @@ def read_user_data(name):
         q_counter += 1
     converted_scores = [int(x) for x in user_data] #converts user data to a list of integers so that numerical analysis can be performed
     average_score = statistics.mean(converted_scores)
+    score_variance = statistics.variance(converted_scores)
+    if score_variance > 1.5:
+        variance_string = "high level of variance, indicating significant disparity between the 'best' and 'worst' aspects of the job."
+    elif score_variance > 1:
+        variance_string = "moderate level of variance."
+    else:
+        variance_string = "low level of variance, suggesting the respondent is very consistent in their perception about the qualities of the job." 
     print(f"{user_name} gave an average score of {average_score} across all questions.")
+    print(f"{user_name} had a variance of {round(score_variance, 2)} in their scores. This is a {variance_string}")
 
 def validate_user_command(user_command):
     """
