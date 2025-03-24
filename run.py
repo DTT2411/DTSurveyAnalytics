@@ -1,6 +1,5 @@
 import gspread
 import statistics
-import numpy as np #downloaded to try average but didn't work, delete if unused
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -15,6 +14,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
 survey = SHEET.worksheet("survey_results")
 data = survey.get_all_values()
+
 
 def process_user_command():
     """
@@ -87,15 +87,6 @@ def get_survey_data():
                     print("Not a number between 1 and 5. Please enter a valid value.")
         return user_responses
 
-        #call update_sheet function to add the user_responses into the spreadsheet
-        #continue_data_entry = input("Would you like to enter another set of survey data? Y/N: \n")
-        #if continue_data_entry == "Y" or continue_data_entry == "y":
-        #    user_responses = [] #resets the local user_responses variable for next set of data
-        #    continue
-        #else: 
-
-            #process_user_command() moves user back to main command menu
-
 
 def update_survey_sheet(new_data_row):
     """
@@ -104,6 +95,7 @@ def update_survey_sheet(new_data_row):
     print(f"Updating survey results spreadsheet...\n")
     worksheet = SHEET.worksheet('survey_results')
     worksheet.append_row(new_data_row)
+
 
 def read_user_data(name):
     """
@@ -115,6 +107,7 @@ def read_user_data(name):
     user_scores = worksheet.row_values(name_cell.row)
     return user_scores
 
+
 def delete_row(name):
     """
     Takes the validated name input by the user and deletes the corresponding row in the spreadsheet.
@@ -124,6 +117,7 @@ def delete_row(name):
     name_cell = worksheet.find(name)
     worksheet.delete_rows(name_cell.row)
     print(f"Deletion complete. {name}'s entry has been removed from the survey.\n")
+
 
 def validate_name(name):
     """
@@ -136,6 +130,7 @@ def validate_name(name):
     while name not in existing_names:
         name = input("The name you entered does not exist. Please submit the name of a respondent who has completed the survey.\n")
     return name
+
 
 def check_existing_names(name):
     """
@@ -150,6 +145,7 @@ def check_existing_names(name):
         name = input("Please enter the name of a new respondent.\n")
     return name
 
+
 def validate_user_command(user_command):
     """
     Checks that the initial command passed by user to perform on data set is valid.
@@ -159,7 +155,8 @@ def validate_user_command(user_command):
         return True
     else:
         return False
-    
+
+
 def get_questions():
     """
     Returns a list of the survey questions
@@ -169,6 +166,7 @@ def get_questions():
     questions = headings[1:]
     print(questions)
     return questions
+
 
 def analyse_user_data(user_data):
     """
@@ -205,7 +203,6 @@ def analyse_user_data(user_data):
             lowest_scored_questions.append(summarised_questions[i])
         i += 1
     print(f"Lowest scored questions were scored {min_score} as follows: {lowest_scored_questions}. These should be areas of focus for the respondent and organisation to work on together.")
-    
 
 
 def analyse_survey():
@@ -222,6 +219,7 @@ def analyse_survey():
     #print dataset for testing
     #print statement "Results for Individual questions"
     #loop through dataset, gett
+
 
 def main():
     """
@@ -250,8 +248,7 @@ def main():
             case 'exit':
                 print("The application will now close.")
                 quit()
-    
-    
+
 
 print("Welcome to DT Survey Analytics.\n")
 main()
