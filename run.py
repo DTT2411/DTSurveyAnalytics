@@ -21,7 +21,7 @@ def process_user_command():
     Requests user to indicate what function they want to
     perform via command:
     - 'add' adds new survey data to existing spreadsheet
-    - 'delete' removes an individual's set of responses from the spreadsheet
+    - 'delete' removes a given individual's set of responses from the spreadsheet
     - 'list' returns a list of names of individual respondents
     - 'read' returns a specific individual's responses
     - 'analyse' returns general analysis over all survey data
@@ -48,7 +48,7 @@ def list_respondents():
     Returns a list of the names of all survey respondents
     """
     respondent_column = SHEET.worksheet("survey_results").col_values(1)
-    respondent_names = respondent_column[1:]
+    respondent_names = respondent_column[1:] 
     print("**See below for a list of all respondents.**\n")
     for respondent in respondent_names:
         print(respondent)
@@ -128,8 +128,8 @@ def delete_row(name):
 def validate_name(name):
     """
     Takes the name input by user following "read" command and checks whether it matches any of the names 
-    in the spreadsheet. If no match is found, the user must keep entering names until a match is detected, 
-    at which point the valid name is passed back to the main() function and the application can progress.
+    in the spreadsheet. If no match is found, user will be prompted until a match is detected, then the 
+    valid name is passed back to the main() function.
     """
     worksheet = SHEET.worksheet('survey_results')
     existing_names = worksheet.col_values(1)
@@ -140,8 +140,8 @@ def validate_name(name):
 def check_existing_names(name):
     """
     Takes the name input by user following "add" command and checks whether it matches any of the names 
-    in the spreadsheet. If the name matches, the user must keep entering names until a new name is submitted, 
-    at which point the valid name is passed back to the main() function and the application can progress.
+    in the spreadsheet. If the name matches, user will be prompted until a new name is submitted, then the 
+    valid name is passed back to the main() function.
     """
     worksheet = SHEET.worksheet('survey_results')
     existing_names = worksheet.col_values(1)
