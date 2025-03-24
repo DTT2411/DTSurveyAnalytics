@@ -51,7 +51,7 @@ def get_survey_data():
     user.
     """
     print("Adding survey data...\n")
-    print("Please enter a value between 1 to 5 for the following questions unless instructed otherwise.\n")
+    print("Please enter a value between 1 to 5 for the following questions.\n")
     print("5 - Excellent")
     print("4 - Good")
     print("3 - Moderate")
@@ -69,10 +69,16 @@ def get_survey_data():
         "Q7 - How would you rate the opportunities for career growth within the organisation?:",
         "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
         "Q9 - How well valued do you feel within your current role?:",
-        "Q10 - Would you recommend working at our organisation to others? (Please answer with Y (yes) or N (no)):"
+        #"Q10 - Rate your likelihood of recommending working at our organisation to others?:"
+        "Q10 - Would you recommend working in our organisation to others? Answer 'Y' for yes or 'N' for no"
     ]
 
-    
+    for question in questions:
+        print(question + "\n")
+        user_response = input("Answer: ")
+        validate_data(user_response, question)
+        user_responses.append(user_response)
+
     #Q1 - 
     #Q2
     #Q3
@@ -102,6 +108,7 @@ def validate_user_function(user_command):
     perform on data set is valid.
     """
     command_list = ['add', 'list', 'read', 'analyse']
+    print(user_command)
     if user_command in command_list:
         if user_command == 'add':
             get_survey_data()
@@ -112,14 +119,20 @@ def validate_user_function(user_command):
             read_user_data(respondent_name)
         elif user_command == 'analyse':
             analyse_data()
+        elif user_command == 'exit':
+            #exit
         else:
-            exit
+            print("Command was not valid. Please enter a valid command from the list provided.\n")
+            get_user_function()
 
-def validate_data(values):
+def validate_data(value, question):
     """
     Checks that the user input intended to be submitted 
     to the spreadsheet is in a valid format.
     """
+    valid = False
+    #if question == "Q10 - Would you recommend working in our organisation to others? Answer 'Y' for yes or 'N' for no":
+
 
 def analyse_data():
     """
