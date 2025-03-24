@@ -61,7 +61,7 @@ def get_survey_data():
     Gets survey input for a given responder from the user.
     """
     print("Adding survey data...\n")
-    print("Please enter a value between 1 to 5 for the following questions.\n")
+    print("Please enter a value between 1 to 5 for the following questions, where appropriate.\n")
     print("5 - Excellent")
     print("4 - Good")
     print("3 - Moderate")
@@ -82,8 +82,9 @@ def get_survey_data():
         "Q10 - Rate your likelihood of recommending working at our organisation to others?:"
     ]
     while True:
-        user_name = input("What is your name?: ")
-        user_responses.append(user_name)
+        user_name = input("Please enter your name: ")
+        user_name_checked = check_existing_names(user_name)
+        user_responses.append(user_name_checked)
         for question in questions:
             print(question + "\n")
             while True:
@@ -142,6 +143,14 @@ def validate_name(name):
         name = input("The name you entered does not exist. Please submit the name of a respondent who has completed the survey.\n")
     return name
 
+def check_existing_names(name):
+    worksheet = SHEET.worksheet('survey_results')
+    existing_names = worksheet.col_values(1)
+    while name in existing_names:
+        print("The name you entered already exists - you have already completed the survey!\n")
+        name = input("Please enter the name of a new respondent.\n")
+    return name
+
 def validate_user_command(user_command):
     """
     Checks that the initial command passed by user to 
@@ -197,7 +206,6 @@ def main():
     """
     Run all program functions
     """
-    print("Hello world")
     while True: #The program will keep requesting user commands until they input the "exit" command
         user_command = process_user_command()
         print(f"MAIN: user command is {user_command}") #TESTING
