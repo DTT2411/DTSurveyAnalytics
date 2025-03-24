@@ -169,19 +169,6 @@ def get_questions():
     questions = headings[1:]
     print(questions)
     return questions
-    #questions = [
-    #    "Q1 - How satisfied are you with your job role?:",
-    #    "Q2 - How satisfied are you with your pay and remuneration?:",
-    #    "Q3 - How well do you feel supported by staff initiatives (e.g. Cycle to Work scheme, staff clubs, social events)?:",
-    #    "Q4 - How satisfied are you with the number of holidays you receive per year?:",
-    #    "Q5 - How would you rate the staff benefits on offer (e.g. gym fee subsidy, staff development fund)?:",
-    #    "Q6 - How would you describe the quality of support provided to you by your line manager?:",
-    #    "Q7 - How would you rate the opportunities for career growth within the organisation?:",
-    #    "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
-    #    "Q9 - How well valued do you feel within your current role?:",
-    #    "Q10 - Rate your likelihood of recommending working at our organisation to others?:"
-    #]
-    return questions
 
 def analyse_user_data(user_data):
     """
@@ -231,7 +218,7 @@ def analyse_survey():
     #create "dataset" variable pulling all data from sheet
     #call get_questions and assign to questions variable
     #intialise results variable, pulling individual results
-    #potential nested array, list of qs and results
+    #potential nested array, list of qs and results. or zip dictionary?
     #print dataset for testing
     #print statement "Results for Individual questions"
     #loop through dataset, gett
