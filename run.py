@@ -15,7 +15,16 @@ SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
 survey = SHEET.worksheet("survey_results")
 data = survey.get_all_values()
 
-print(data)
+#print(data)
+
+def get_user_input():
+    """
+    Requests user to indicate what function they want to
+    perform via command:
+    - "add" to add new survey data to existing spreadsheet
+    - "read" to read a specific individual's responses
+    - "analyse" to conduct general analysis over all survey data
+    """
 
 def get_survey_data():
     """
@@ -33,6 +42,12 @@ def read_user_data(name):
     """
     Reads a row of data from the spreadsheet based on 
     the employees name, which is passed by user.
+    """
+
+def validate_user_fucntion(function):
+    """
+    Checks that the initial function passed by user to 
+    perform on data set is valid.
     """
 
 def validate_data(values):
