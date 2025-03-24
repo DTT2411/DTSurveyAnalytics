@@ -144,6 +144,20 @@ def read_user_data(name):
     print(f"{user_name} gave an average score of {average_score} across all questions.")
     print(f"{user_name} had a variance of {round(score_variance, 2)} in their scores. This is a {variance_string}")
 
+    min_score = min(converted_scores)
+    print(f"Min score: {min_score}")
+    lowest_scored_questions = []
+    i = 0
+    while i < 10:
+        if converted_scores[i] == min_score:
+            lowest_scored_questions.append(summarised_questions[i])
+        i += 1
+
+    #for score in converted_scores:
+    #    if score == min_score:
+    #        lowest_scored_questions.append(summarised_questions[score])
+    print(f"Lowest scored questions were: {lowest_scored_questions}")
+
 def validate_user_command(user_command):
     """
     Checks that the initial command passed by user to 
@@ -167,7 +181,7 @@ def main():
     Run all program functions
     """
     print("Hello world")
-    while True:
+    while True: #The program will keep requesting user commands until they input the "exit" command
         user_command = process_user_command()
         print(f"MAIN: user command is {user_command}")
         match user_command:
