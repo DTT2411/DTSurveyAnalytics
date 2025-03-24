@@ -52,8 +52,6 @@ def get_user_function():
             print("Invalid command. Please enter a command from the list provided.")
     
 
-
-
 def list_respondents():
     """
     Returns a list of the names of all survey respondents
@@ -67,8 +65,7 @@ def list_respondents():
 
 def get_survey_data():
     """
-    Gets survey input for a given responder from the 
-    user.
+    Gets survey input for a given responder from the user.
     """
     print("Adding survey data...\n")
     print("Please enter a value between 1 to 5 for the following questions.\n")
@@ -89,25 +86,32 @@ def get_survey_data():
         "Q7 - How would you rate the opportunities for career growth within the organisation?:",
         "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
         "Q9 - How well valued do you feel within your current role?:",
-        #"Q10 - Rate your likelihood of recommending working at our organisation to others?:"
-        "Q10 - Would you recommend working in our organisation to others? Answer 'Y' for yes or 'N' for no"
+        "Q10 - Rate your likelihood of recommending working at our organisation to others?:"
     ]
-
-    for question in questions:
-        print(question + "\n")
-        user_response = input("Answer: ")
-        validate_data(user_response, question)
-        user_responses.append(user_response)
-
-    #Q1 - 
-    #Q2
-    #Q3
-    #Q4
-
-
-    #would you like to enter another set of survey data? Y/N
-    #Yes = loop back to start of this function
-    #No = go back to get_user_function input
+    while True:
+        user_name = input("What is your name?: ")
+        user_responses.append(user_name)
+        for question in questions:
+            print(question + "\n")
+            while True:
+                try:
+                    user_response = int(input("Answer: \n"))
+                    if user_response in range(1,6):
+                        print(f"User entered {user_response}.\n")
+                        user_responses.append(user_response)
+                        break
+                    else:
+                        print("Not a number between 1 and 5. Please enter a valid value.")
+                except ValueError:
+                    print("Not a number between 1 and 5. Please enter a valid value.")
+        print(user_responses)
+        #call update_sheet function to add the user_responses into the spreadsheet
+        continue_data_entry = input("Would you like to enter another set of survey data? Y/N: \n")
+        if continue_data_entry == "Y" or continue_data_entry == "y":
+            user_responses = [] #resets the local user_responses variable for next set of data
+            continue
+        else: 
+            get_user_function() #moves user back to main command menu
 
 
 def update_sheet(new_data_row):
@@ -128,24 +132,10 @@ def validate_user_function(user_command):
     perform on data set is valid.
     """
     command_list = ['add', 'list', 'read', 'analyse', 'exit']
-    print(user_command)
     if user_command in command_list:
         return True
     else:
         return False
-
-        #else:
-            #print("Command was not valid. Please enter a valid command from the list provided.\n")
-            #get_user_function()
-
-def validate_data(value, question):
-    """
-    Checks that the user input intended to be submitted 
-    to the spreadsheet is in a valid format.
-    """
-    valid = False
-    #if question == "Q10 - Would you recommend working in our organisation to others? Answer 'Y' for yes or 'N' for no":
-
 
 def analyse_data():
     """
