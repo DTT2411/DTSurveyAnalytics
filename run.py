@@ -34,7 +34,23 @@ def get_user_function():
         print("- 'read' to read a specific individual's responses")
         print("- 'analyse' to conduct general analysis over all survey data\n")
         user_command = input("Enter your command here: \n")
-        validate_user_function(user_command)
+        validity_check = validate_user_function(user_command)
+        if validity_check:
+            if user_command == 'add':
+                get_survey_data()
+            elif user_command == 'list':
+                list_respondents()
+            elif user_command == 'read':
+                respondent_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
+                read_user_data(respondent_name)
+            elif user_command == 'analyse':
+                analyse_data()
+            elif user_command == 'exit':
+                print("The application will now close.")
+                quit()
+        else:
+            print("Invalid command. Please enter a command from the list provided.")
+    
 
 
 
@@ -42,7 +58,11 @@ def list_respondents():
     """
     Returns a list of the names of all survey respondents
     """
-
+    respondent_column = SHEET.worksheet("survey_results").col_values(1)
+    respondent_names = respondent_column[1:]
+    print("**See below for a list of all respondents.**\n")
+    for respondent in respondent_names:
+        print(respondent)
 
 
 def get_survey_data():
@@ -107,23 +127,16 @@ def validate_user_function(user_command):
     Checks that the initial function passed by user to 
     perform on data set is valid.
     """
-    command_list = ['add', 'list', 'read', 'analyse']
+    command_list = ['add', 'list', 'read', 'analyse', 'exit']
     print(user_command)
     if user_command in command_list:
-        if user_command == 'add':
-            get_survey_data()
-        elif user_command == 'list':
-            list_respondents()
-        elif user_command == 'read':
-            respondent_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
-            read_user_data(respondent_name)
-        elif user_command == 'analyse':
-            analyse_data()
-        elif user_command == 'exit':
-            #exit
-        else:
-            print("Command was not valid. Please enter a valid command from the list provided.\n")
-            get_user_function()
+        return True
+    else:
+        return False
+
+        #else:
+            #print("Command was not valid. Please enter a valid command from the list provided.\n")
+            #get_user_function()
 
 def validate_data(value, question):
     """
