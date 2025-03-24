@@ -17,7 +17,7 @@ data = survey.get_all_values()
 
 #print(data)
 
-def get_user_command():
+def process_user_command():
     """
     Requests user to indicate what function they want to
     perform via command:
@@ -32,22 +32,12 @@ def get_user_command():
         print("- 'add' to add new survey data to existing spreadsheet")
         print("- 'list' to see a list of names of individual respondents")
         print("- 'read' to read a specific individual's responses")
-        print("- 'analyse' to conduct general analysis over all survey data\n")
+        print("- 'analyse' to conduct general analysis over all survey data")
+        print("- 'exit' to exit the application\n")
         user_command = input("Enter your command here: \n")
         validity_check = validate_user_command(user_command)
         if validity_check:
-            if user_command == 'add':
-                get_survey_data()
-            elif user_command == 'list':
-                list_respondents()
-            elif user_command == 'read':
-                respondent_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
-                read_user_data(respondent_name)
-            elif user_command == 'analyse':
-                analyse_data()
-            elif user_command == 'exit':
-                print("The application will now close.")
-                quit()
+            return user_command
         else:
             print("Invalid command. Please enter a command from the list provided.")
     
@@ -111,7 +101,7 @@ def get_survey_data():
             user_responses = [] #resets the local user_responses variable for next set of data
             continue
         else: 
-            get_user_command() #moves user back to main command menu
+            process_user_command() #moves user back to main command menu
 
 
 def update_sheet(new_data_row):
@@ -149,7 +139,22 @@ def main():
     Run all program functions
     """
     print("Hello world")
-    get_user_command()
+    while True:
+        user_command = process_user_command()
+        print(f"MAIN: user command is {user_command}")
+        match user_command:
+            case 'add':
+                get_survey_data()
+            case 'list':
+                list_respondents()
+            case 'read':
+                respondent_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
+                read_user_data(respondent_name)
+            case 'analyse':
+                analyse_data()
+            case 'exit':
+                print("The application will now close.")
+                quit()
     
     
 
