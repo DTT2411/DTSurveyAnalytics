@@ -119,13 +119,35 @@ def update_survey_sheet(new_data_row):
 
 def read_user_data(name):
     """
-    Reads a row of data from the spreadsheet based on 
-    the employees name, which is passed by user.
+    Reads a row of data from the spreadsheet based on the employees name, which is passed by user.
     """
-    summarised_questions = ['Role Satisfaction', 'Remuneration Satisfaction', 'Staff Support', 'Holidays', 'Benefits', 'Manager Support', 'Career Growth', 'Life-Work Balance','Feeling Valued', 'Would Recommend']
     worksheet = SHEET.worksheet('survey_results')
     name_cell = worksheet.find(name)
-    user_data = worksheet.row_values(name_cell.row)
+    user_scores = worksheet.row_values(name_cell.row)
+    return user_scores
+
+    #split this function here? we can make another function "analyse_used_data" to do the operations below
+
+    
+
+    #for score in converted_scores:
+    #    if score == min_score:
+    #        lowest_scored_questions.append(summarised_questions[score])
+    
+
+def validate_user_command(user_command):
+    """
+    Checks that the initial command passed by user to 
+    perform on data set is valid.
+    """
+    command_list = ['add', 'list', 'read', 'analyse', 'exit']
+    if user_command in command_list:
+        return True
+    else:
+        return False
+
+def analyse_user_data(user_data):
+    summarised_questions = ['Role Satisfaction', 'Remuneration Satisfaction', 'Staff Support', 'Holidays', 'Benefits', 'Manager Support', 'Career Growth', 'Life-Work Balance','Feeling Valued', 'Would Recommend']
     user_name = user_data.pop(0) #removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Results for {user_name} are as follows:")
     q_counter = 0
@@ -152,22 +174,9 @@ def read_user_data(name):
         if converted_scores[i] == min_score:
             lowest_scored_questions.append(summarised_questions[i])
         i += 1
-
-    #for score in converted_scores:
-    #    if score == min_score:
-    #        lowest_scored_questions.append(summarised_questions[score])
-    print(f"Lowest scored questions were: {lowest_scored_questions}")
-
-def validate_user_command(user_command):
-    """
-    Checks that the initial command passed by user to 
-    perform on data set is valid.
-    """
-    command_list = ['add', 'list', 'read', 'analyse', 'exit']
-    if user_command in command_list:
-        return True
-    else:
-        return False
+    print(f"Lowest scored questions were scored {min_score} as follows: {lowest_scored_questions}. These should be areas of focus for the respondent and organisation to work on together.")
+    
+    
 
 def analyse_data():
     """
@@ -193,7 +202,8 @@ def main():
                 list_respondents()
             case 'read':
                 respondent_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
-                read_user_data(respondent_name)
+                user_data = read_user_data(respondent_name)
+                analyse_user_data(user_data)
             case 'analyse':
                 analyse_data()
             case 'exit':
