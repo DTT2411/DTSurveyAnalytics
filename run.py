@@ -1,4 +1,6 @@
 import gspread
+import statistics
+import numpy as np #downloaded to try average but didn't work, delete if unused
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -120,6 +122,19 @@ def read_user_data(name):
     Reads a row of data from the spreadsheet based on 
     the employees name, which is passed by user.
     """
+    summarised_questions = ['Role Satisfaction', 'Remuneration Satisfaction', 'Staff Support', 'Holidays', 'Benefits', 'Manager Support', 'Career Growth', 'Life-Work Balance','Feeling Valued', 'Would Recommend']
+    worksheet = SHEET.worksheet('survey_results')
+    name_cell = worksheet.find(name)
+    user_data = worksheet.row_values(name_cell.row)
+    user_name = user_data.pop(0)
+    print(f"Results for {user_name} are as follows:")
+    q_counter = 0
+    for datum in user_data:
+        print(f"{summarised_questions[q_counter]} : {datum}")
+        q_counter += 1
+    converted_scores = [int(x) for x in user_data] #converts user data to a list of integers so that numerical analysis can be performed
+    average_score = statistics.mean(converted_scores)
+    print(f"{user_name} gave an average score of {average_score} across all questions.")
 
 def validate_user_command(user_command):
     """
