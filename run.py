@@ -73,7 +73,7 @@ def get_survey_data():
         user_name_checked = check_existing_names(user_name)
         user_responses.append(user_name_checked)
         for question in questions:
-            print(question + "\n")
+            print(question + ": \n")
             while True:
                 try:
                     user_response = int(input("Answer: "))
@@ -164,18 +164,23 @@ def get_questions():
     """
     Returns a list of the survey questions
     """
-    questions = [
-        "Q1 - How satisfied are you with your job role?:",
-        "Q2 - How satisfied are you with your pay and remuneration?:",
-        "Q3 - How well do you feel supported by staff initiatives (e.g. Cycle to Work scheme, staff clubs, social events)?:",
-        "Q4 - How satisfied are you with the number of holidays you receive per year?:",
-        "Q5 - How would you rate the staff benefits on offer (e.g. gym fee subsidy, staff development fund)?:",
-        "Q6 - How would you describe the quality of support provided to you by your line manager?:",
-        "Q7 - How would you rate the opportunities for career growth within the organisation?:",
-        "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
-        "Q9 - How well valued do you feel within your current role?:",
-        "Q10 - Rate your likelihood of recommending working at our organisation to others?:"
-    ]
+    worksheet = SHEET.worksheet('survey_results')
+    headings = worksheet.row_values(1)
+    questions = headings[1:]
+    print(questions)
+    return questions
+    #questions = [
+    #    "Q1 - How satisfied are you with your job role?:",
+    #    "Q2 - How satisfied are you with your pay and remuneration?:",
+    #    "Q3 - How well do you feel supported by staff initiatives (e.g. Cycle to Work scheme, staff clubs, social events)?:",
+    #    "Q4 - How satisfied are you with the number of holidays you receive per year?:",
+    #    "Q5 - How would you rate the staff benefits on offer (e.g. gym fee subsidy, staff development fund)?:",
+    #    "Q6 - How would you describe the quality of support provided to you by your line manager?:",
+    #    "Q7 - How would you rate the opportunities for career growth within the organisation?:",
+    #    "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
+    #    "Q9 - How well valued do you feel within your current role?:",
+    #    "Q10 - Rate your likelihood of recommending working at our organisation to others?:"
+    #]
     return questions
 
 def analyse_user_data(user_data):
