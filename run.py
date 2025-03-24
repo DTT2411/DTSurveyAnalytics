@@ -85,7 +85,7 @@ def get_survey_data():
             print(question + "\n")
             while True:
                 try:
-                    user_response = int(input("Answer: \n"))
+                    user_response = int(input("Answer: "))
                     if user_response in range(1,6):
                         print(f"User entered {user_response}.\n")
                         user_responses.append(user_response)
@@ -94,21 +94,26 @@ def get_survey_data():
                         print("Not a number between 1 and 5. Please enter a valid value.")
                 except ValueError:
                     print("Not a number between 1 and 5. Please enter a valid value.")
-        print(user_responses)
+        return user_responses
+
         #call update_sheet function to add the user_responses into the spreadsheet
-        continue_data_entry = input("Would you like to enter another set of survey data? Y/N: \n")
-        if continue_data_entry == "Y" or continue_data_entry == "y":
-            user_responses = [] #resets the local user_responses variable for next set of data
-            continue
-        else: 
-            process_user_command() #moves user back to main command menu
+        #continue_data_entry = input("Would you like to enter another set of survey data? Y/N: \n")
+        #if continue_data_entry == "Y" or continue_data_entry == "y":
+        #    user_responses = [] #resets the local user_responses variable for next set of data
+        #    continue
+        #else: 
+
+            #process_user_command() moves user back to main command menu
 
 
-def update_sheet(new_data_row):
+def update_survey_sheet(new_data_row):
     """
     Updates the survey spreadsheet with a list of new
     values, provided by the user.
     """
+    print(f"Updating survey results spreadsheet...\n")
+    worksheet = SHEET.worksheet('survey_results')
+    worksheet.append_row(new_data_row)
 
 def read_user_data(name):
     """
@@ -144,7 +149,9 @@ def main():
         print(f"MAIN: user command is {user_command}")
         match user_command:
             case 'add':
-                get_survey_data()
+                user_responses = get_survey_data()
+                print(user_responses)
+                update_survey_sheet(user_responses)
             case 'list':
                 list_respondents()
             case 'read':
