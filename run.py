@@ -35,6 +35,7 @@ def process_user_command():
         print("- 'list' to see a list of names of individual respondents")
         print("- 'read' to read a specific individual's responses")
         print("- 'analyse' to conduct general analysis over all survey data")
+        print("- 'delete' to delete a record based on an inputted name")
         print("- 'exit' to exit the application\n")
         user_command = input("Enter your command here: \n")
         validity_check = validate_user_command(user_command)
@@ -121,33 +122,40 @@ def read_user_data(name):
     """
     Reads a row of data from the spreadsheet based on the employees name, which is passed by user.
     """
+    print(f"Reading {name}'s data...\n")
     worksheet = SHEET.worksheet('survey_results')
     name_cell = worksheet.find(name)
     user_scores = worksheet.row_values(name_cell.row)
     return user_scores
 
-    #split this function here? we can make another function "analyse_used_data" to do the operations below
+def delete_row(name):
+    print(f"Deleting {name}'s data...\n")
+    worksheet = SHEET.worksheet('survey_results')
+    name_cell = worksheet.find(name)
+    worksheet.delete_rows(name_cell.row)
+    print(f"Deletion complete. {name}'s entry has been removed from the survey.\n")
 
-    
-
-    #for score in converted_scores:
-    #    if score == min_score:
-    #        lowest_scored_questions.append(summarised_questions[score])
-    
+def validate_name(name):
+    worksheet = SHEET.worksheet('survey_results')
+    existing_names = worksheet.col_values(1)
+    while name not in existing_names:
+        name = input("The name you entered does not exist. Please submit the name of a respondent who has completed the survey.\n")
+    return name
 
 def validate_user_command(user_command):
     """
     Checks that the initial command passed by user to 
     perform on data set is valid.
     """
-    command_list = ['add', 'list', 'read', 'analyse', 'exit']
+    command_list = ['add', 'delete', 'list', 'read', 'analyse', 'exit']
     if user_command in command_list:
         return True
     else:
         return False
 
 def analyse_user_data(user_data):
-    summarised_questions = ['Role Satisfaction', 'Remuneration Satisfaction', 'Staff Support', 'Holidays', 'Benefits', 'Manager Support', 'Career Growth', 'Life-Work Balance','Feeling Valued', 'Would Recommend']
+    print(f"Analysing data...\n")
+    summarised_questions = ['Q1 - Role Satisfaction', 'Q2 - Remuneration Satisfaction', 'Q3 - Staff Support', 'Q4 - Holidays', 'Q5 - Benefits', 'Q6 - Manager Support', 'Q7 - Career Growth', 'Q8 - Life-Work Balance','Q9 - Feeling Valued', 'Q10 - Would Recommend']
     user_name = user_data.pop(0) #removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Results for {user_name} are as follows:")
     q_counter = 0
@@ -167,7 +175,7 @@ def analyse_user_data(user_data):
     print(f"{user_name} had a variance of {round(score_variance, 2)} in their scores. This is a {variance_string}")
 
     min_score = min(converted_scores)
-    print(f"Min score: {min_score}")
+    print(f"Min score: {min_score}") #TESTING
     lowest_scored_questions = []
     i = 0
     while i < 10:
@@ -176,9 +184,9 @@ def analyse_user_data(user_data):
         i += 1
     print(f"Lowest scored questions were scored {min_score} as follows: {lowest_scored_questions}. These should be areas of focus for the respondent and organisation to work on together.")
     
-    
 
-def analyse_data():
+
+def analyse_dataset():
     """
     Conducts analysis of the overall survey data set, returning
     summarised information for each question, overall statistics,
@@ -192,20 +200,24 @@ def main():
     print("Hello world")
     while True: #The program will keep requesting user commands until they input the "exit" command
         user_command = process_user_command()
-        print(f"MAIN: user command is {user_command}")
+        print(f"MAIN: user command is {user_command}") #TESTING
         match user_command:
             case 'add':
                 user_responses = get_survey_data()
-                print(user_responses)
                 update_survey_sheet(user_responses)
+            case 'delete':
+                delete_name = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
+                validated_delete_name = validate_name(delete_name)
+                delete_row(validated_delete_name)
             case 'list':
                 list_respondents()
             case 'read':
-                respondent_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
-                user_data = read_user_data(respondent_name)
+                read_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
+                validated_read_name = validate_name(read_name)
+                user_data = read_user_data(validated_read_name)
                 analyse_user_data(user_data)
             case 'analyse':
-                analyse_data()
+                analyse_dataset()
             case 'exit':
                 print("The application will now close.")
                 quit()
