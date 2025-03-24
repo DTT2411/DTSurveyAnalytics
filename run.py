@@ -17,7 +17,7 @@ data = survey.get_all_values()
 
 #print(data)
 
-def get_user_function():
+def get_user_command():
     """
     Requests user to indicate what function they want to
     perform via command:
@@ -34,7 +34,7 @@ def get_user_function():
         print("- 'read' to read a specific individual's responses")
         print("- 'analyse' to conduct general analysis over all survey data\n")
         user_command = input("Enter your command here: \n")
-        validity_check = validate_user_function(user_command)
+        validity_check = validate_user_command(user_command)
         if validity_check:
             if user_command == 'add':
                 get_survey_data()
@@ -111,7 +111,7 @@ def get_survey_data():
             user_responses = [] #resets the local user_responses variable for next set of data
             continue
         else: 
-            get_user_function() #moves user back to main command menu
+            get_user_command() #moves user back to main command menu
 
 
 def update_sheet(new_data_row):
@@ -126,9 +126,9 @@ def read_user_data(name):
     the employees name, which is passed by user.
     """
 
-def validate_user_function(user_command):
+def validate_user_command(user_command):
     """
-    Checks that the initial function passed by user to 
+    Checks that the initial command passed by user to 
     perform on data set is valid.
     """
     command_list = ['add', 'list', 'read', 'analyse', 'exit']
@@ -149,7 +149,9 @@ def main():
     Run all program functions
     """
     print("Hello world")
-    get_user_function()
+    get_user_command()
+    
+    
 
 print("Welcome to DT Survey Analytics.\n")
 main()
