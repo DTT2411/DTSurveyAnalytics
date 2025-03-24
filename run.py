@@ -112,8 +112,7 @@ def get_survey_data():
 
 def update_survey_sheet(new_data_row):
     """
-    Updates the survey spreadsheet with a list of new
-    values, provided by the user.
+    Updates the survey spreadsheet with a list of new values, provided by the user.
     """
     print(f"Updating survey results spreadsheet...\n")
     worksheet = SHEET.worksheet('survey_results')
@@ -130,6 +129,9 @@ def read_user_data(name):
     return user_scores
 
 def delete_row(name):
+    """
+    Takes the validated name input by the user and deletes the corresponding row in the spreadsheet.
+    """
     print(f"Deleting {name}'s data...\n")
     worksheet = SHEET.worksheet('survey_results')
     name_cell = worksheet.find(name)
@@ -137,6 +139,11 @@ def delete_row(name):
     print(f"Deletion complete. {name}'s entry has been removed from the survey.\n")
 
 def validate_name(name):
+    """
+    Takes the name input by user following "read" command and checks whether it matches any of the names 
+    in the spreadsheet. If no match is found, the user must keep entering names until a match is detected, 
+    at which point the valid name is passed back to the main() function and the application can progress.
+    """
     worksheet = SHEET.worksheet('survey_results')
     existing_names = worksheet.col_values(1)
     while name not in existing_names:
@@ -144,6 +151,11 @@ def validate_name(name):
     return name
 
 def check_existing_names(name):
+    """
+    Takes the name input by user following "add" command and checks whether it matches any of the names 
+    in the spreadsheet. If the name matches, the user must keep entering names until a new name is submitted, 
+    at which point the valid name is passed back to the main() function and the application can progress.
+    """
     worksheet = SHEET.worksheet('survey_results')
     existing_names = worksheet.col_values(1)
     while name in existing_names:
@@ -153,8 +165,7 @@ def check_existing_names(name):
 
 def validate_user_command(user_command):
     """
-    Checks that the initial command passed by user to 
-    perform on data set is valid.
+    Checks that the initial command passed by user to perform on data set is valid.
     """
     command_list = ['add', 'delete', 'list', 'read', 'analyse', 'exit']
     if user_command in command_list:
@@ -163,6 +174,11 @@ def validate_user_command(user_command):
         return False
 
 def analyse_user_data(user_data):
+    """
+    Conducts analysis on data passed through the main function following
+    a "read" command, displaying the question responses and statistics
+    for the given individual. 
+    """
     print(f"Analysing data...\n")
     summarised_questions = ['Q1 - Role Satisfaction', 'Q2 - Remuneration Satisfaction', 'Q3 - Staff Support', 'Q4 - Holidays', 'Q5 - Benefits', 'Q6 - Manager Support', 'Q7 - Career Growth', 'Q8 - Life-Work Balance','Q9 - Feeling Valued', 'Q10 - Would Recommend']
     user_name = user_data.pop(0) #removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
