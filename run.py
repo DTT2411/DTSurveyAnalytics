@@ -24,6 +24,7 @@ def process_user_command():
     Requests user to indicate what function they want to
     perform via command:
     - 'add' adds new survey data to existing spreadsheet
+    - 'delete' removes an individual's set of responses from the spreadsheet
     - 'list' returns a list of names of individual respondents
     - 'read' returns a specific individual's responses
     - 'analyse' returns general analysis over all survey data
