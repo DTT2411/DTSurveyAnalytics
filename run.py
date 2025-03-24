@@ -13,11 +13,8 @@ CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
-
 survey = SHEET.worksheet("survey_results")
 data = survey.get_all_values()
-
-#print(data)
 
 def process_user_command():
     """
@@ -70,18 +67,7 @@ def get_survey_data():
     print("1 - Very Poor\n")
 
     user_responses = []
-    questions = [
-        "Q1 - How satisfied are you with your job role?:",
-        "Q2 - How satisfied are you with your pay and remuneration?:",
-        "Q3 - How well do you feel supported by staff initiatives (e.g. Cycle to Work scheme, staff clubs, social events)?:",
-        "Q4 - How satisfied are you with the number of holidays you receive per year?:",
-        "Q5 - How would you rate the staff benefits on offer (e.g. gym fee subsidy, staff development fund)?:",
-        "Q6 - How would you describe the quality of support provided to you by your line manager?:",
-        "Q7 - How would you rate the opportunities for career growth within the organisation?:",
-        "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
-        "Q9 - How well valued do you feel within your current role?:",
-        "Q10 - Rate your likelihood of recommending working at our organisation to others?:"
-    ]
+    questions = get_questions()
     while True:
         user_name = input("Please enter your name: ")
         user_name_checked = check_existing_names(user_name)
@@ -173,6 +159,24 @@ def validate_user_command(user_command):
         return True
     else:
         return False
+    
+def get_questions():
+    """
+    Returns a list of the survey questions
+    """
+    questions = [
+        "Q1 - How satisfied are you with your job role?:",
+        "Q2 - How satisfied are you with your pay and remuneration?:",
+        "Q3 - How well do you feel supported by staff initiatives (e.g. Cycle to Work scheme, staff clubs, social events)?:",
+        "Q4 - How satisfied are you with the number of holidays you receive per year?:",
+        "Q5 - How would you rate the staff benefits on offer (e.g. gym fee subsidy, staff development fund)?:",
+        "Q6 - How would you describe the quality of support provided to you by your line manager?:",
+        "Q7 - How would you rate the opportunities for career growth within the organisation?:",
+        "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
+        "Q9 - How well valued do you feel within your current role?:",
+        "Q10 - Rate your likelihood of recommending working at our organisation to others?:"
+    ]
+    return questions
 
 def analyse_user_data(user_data):
     """
@@ -212,12 +216,20 @@ def analyse_user_data(user_data):
     
 
 
-def analyse_dataset():
+def analyse_survey():
     """
     Conducts analysis of the overall survey data set, returning
     summarised information for each question, overall statistics,
     highlighting questions with low scores i.e. areas to work on
     """
+    #print statement "Analysing survey results..."
+    #create "dataset" variable pulling all data from sheet
+    #call get_questions and assign to questions variable
+    #intialise results variable, pulling individual results
+    #potential nested array, list of qs and results
+    #print dataset for testing
+    #print statement "Results for Individual questions"
+    #loop through dataset, gett
 
 def main():
     """
@@ -242,7 +254,7 @@ def main():
                 user_data = read_user_data(validated_read_name)
                 analyse_user_data(user_data)
             case 'analyse':
-                analyse_dataset()
+                analyse_survey()
             case 'exit':
                 print("The application will now close.")
                 quit()
