@@ -17,20 +17,72 @@ data = survey.get_all_values()
 
 #print(data)
 
-def get_user_input():
+def get_user_function():
     """
     Requests user to indicate what function they want to
     perform via command:
-    - "add" to add new survey data to existing spreadsheet
-    - "read" to read a specific individual's responses
-    - "analyse" to conduct general analysis over all survey data
+    - 'add' adds new survey data to existing spreadsheet
+    - 'list' returns a list of names of individual respondents
+    - 'read' returns a specific individual's responses
+    - 'analyse' returns general analysis over all survey data
+    - 'exit' exits the program
     """
+    while True:
+        print("Please enter a command to perform on the survey\n")
+        print("- 'add' to add new survey data to existing spreadsheet")
+        print("- 'list' to see a list of names of individual respondents")
+        print("- 'read' to read a specific individual's responses")
+        print("- 'analyse' to conduct general analysis over all survey data\n")
+        user_command = input("Enter your command here: \n")
+        validate_user_function(user_command)
+
+
+
+def list_respondents():
+    """
+    Returns a list of the names of all survey respondents
+    """
+
+
 
 def get_survey_data():
     """
     Gets survey input for a given responder from the 
     user.
     """
+    print("Adding survey data...\n")
+    print("Please enter a value between 1 to 5 for the following questions unless instructed otherwise.\n")
+    print("5 - Excellent")
+    print("4 - Good")
+    print("3 - Moderate")
+    print("2 - Poor")
+    print("1 - Very Poor\n")
+
+    user_responses = []
+    questions = [
+        "Q1 - How satisfied are you with your job role?:",
+        "Q2 - How satisfied are you with your pay and remuneration?:",
+        "Q3 - How well do you feel supported by staff initiatives (e.g. Cycle to Work scheme, staff clubs, social events)?:",
+        "Q4 - How satisfied are you with the number of holidays you receive per year?:",
+        "Q5 - How would you rate the staff benefits on offer (e.g. gym fee subsidy, staff development fund)?:",
+        "Q6 - How would you describe the quality of support provided to you by your line manager?:",
+        "Q7 - How would you rate the opportunities for career growth within the organisation?:",
+        "Q8 - How do you feel regarding life-work balance and workload within your current role?:",
+        "Q9 - How well valued do you feel within your current role?:",
+        "Q10 - Would you recommend working at our organisation to others? (Please answer with Y (yes) or N (no)):"
+    ]
+
+    
+    #Q1 - 
+    #Q2
+    #Q3
+    #Q4
+
+
+    #would you like to enter another set of survey data? Y/N
+    #Yes = loop back to start of this function
+    #No = go back to get_user_function input
+
 
 def update_sheet(new_data_row):
     """
@@ -44,11 +96,24 @@ def read_user_data(name):
     the employees name, which is passed by user.
     """
 
-def validate_user_fucntion(function):
+def validate_user_function(user_command):
     """
     Checks that the initial function passed by user to 
     perform on data set is valid.
     """
+    command_list = ['add', 'list', 'read', 'analyse']
+    if user_command in command_list:
+        if user_command == 'add':
+            get_survey_data()
+        elif user_command == 'list':
+            list_respondents()
+        elif user_command == 'read':
+            respondent_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
+            read_user_data(respondent_name)
+        elif user_command == 'analyse':
+            analyse_data()
+        else:
+            exit
 
 def validate_data(values):
     """
@@ -56,11 +121,19 @@ def validate_data(values):
     to the spreadsheet is in a valid format.
     """
 
+def analyse_data():
+    """
+    Conducts analysis of the overall survey data set, returning
+    summarised information for each question, overall statistics,
+    highlighting questions with low scores i.e. areas to work on
+    """
+
 def main():
     """
     Run all program functions
     """
     print("Hello world")
+    get_user_function()
 
 print("Welcome to DT Survey Analytics.\n")
 main()
