@@ -236,19 +236,32 @@ def analyse_survey():
     print("See below for average scores for each question in the survey:\n")
     #overall_average = statistics.mean(response_values[(len(summarised_questions)):])
     overall_average = statistics.mean(response_values)
-    print(f"Overall average score across organisation: {round(overall_average, 2)}")
+    print(f"Overall average score across organisation: {round(overall_average, 1)}")
     
+    # initialises totals variable depending on the number of responses
     question_totals = []
+    number_of_responses = len(survey_data)
+    print(f"Number of responses, should be 15: {number_of_responses}")
     for index in range(len(summarised_questions)):
         question_totals.append(0)
     print(f"Initialised question totals, should all be 0: {question_totals}")
 
+    #Gets totals for each question
     for dataset in survey_data:
         for index in range(len(dataset)):
             print(f"Current value being looked at: {dataset[index]}")
             print(f"Index: {index}")
             question_totals[index] += int(dataset[index])
     print(f"List of total scores for each question: {question_totals}\n")
+    question_averages = [x/number_of_responses for x in question_totals]
+    question_averages_rounded = ['%.1f' % x for x in question_averages]
+
+    #question_averages_rounded
+    #for index in range(len(question_averages)):
+    #    question_averages_rounded.append(round(question_averages[index], 1))
+    print(f"List of average scores for each question: {question_averages_rounded}\n")
+    print("Q1 below")
+    print(question_averages_rounded[0])
 
     
     #question_index = 0
