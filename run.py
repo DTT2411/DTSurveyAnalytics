@@ -179,10 +179,10 @@ def analyse_user_data(user_data):
     print(f"Analysing data...\n")
     user_name = user_data.pop(0) #removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Results for {user_name} are as follows:")
-    q_counter = 0
-    for datum in user_data:
-        print(f"{summarised_questions[q_counter]} : {datum}")
-        q_counter += 1
+    question_index = 0
+    for score in user_data: #this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
+        print(f"{summarised_questions[question_index]} : {score}")
+        question_index += 1
     converted_scores = [int(x) for x in user_data] #converts user data to a list of integers so that numerical analysis can be performed
     average_score = statistics.mean(converted_scores)
     score_variance = statistics.variance(converted_scores)
