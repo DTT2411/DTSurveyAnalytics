@@ -58,7 +58,9 @@ def list_respondents():
 
 def get_user_data():
     """
-    Gets survey input for a given responder from the user.
+    Gets survey input for a given respondent from the user. Checks the user inputs an integer between 1 and 5,
+    continues prompting until valid valid input is received. Individual responses are added to a list variable
+    which is passed back to the main() function.
     """
     print("Adding survey data...\n")
     print("Please enter a value between 1 to 5 for the following questions, where appropriate.\n")
@@ -120,6 +122,7 @@ def delete_row(name):
     print(f"Deletion complete. {name}'s entry has been removed from the survey.\n")
 
 
+#  REFACTOR? validate_name & check_existing_names perform similar, but inverse functions. 
 def validate_name(name):
     """
     Takes the name input by user following "read" command and checks whether it matches any of the names 
@@ -162,7 +165,7 @@ def get_questions():
     a list of lists containing cell notes which needs to be unpacked before
     returning.
     """
-    questions = SURVEY.get_notes()
+    questions = SURVEY.get_notes() 
     return questions[0][1:]
 
 
@@ -188,9 +191,9 @@ def analyse_user_data(user_data):
     converted_scores = [int(x) for x in user_data]  # converts user data to a list of integers so that numerical analysis can be performed
     average_score = statistics.mean(converted_scores)
     score_variance = statistics.variance(converted_scores)
-    if score_variance > 1.5:
+    if score_variance > 2:
         variance_string = "high level of variance, indicating significant disparity between the 'best' and 'worst' aspects of the job."
-    elif score_variance > 1:
+    elif score_variance > 1.3:
         variance_string = "moderate level of variance."
     else:
         variance_string = "low level of variance, suggesting the respondent is very consistent in their perception about the qualities of the job." 
@@ -218,14 +221,9 @@ def analyse_survey():
     # intialise survey_data variable, pulling all data from survey
     survey_data = SURVEY.get_all_values()
     #print(f"Survey data: {survey_data}\n")
-    # call get_questions and assign to questions variable
-    
-    #print(summarised_questions)
     #names = []  # May not be required, might only need to pop names off if they're not used
     #print(f"Names list: {names}\n")  
     #print(f"Names list without NAME heading: {names[1:]}\n")
-
-    
     print(f"Printing summarised questions from inside analyse_survey, should exclude name: {SUMMARISED_QUESTIONS}")
     #print(f"List of responses: {survey_data}\n")
     #print(f"Summarised questions: {summarised_questions}\n")
@@ -241,12 +239,6 @@ def analyse_survey():
 
     print("-- End of analyse_survey function")
     return question_averages
-    
-    
-    # potential nested array, list of qs and results. or zip dictionary?
-    # print dataset for testing
-    # print statement "Results for Individual questions"
-    # loop through dataset, gett
 
 
 def get_question_averages(survey_data, full_analysis):
@@ -266,6 +258,7 @@ def get_question_averages(survey_data, full_analysis):
                 response_values.append(int(value))
             else:
                 continue
+    
     print(f"Response values within get_question_averages, should be all numbers: {response_values}")
     
     overall_average = statistics.mean(response_values)
@@ -288,8 +281,8 @@ def get_question_averages(survey_data, full_analysis):
     for dataset in survey_data:
         #dataset.pop(0)
         for index in range(len(dataset)):
-            print(f"Current value being looked at: {dataset[index]}")
-            print(f"Index: {index}")
+            print(f"Current value being looked at: {dataset[index]}")  # test
+            print(f"Index: {index}")  # test
             question_totals[index] += int(dataset[index])
     print(f"List of total scores for each question: {question_totals}\n")
     print(f"Number of responses which the totals will be divided by: {number_of_responses}")
@@ -315,9 +308,9 @@ def make_recommendations(analysed_data):
     high_scores = []
     question_index = 0
     for score in float_data:
-        if score <= 2.5:  # If the average score is below 2.8 it is deemed "Low". Arbitrary, can be changed.
+        if score <= 2.5:  # If the average score is below 2.5 it is deemed "Low". Arbitrary, can be changed.
             low_scores.append(SUMMARISED_QUESTIONS[question_index])
-        elif score >= 3.5:  # If the average score is above 3.2 it is deemed "High". Arbitrary, can be changed.
+        elif score >= 3.5:  # If the average score is above 3.5 it is deemed "High". Arbitrary, can be changed.
             high_scores.append(SUMMARISED_QUESTIONS[question_index])
         question_index += 1
     print(f"Low scoring questions: {low_scores}")
@@ -326,7 +319,7 @@ def make_recommendations(analysed_data):
     for question in low_scores:
         low_scores_headings.append(question[5:])
     print("Based on the average scores, major areas of concern for the organisation should be: ")
-    #print([heading for heading in low_scores_headings])
+    # print([heading for heading in low_scores_headings])
     for heading in low_scores_headings:
         print(f"{heading}")
 
