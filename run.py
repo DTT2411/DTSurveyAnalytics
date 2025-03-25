@@ -68,6 +68,7 @@ def get_survey_data():
 
     user_responses = []
     questions = get_questions()
+    print(questions)
     while True:
         user_name = input("Please enter your name: ")
         user_name_checked = check_existing_names(user_name)
@@ -162,11 +163,8 @@ def get_questions():
     Returns a list of the survey questions
     """
     worksheet = SHEET.worksheet('survey_results')
-    #headings = worksheet.row_values(1)
     questions = worksheet.get_notes()
-    #questions = headings[1:]
-    print(questions)
-    return questions
+    return questions[0][1:] #get_notes function returns a list of lists which needs to be unpacked, and is 1-indexed so need to start from +1 position in nested list
 
 
 def analyse_user_data(user_data):
@@ -176,7 +174,6 @@ def analyse_user_data(user_data):
     for the given individual. 
     """
     worksheet = SHEET.worksheet('survey_results')
-    #notes = worksheet.get_notes() #may need to specify a range/row in case someone puts note on another cell, which then gets read
     notes = worksheet.row_values(1)
     summarised_questions = notes[1:]
     print(f"Analysing data...\n")
