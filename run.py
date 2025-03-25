@@ -227,10 +227,10 @@ def analyse_survey():
             else:
                 continue
     summarised_questions = survey_data.pop(0)
-    print(f"List of responses: {survey_data}")
-    print(f"Summarised questions: {summarised_questions}")
+    print(f"List of responses: {survey_data}\n")
+    print(f"Summarised questions: {summarised_questions}\n")
     #print(f"Response values only, should only be numbers: {response_values[(len(summarised_questions)):]}")
-    print(f"Response values only, should only be numbers: {response_values}")
+    print(f"Response values only, should only be numbers: {response_values}\n")
     #print(f"Names list: {names}\n")  
     #print(f"Names list without NAME heading: {names[1:]}\n")
     print("See below for average scores for each question in the survey:\n")
@@ -238,11 +238,23 @@ def analyse_survey():
     overall_average = statistics.mean(response_values)
     print(f"Overall average score across organisation: {round(overall_average, 2)}")
     
+    question_totals = []
+    for index in range(len(summarised_questions)):
+        question_totals.append(0)
+    print(f"Initialised question totals, should all be 0: {question_totals}")
+
+    for dataset in survey_data:
+        for index in range(len(dataset)):
+            print(f"Current value being looked at: {dataset[index]}")
+            print(f"Index: {index}")
+            question_totals[index] += int(dataset[index])
+    print(f"List of total scores for each question: {question_totals}\n")
+
     
-    question_index = 0
-    for dataset in survey_data:  
-        print(f"{summarised_questions[question_index]} : {score}")
-        question_index += 1
+    #question_index = 0
+    #for dataset in survey_data:  
+    #    print(f"{summarised_questions[question_index]} : {score}")
+    #    question_index += 1
 
 
 
