@@ -12,8 +12,8 @@ CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
-survey = SHEET.worksheet("survey_results")
-data = survey.get_all_values()
+SURVEY = SHEET.worksheet("survey_results")
+data = SURVEY.get_all_values()
 
 
 def process_user_command():
@@ -94,8 +94,8 @@ def update_survey_sheet(new_data_row):
     Updates the survey spreadsheet with a list of new values, provided by the user.
     """
     print(f"Updating survey results spreadsheet...\n")
-    worksheet = SHEET.worksheet('survey_results')
-    worksheet.append_row(new_data_row)
+    SURVEY.append_row(new_data_row)
+    print(f"Update complete!\n")
 
 
 def read_user_data(name):
@@ -103,9 +103,8 @@ def read_user_data(name):
     Reads a row of data from the spreadsheet based on the employees name, which is passed by user.
     """
     print(f"Reading {name}'s data...\n")
-    worksheet = SHEET.worksheet('survey_results')
-    name_cell = worksheet.find(name)
-    user_scores = worksheet.row_values(name_cell.row)
+    name_cell = SURVEY.find(name)
+    user_scores = SURVEY.row_values(name_cell.row)
     return user_scores
 
 
@@ -114,9 +113,8 @@ def delete_row(name):
     Takes the validated name input by the user and deletes the corresponding row in the spreadsheet.
     """
     print(f"Deleting {name}'s data...\n")
-    worksheet = SHEET.worksheet('survey_results')
-    name_cell = worksheet.find(name)
-    worksheet.delete_rows(name_cell.row)
+    name_cell = SURVEY.find(name)
+    SURVEY.delete_rows(name_cell.row)
     print(f"Deletion complete. {name}'s entry has been removed from the survey.\n")
 
 
@@ -126,8 +124,7 @@ def validate_name(name):
     in the spreadsheet. If no match is found, user will be prompted until a match is detected, then the 
     valid name is passed back to the main() function.
     """
-    worksheet = SHEET.worksheet('survey_results')
-    existing_names = worksheet.col_values(1)
+    existing_names = SURVEY.col_values(1)
     while name not in existing_names:
         name = input("The name you entered does not exist. Please submit the name of a respondent who has completed the survey.\n")
     return name
@@ -139,8 +136,7 @@ def check_existing_names(name):
     in the spreadsheet. If the name matches, user will be prompted until a new name is submitted, then the 
     valid name is passed back to the main() function.
     """
-    worksheet = SHEET.worksheet('survey_results')
-    existing_names = worksheet.col_values(1)
+    existing_names = SURVEY.col_values(1)
     while name in existing_names:
         print("The name you entered already exists - you have already completed the survey!\n")
         name = input("Please enter the name of a new respondent.\n")
@@ -162,9 +158,8 @@ def get_questions():
     """
     Returns a list of the survey questions
     """
-    worksheet = SHEET.worksheet('survey_results')
-    questions = worksheet.get_notes()
-    return questions[0][1:]  # get_notes function returns a list of lists which needs to be unpacked, and is 1-indexed so need to start from +1 position in nested list
+    questions = SURVEY.get_notes()
+    return questions[0][1:]  # get_notes function returns a list of lists containing notes which needs to be unpacked
 
 
 def analyse_user_data(user_data):
@@ -173,8 +168,7 @@ def analyse_user_data(user_data):
     a "read" command, displaying the question responses and statistics
     for the given individual. 
     """
-    worksheet = SHEET.worksheet('survey_results')
-    notes = worksheet.row_values(1)
+    notes = SURVEY.row_values(1)
     summarised_questions = notes[1:]
     print(f"Analysing data...\n")
     user_name = user_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
