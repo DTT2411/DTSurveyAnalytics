@@ -225,7 +225,7 @@ def analyse_survey():
     print(f"Summarised questions: {summarised_questions}\n")
     #print(f"Response values only, should only be numbers: {response_values}\n")
 
-    question_averages = get_question_averages(survey_data, summarised_questions)
+    question_averages = get_question_averages(survey_data, summarised_questions, True)
     print(f"Printing question averages from analyse_survey function after call: {question_averages}")
 
     print("-- End of analyse_survey function")
@@ -237,15 +237,13 @@ def analyse_survey():
     # loop through dataset, gett
 
 
-def get_question_averages(survey_data, summarised_questions):
+def get_question_averages(survey_data, summarised_questions, full_analysis):
     """
-    TBC
+    Extracts only values (excludes questions & names) from survey data. Calculates and overall average score.
+    Calculates individual questio
     """
-    #names = [] # delete if names are not used
     response_values = []
     for data_row in survey_data:
-        #name = data_row.pop(0)
-        #names.append(name)
         data_row.pop(0)
         for value in data_row:
             if len(value) == 1:
@@ -255,7 +253,8 @@ def get_question_averages(survey_data, summarised_questions):
     
     print("See below for average scores for each question in the survey:\n")
     overall_average = statistics.mean(response_values)
-    print(f"Overall average score across organisation: {round(overall_average, 1)}")
+    if full_analysis:
+        print(f"Overall average score across organisation: {round(overall_average, 1)}")
     
     # initialises totals variable depending on the number of responses
     question_totals = []
