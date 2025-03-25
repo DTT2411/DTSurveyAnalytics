@@ -162,8 +162,9 @@ def get_questions():
     Returns a list of the survey questions
     """
     worksheet = SHEET.worksheet('survey_results')
-    headings = worksheet.row_values(1)
-    questions = headings[1:]
+    #headings = worksheet.row_values(1)
+    questions = worksheet.get_notes()
+    #questions = headings[1:]
     print(questions)
     return questions
 
@@ -174,8 +175,11 @@ def analyse_user_data(user_data):
     a "read" command, displaying the question responses and statistics
     for the given individual. 
     """
+    worksheet = SHEET.worksheet('survey_results')
+    #notes = worksheet.get_notes() #may need to specify a range/row in case someone puts note on another cell, which then gets read
+    notes = worksheet.row_values(1)
+    summarised_questions = notes[1:]
     print(f"Analysing data...\n")
-    summarised_questions = ['Q1 - Role Satisfaction', 'Q2 - Remuneration Satisfaction', 'Q3 - Staff Support', 'Q4 - Holidays', 'Q5 - Benefits', 'Q6 - Manager Support', 'Q7 - Career Growth', 'Q8 - Life-Work Balance','Q9 - Feeling Valued', 'Q10 - Would Recommend']
     user_name = user_data.pop(0) #removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Results for {user_name} are as follows:")
     q_counter = 0
