@@ -216,60 +216,17 @@ def analyse_survey():
     # call get_questions and assign to questions variable
     
     #print(summarised_questions)
-    names = []  # May not be required, might only need to pop names off if they're not used
-    response_values = []
-    for data_row in survey_data:
-        name = data_row.pop(0)
-        names.append(name)
-        for value in data_row:
-            if len(value) == 1:
-                response_values.append(int(value))
-            else:
-                continue
+    #names = []  # May not be required, might only need to pop names off if they're not used
+    #print(f"Names list: {names}\n")  
+    #print(f"Names list without NAME heading: {names[1:]}\n")
+
     summarised_questions = survey_data.pop(0)
     print(f"List of responses: {survey_data}\n")
     print(f"Summarised questions: {summarised_questions}\n")
-    #print(f"Response values only, should only be numbers: {response_values[(len(summarised_questions)):]}")
-    print(f"Response values only, should only be numbers: {response_values}\n")
-    #print(f"Names list: {names}\n")  
-    #print(f"Names list without NAME heading: {names[1:]}\n")
-    print("See below for average scores for each question in the survey:\n")
-    #overall_average = statistics.mean(response_values[(len(summarised_questions)):])
-    overall_average = statistics.mean(response_values)
-    print(f"Overall average score across organisation: {round(overall_average, 1)}")
-    
-    # initialises totals variable depending on the number of responses
-    question_totals = []
-    number_of_responses = len(survey_data)
-    print(f"Number of responses, should be 15: {number_of_responses}")
-    for index in range(len(summarised_questions)):
-        question_totals.append(0)
-    print(f"Initialised question totals, should all be 0: {question_totals}")
+    #print(f"Response values only, should only be numbers: {response_values}\n")
 
-    #Gets totals for each question
-    for dataset in survey_data:
-        for index in range(len(dataset)):
-            print(f"Current value being looked at: {dataset[index]}")
-            print(f"Index: {index}")
-            question_totals[index] += int(dataset[index])
-    print(f"List of total scores for each question: {question_totals}\n")
-    question_averages = [x/number_of_responses for x in question_totals]
-    question_averages_rounded = ['%.1f' % x for x in question_averages]
-
-    #question_averages_rounded
-    #for index in range(len(question_averages)):
-    #    question_averages_rounded.append(round(question_averages[index], 1))
-    print(f"List of average scores for each question: {question_averages_rounded}\n")
-    print("Q1 below")
-    print(question_averages_rounded[0])
-
-    
-    #question_index = 0
-    #for dataset in survey_data:  
-    #    print(f"{summarised_questions[question_index]} : {score}")
-    #    question_index += 1
-
-
+    question_averages = get_question_averages(survey_data, summarised_questions)
+    print(f"Printing question averages from analyse_survey function after call: {question_averages}")
 
     print("-- End of analyse_survey function")
     
@@ -280,11 +237,54 @@ def analyse_survey():
     # loop through dataset, gett
 
 
-def get_organisational_results():
+def get_question_averages(survey_data, summarised_questions):
     """
     TBC
     """
+    #names = [] # delete if names are not used
+    response_values = []
+    for data_row in survey_data:
+        #name = data_row.pop(0)
+        #names.append(name)
+        data_row.pop(0)
+        for value in data_row:
+            if len(value) == 1:
+                response_values.append(int(value))
+            else:
+                continue
+    
+    print("See below for average scores for each question in the survey:\n")
+    overall_average = statistics.mean(response_values)
+    print(f"Overall average score across organisation: {round(overall_average, 1)}")
+    
+    # initialises totals variable depending on the number of responses
+    question_totals = []
+    number_of_responses = len(survey_data)
+    print(f"Number of responses, should be 15: {number_of_responses}")
+    for index in range(len(summarised_questions) - 1):
+        question_totals.append(0)
+    print(f"Initialised question totals, should all be 0: {question_totals}")
 
+    #Gets totals for each question
+    for dataset in survey_data:
+        for index in range(len(dataset)):
+            print(f"Current value being looked at: {dataset[index]}")
+            print(f"Index: {index}")
+            question_totals[index] += int(dataset[index])
+    print(f"List of total scores for each question: {question_totals}\n")
+
+    # for loop comprehensions to generate a list of averages then round all values to one decimal place
+    question_averages = [x/number_of_responses for x in question_totals]
+    question_averages_rounded = ['%.1f' % x for x in question_averages]
+    print(f"List of average scores for each question: {question_averages_rounded}\n")
+    print("Q1 below")
+    print(question_averages_rounded[0])
+
+    return question_averages_rounded
+    #question_index = 0
+    #for dataset in survey_data:  
+    #    print(f"{summarised_questions[question_index]} : {score}")
+    #    question_index += 1
 
 def main():
     """
