@@ -172,7 +172,7 @@ def analyse_user_data(user_data):
     """
     notes = SURVEY.row_values(1)
     summarised_questions = notes[1:]
-    print(f"Analysing data...\n")
+    print(f"Analysing user data...\n")
     user_name = user_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Results for {user_name} are as follows:")
     question_index = 0
@@ -209,13 +209,56 @@ def analyse_survey():
     highlighting questions with low scores i.e. areas to work on
     """
     # print statement "Analysing survey results..."
-    # create "dataset" variable pulling all data from sheet
+    print(f"Analysing survey data...\n")
+    # intialise survey_data variable, pulling all data from survey
+    survey_data = SURVEY.get_all_values()
+    print(f"Survey data: {survey_data}\n")
     # call get_questions and assign to questions variable
-    # intialise results variable, pulling individual results
+    
+    #print(summarised_questions)
+    names = []  # May not be required, might only need to pop names off if they're not used
+    response_values = []
+    for data_row in survey_data:
+        name = data_row.pop(0)
+        names.append(name)
+        for value in data_row:
+            if len(value) == 1:
+                response_values.append(int(value))
+            else:
+                continue
+    summarised_questions = survey_data.pop(0)
+    print(f"List of responses: {survey_data}")
+    print(f"Summarised questions: {summarised_questions}")
+    #print(f"Response values only, should only be numbers: {response_values[(len(summarised_questions)):]}")
+    print(f"Response values only, should only be numbers: {response_values}")
+    #print(f"Names list: {names}\n")  
+    #print(f"Names list without NAME heading: {names[1:]}\n")
+    print("See below for average scores for each question in the survey:\n")
+    #overall_average = statistics.mean(response_values[(len(summarised_questions)):])
+    overall_average = statistics.mean(response_values)
+    print(f"Overall average score across organisation: {round(overall_average, 2)}")
+    
+    
+    question_index = 0
+    for dataset in survey_data:  
+        print(f"{summarised_questions[question_index]} : {score}")
+        question_index += 1
+
+
+
+    print("-- End of analyse_survey function")
+    
+    
     # potential nested array, list of qs and results. or zip dictionary?
     # print dataset for testing
     # print statement "Results for Individual questions"
     # loop through dataset, gett
+
+
+def get_organisational_results():
+    """
+    TBC
+    """
 
 
 def main():
