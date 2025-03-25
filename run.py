@@ -156,10 +156,12 @@ def validate_user_command(user_command):
 
 def get_questions():
     """
-    Returns a list of the survey questions
+    Returns a list of the survey questions. The get_notes function returns 
+    a list of lists containing cell notes which needs to be unpacked before
+    returning.
     """
     questions = SURVEY.get_notes()
-    return questions[0][1:]  # get_notes function returns a list of lists containing notes which needs to be unpacked
+    return questions[0][1:]
 
 
 def analyse_user_data(user_data):
