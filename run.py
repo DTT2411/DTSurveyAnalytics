@@ -164,7 +164,7 @@ def get_questions():
     """
     worksheet = SHEET.worksheet('survey_results')
     questions = worksheet.get_notes()
-    return questions[0][1:] #get_notes function returns a list of lists which needs to be unpacked, and is 1-indexed so need to start from +1 position in nested list
+    return questions[0][1:]  # get_notes function returns a list of lists which needs to be unpacked, and is 1-indexed so need to start from +1 position in nested list
 
 
 def analyse_user_data(user_data):
@@ -177,13 +177,13 @@ def analyse_user_data(user_data):
     notes = worksheet.row_values(1)
     summarised_questions = notes[1:]
     print(f"Analysing data...\n")
-    user_name = user_data.pop(0) #removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
+    user_name = user_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Results for {user_name} are as follows:")
     question_index = 0
-    for score in user_data: #this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
+    for score in user_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
         print(f"{summarised_questions[question_index]} : {score}")
         question_index += 1
-    converted_scores = [int(x) for x in user_data] #converts user data to a list of integers so that numerical analysis can be performed
+    converted_scores = [int(x) for x in user_data]  # converts user data to a list of integers so that numerical analysis can be performed
     average_score = statistics.mean(converted_scores)
     score_variance = statistics.variance(converted_scores)
     if score_variance > 1.5:
@@ -196,7 +196,7 @@ def analyse_user_data(user_data):
     print(f"{user_name} had a variance of {round(score_variance, 2)} in their scores. This is a {variance_string}")
 
     min_score = min(converted_scores)
-    print(f"Min score: {min_score}") #TESTING
+    print(f"Min score: {min_score}")  # TESTING
     lowest_scored_questions = []
     i = 0
     while i < 10:
@@ -212,21 +212,21 @@ def analyse_survey():
     summarised information for each question, overall statistics,
     highlighting questions with low scores i.e. areas to work on
     """
-    #print statement "Analysing survey results..."
-    #create "dataset" variable pulling all data from sheet
-    #call get_questions and assign to questions variable
-    #intialise results variable, pulling individual results
-    #potential nested array, list of qs and results. or zip dictionary?
-    #print dataset for testing
-    #print statement "Results for Individual questions"
-    #loop through dataset, gett
+    # print statement "Analysing survey results..."
+    # create "dataset" variable pulling all data from sheet
+    # call get_questions and assign to questions variable
+    # intialise results variable, pulling individual results
+    # potential nested array, list of qs and results. or zip dictionary?
+    # print dataset for testing
+    # print statement "Results for Individual questions"
+    # loop through dataset, gett
 
 
 def main():
     """
     Run all program functions
     """
-    while True: #The program will keep requesting user commands until they input the "exit" command
+    while True:  # The program will keep requesting user commands until they input the "exit" command
         user_command = process_user_command()
         print(f"MAIN: user command is {user_command}") #TESTING
         match user_command:
