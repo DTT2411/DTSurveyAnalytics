@@ -170,10 +170,19 @@ def analyse_user_data(user_data):
     a "read" command, displaying the question responses and statistics
     for the given individual. 
     """
-    notes = SURVEY.row_values(1)
-    summarised_questions = notes[1:]
+    #notes = SURVEY.row_values(1)
+    survey_data = SURVEY.get_all_values()
+    headings = survey_data.pop(0)
+    headings.pop(0)
+    summarised_questions = headings
     print(f"Analysing user data...\n")
     user_name = user_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
+    print(f"Survey data being fed into averages function: {survey_data}\n")
+    print(f"Qs data being fed into averages function: {summarised_questions}\n")
+    survey_averages = get_question_averages(survey_data, summarised_questions, False)
+    print(f"Printing survey_averages from within analyse_user_data function: {survey_averages}")
+
+
     print(f"Results for {user_name} are as follows:")
     question_index = 0
     for score in user_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
@@ -189,7 +198,7 @@ def analyse_user_data(user_data):
     else:
         variance_string = "low level of variance, suggesting the respondent is very consistent in their perception about the qualities of the job." 
     print(f"{user_name} gave an average score of {average_score} across all questions.")
-    print(f"{user_name} had a variance of {round(score_variance, 2)} in their scores. This is a {variance_string}")
+    print(f"{user_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
 
     min_score = min(converted_scores)
     print(f"Min score: {min_score}")  # TESTING
@@ -199,7 +208,7 @@ def analyse_user_data(user_data):
         if converted_scores[i] == min_score:
             lowest_scored_questions.append(summarised_questions[i])
         i += 1
-    print(f"Lowest scored questions were scored {min_score} as follows: {lowest_scored_questions}. These should be areas of focus for the respondent and organisation to work on together.")
+    print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.")
 
 
 def analyse_survey():
@@ -212,6 +221,9 @@ def analyse_survey():
     print(f"Analysing survey data...\n")
     # intialise survey_data variable, pulling all data from survey
     survey_data = SURVEY.get_all_values()
+    headings = survey_data.pop(0)
+    headings.pop(0)
+    summarised_questions = headings
     #print(f"Survey data: {survey_data}\n")
     # call get_questions and assign to questions variable
     
@@ -220,7 +232,8 @@ def analyse_survey():
     #print(f"Names list: {names}\n")  
     #print(f"Names list without NAME heading: {names[1:]}\n")
 
-    summarised_questions = survey_data.pop(0)
+    
+    print(f"Printing summarised questions from inside analyse_survey, should exclude name: {summarised_questions}")
     #print(f"List of responses: {survey_data}\n")
     #print(f"Summarised questions: {summarised_questions}\n")
     #print(f"Response values only, should only be numbers: {response_values}\n")
@@ -248,6 +261,10 @@ def get_question_averages(survey_data, summarised_questions, full_analysis):
     Extracts only values (excludes questions & names) from survey data. Calculates and overall average score.
     Calculates individual questio
     """
+    print("Printing questions and length of q array in getqavgs function")
+    print(summarised_questions)
+    print(len(summarised_questions))
+
     response_values = []
     for data_row in survey_data:
         data_row.pop(0)
@@ -256,7 +273,7 @@ def get_question_averages(survey_data, summarised_questions, full_analysis):
                 response_values.append(int(value))
             else:
                 continue
-    
+    print(f"Response values within get_question_averages, should be 0: {response_values}")
     
     overall_average = statistics.mean(response_values)
     if full_analysis:
@@ -266,15 +283,16 @@ def get_question_averages(survey_data, summarised_questions, full_analysis):
     question_totals = []
     number_of_responses = len(survey_data)
     #print(f"Number of responses, should be 15: {number_of_responses}")
-    for index in range(len(summarised_questions) - 1):
+    for index in range(len(summarised_questions)):
         question_totals.append(0)
+    print(f"Question totals from inside get_question_averages function: {question_totals}")
     #print(f"Initialised question totals, should all be 0: {question_totals}")
 
     #Gets totals for each question
     for dataset in survey_data:
         for index in range(len(dataset)):
-            #print(f"Current value being looked at: {dataset[index]}")
-            #print(f"Index: {index}")
+            print(f"Current value being looked at: {dataset[index]}")
+            print(f"Index: {index}")
             question_totals[index] += int(dataset[index])
     #print(f"List of total scores for each question: {question_totals}\n")
 
