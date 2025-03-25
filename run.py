@@ -54,7 +54,7 @@ def list_respondents():
         print(respondent)
 
 
-def get_survey_data():
+def get_user_data():
     """
     Gets survey input for a given responder from the user.
     """
@@ -318,7 +318,7 @@ def main():
         print(f"MAIN: user command is {user_command}") #TESTING
         match user_command:
             case 'add':
-                user_responses = get_survey_data()
+                user_responses = get_user_data()
                 update_survey_sheet(user_responses)
             case 'delete':
                 delete_name = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
