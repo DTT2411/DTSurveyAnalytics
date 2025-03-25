@@ -308,20 +308,27 @@ def make_recommendations(analysed_data):
     Makes recommendations based on the average scores calculated across the dataset.
     """
     print("Recommendations for your organisation based on overall survey results...\n")
-    print(analysed_data)
-    float_data = [float(x) for x in analysed_data]
-    print(float_data)
+    #print(analysed_data)
+    float_data = [float(x) for x in analysed_data]  # converts the list of strings of averages into floats for numerical comparison
+    #print(float_data)
     low_scores = []
     high_scores = []
-    question_index = 0 
+    question_index = 0
     for score in float_data:
-        if score < 2.5:
+        if score <= 2.5:  # If the average score is below 2.8 it is deemed "Low". Arbitrary, can be changed.
             low_scores.append(SUMMARISED_QUESTIONS[question_index])
-        elif score > 3.5:
+        elif score >= 3.5:  # If the average score is above 3.2 it is deemed "High". Arbitrary, can be changed.
             high_scores.append(SUMMARISED_QUESTIONS[question_index])
         question_index += 1
     print(f"Low scoring questions: {low_scores}")
-    print(f"High scoring questions: {high_scores}")
+    print(f"High scoring questions: {high_scores}\n")
+    low_scores_headings = []
+    for question in low_scores:
+        low_scores_headings.append(question[5:])
+    print("Based on the average scores, major areas of concern for the organisation should be: ")
+    #print([heading for heading in low_scores_headings])
+    for heading in low_scores_headings:
+        print(f"{heading}")
 
 
 def main():
