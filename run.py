@@ -317,7 +317,7 @@ def make_recommendations(analysed_data):
     print(f"High scoring questions: {high_scores}\n")
     low_scores_headings = []
     for question in low_scores:
-        low_scores_headings.append(question[5:])
+        low_scores_headings.append(question[5:])  # removes text before words from questions (e.g. "Q1 - ") 
     print("Based on the average scores, major areas of concern for the organisation should be: ")
     # print([heading for heading in low_scores_headings])
     for heading in low_scores_headings:
