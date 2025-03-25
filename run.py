@@ -239,8 +239,8 @@ def analyse_survey():
         print(f"{SUMMARISED_QUESTIONS[question_index]} : {average_score}")
         question_index += 1
 
-
     print("-- End of analyse_survey function")
+    return question_averages
     
     
     # potential nested array, list of qs and results. or zip dictionary?
@@ -269,13 +269,13 @@ def get_question_averages(survey_data, full_analysis):
     print(f"Response values within get_question_averages, should be all numbers: {response_values}")
     
     overall_average = statistics.mean(response_values)
-    if full_analysis:
+    if full_analysis:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_user_data
         print(f"Overall average score across organisation: {round(overall_average, 1)}")
     
     # initialises totals variable depending on the number of responses
     question_totals = []
-    number_of_responses = len(survey_data) - 1
-    #print(f"Number of responses, should be 15: {number_of_responses}")
+    number_of_responses = len(survey_data) - 1  # survey data contains all column data including headings, so need to loop through the lenth minus 1
+    #print(f"Number of responses, should be 14: {number_of_responses}")
     for index in range(len(SUMMARISED_QUESTIONS)):
         question_totals.append(0)
     print(f"Question totals from inside get_question_averages function: {question_totals}")
@@ -302,10 +302,27 @@ def get_question_averages(survey_data, full_analysis):
     #print(question_averages_rounded[0])
 
     return question_averages_rounded
-    #question_index = 0
-    #for dataset in survey_data:  
-    #    print(f"{summarised_questions[question_index]} : {score}")
-    #    question_index += 1
+
+def make_recommendations(analysed_data):
+    """
+    Makes recommendations based on the average scores calculated across the dataset.
+    """
+    print("Recommendations for your organisation based on overall survey results...\n")
+    print(analysed_data)
+    float_data = [float(x) for x in analysed_data]
+    print(float_data)
+    low_scores = []
+    high_scores = []
+    question_index = 0 
+    for score in float_data:
+        if score < 2.5:
+            low_scores.append(SUMMARISED_QUESTIONS[question_index])
+        elif score > 3.5:
+            high_scores.append(SUMMARISED_QUESTIONS[question_index])
+        question_index += 1
+    print(f"Low scoring questions: {low_scores}")
+    print(f"High scoring questions: {high_scores}")
+
 
 def main():
     """
@@ -330,7 +347,8 @@ def main():
                 user_data = read_user_data(validated_read_name)
                 analyse_user_data(user_data)
             case 'analyse':
-                analyse_survey()
+                analysed_data = analyse_survey()
+                make_recommendations(analysed_data)
             case 'exit':
                 print("The application will now close.")
                 quit()
