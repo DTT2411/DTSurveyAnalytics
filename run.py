@@ -267,7 +267,8 @@ def analyse_survey():
 
 def get_averages(survey_data, full_analysis):
     """
-    Extracts values (excludes questions & names) from survey data. Calculates an overall average score.
+    Extracts values (excludes questions & names) from survey data. Calculates and returns 
+    an overall average score for each question.
     """
     print("Printing questions and length of q array in getqavgs function")
     print(SUMMARISED_QUESTIONS)
