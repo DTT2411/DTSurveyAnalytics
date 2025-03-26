@@ -293,7 +293,7 @@ def get_question_averages(survey_data, full_analysis):
 
     # for loop comprehensions to generate a list of averages then round all values to one decimal place
     question_averages = [x/number_of_responses for x in question_totals]
-    question_averages_rounded = ['%.1f' % x for x in question_averages]
+    question_averages_rounded = ['%.1f' % x for x in question_averages]  # alternative method of rounding since round() does not work with lists
     #print(f"List of average scores for each question: {question_averages_rounded}\n")
     #print("Q1 below")
     #print(question_averages_rounded[0])
