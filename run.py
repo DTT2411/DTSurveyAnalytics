@@ -26,6 +26,8 @@ def process_main_command():
     - 'delete' removes a given individual's set of responses from the spreadsheet
     - 'list' returns a list of names of individual respondents
     - 'read' returns a given individual's responses
+    - 'add q' adds a new question to the survey
+    - 'delete q' deletes an exiting question within the survey
     - 'analyse' returns general analysis over all survey data
     - 'exit' exits the program
     """
@@ -36,6 +38,8 @@ def process_main_command():
         print("- 'delete' to delete a record based on an inputted name")
         print("- 'list' to see a list of names of individual respondents")
         print("- 'read' to read a specific individual's responses")
+        print("- 'add q' to add a new question to the survey")
+        print("- 'delete q' to delete a question from the survey and all associated data")
         print("- 'analyse' to conduct general analysis over all survey data")
         print("- 'exit' to exit the application\n")
         main_command = input("Enter your command here: \n")
@@ -185,6 +189,27 @@ def update_data(name_to_update, update_command):
                 print("Not a number between 1 and 5. Please enter a valid value.")
 
 
+def add_question():
+    """
+    """
+    print("Adding new question to survey...\n")
+    new_question = input("Please enter the full text question you wish to add: \n")
+    new_summarised_question = input("Please enter the a summarised version (1 to 2 words): \n")
+    #next_question_column = len(SUMMARISED_QUESTIONS) + 2
+    #new_question_cell = 
+    #col_val = SURVEY.column
+    cell_coordinate = f"{next_question_column}1"
+    print(f"New question: {new_question}")
+    print(f"New heading: {new_summarised_question}")
+    
+    print(f"Column to insert to: {next_question_column}")
+    
+    print(f"Cell coordinate being passed: {cell_coordinate}")
+    #SURVEY.insert_note(cell_coordinate, new_question)
+    #SURVEY.update_cell(1, next_question_column, new_summarised_question)
+    print("The question has successfully been added to the survey.\n")
+    return None
+
 def delete_row(name):
     """
     Takes the validated name input by the user and deletes the corresponding row in the spreadsheet.
@@ -228,7 +253,7 @@ def validate_command(command, menu):
     Checks that the initial command passed by user to perform on data set is valid.
     """
     print("Validating command...")
-    main_command_list = ['add', 'update', 'delete', 'list', 'read', 'analyse', 'exit']
+    main_command_list = ['add', 'update', 'delete', 'list', 'read', 'add q', 'delete q', 'analyse', 'exit']
     update_command_list = ['one', 'all']
     if menu == "main":
         if command in main_command_list:
@@ -238,6 +263,7 @@ def validate_command(command, menu):
             return False
     elif menu == "update":
         if command in update_command_list:
+            print("Validated.\n")
             return True
         else:
             return False
@@ -442,6 +468,8 @@ def main():
                 validated_read_name = validate_name(read_name)
                 respondent_data = read_respondent_data(validated_read_name)
                 analyse_respondent_data(respondent_data)
+            case 'add q':
+                add_question()
             case 'analyse':
                 analysed_data = analyse_survey()
                 make_recommendations(analysed_data)
