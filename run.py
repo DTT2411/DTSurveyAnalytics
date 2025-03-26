@@ -14,8 +14,8 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
 SURVEY = SHEET.worksheet("survey_results")
 data = SURVEY.get_all_values()
-headings = data.pop(0)
-headings.pop(0)
+headings = data.pop(0)  # Extracts the first row of data (i.e. name and all questions)
+headings.pop(0)  # Removes the name from list, leaving only the summarised questions
 SUMMARISED_QUESTIONS = headings
 
 def process_user_command():
