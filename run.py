@@ -23,19 +23,21 @@ def process_user_command():
     Requests user to indicate what function they want to
     perform via command:
     - 'add' adds new survey data to existing spreadsheet
+    - 'amend' updates values for a given individual
     - 'delete' removes a given individual's set of responses from the spreadsheet
     - 'list' returns a list of names of individual respondents
-    - 'read' returns a specific individual's responses
+    - 'read' returns a given individual's responses
     - 'analyse' returns general analysis over all survey data
     - 'exit' exits the program
     """
     while True:
         print("Please enter a command to perform on the survey\n")
         print("- 'add' to add new survey data to existing spreadsheet")
+        print("- 'amend' to add amend existing survey data within the spreadsheet")
+        print("- 'delete' to delete a record based on an inputted name")
         print("- 'list' to see a list of names of individual respondents")
         print("- 'read' to read a specific individual's responses")
         print("- 'analyse' to conduct general analysis over all survey data")
-        print("- 'delete' to delete a record based on an inputted name")
         print("- 'exit' to exit the application\n")
         user_command = input("Enter your command here: \n")
         validity_check = validate_user_command(user_command)
@@ -181,7 +183,7 @@ def validate_user_command(user_command):
     """
     Checks that the initial command passed by user to perform on data set is valid.
     """
-    command_list = ['add', 'delete', 'list', 'read', 'analyse', 'exit']
+    command_list = ['add', 'amend', 'delete', 'list', 'read', 'analyse', 'exit']
     if user_command in command_list:
         return True
     else:
