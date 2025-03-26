@@ -56,11 +56,11 @@ def list_respondents():
         print(respondent)
 
 
-def get_user_data():
+def get_respondent_data():
     """
-    Gets survey input for a given respondent from the user. Checks the user inputs an integer between 1 and 5,
-    continues prompting until valid valid input is received. Individual responses are added to a list variable
-    which is passed back to the main() function.
+    Gets survey input from the user. Checks the user inputs an integer between 1 and 5,continues prompting 
+    until valid valid input is received. Individual responses are added to a list variable which is passed 
+    back to the main() function.
     """
     print("Adding survey data...\n")
     print("Please enter a value between 1 to 5 for the following questions, where appropriate.\n")
@@ -70,46 +70,49 @@ def get_user_data():
     print("2 - Poor")
     print("1 - Very Poor\n")
 
-    user_responses = []
+    responses = []
     questions = get_questions()
     print(questions)
     while True:
-        user_name = input("Please enter your name: ")
-        user_name_checked = check_existing_names(user_name)
-        user_responses.append(user_name_checked)
+        respondent_name = input("Please enter your name: ")
+        respondent_name_checked = check_existing_names(respondent_name)
+        responses.append(respondent_name_checked)
         for question in questions:
             print(question + ": \n")
             while True:
                 try:
-                    user_response = int(input("Answer: "))
-                    if user_response in range(1,6):
-                        print(f"User entered {user_response}.\n")
-                        user_responses.append(user_response)
+                    response = int(input("Answer: "))
+                    if response in range(1,6):
+                        print(f"You entered {response}.\n")
+                        responses.append(response)
                         break
                     else:
                         print("Not a number between 1 and 5. Please enter a valid value.")
                 except ValueError:
                     print("Not a number between 1 and 5. Please enter a valid value.")
-        return user_responses
+        return responses
 
 
 def update_survey_sheet(new_data_row):
     """
-    Updates the survey spreadsheet with a list of new values, provided by the user.
+    Updates the survey spreadsheet with the list of new responses.
     """
     print(f"Updating survey results spreadsheet...\n")
     SURVEY.append_row(new_data_row)
     print(f"Update complete!\n")
 
 
-def read_user_data(name):
+def read_respondent_data(name):
     """
-    Reads a row of data from the spreadsheet based on the employees name, which is passed by user.
+    Reads a row of data from the spreadsheet based on the respondent name, which is passed by user.
     """
     print(f"Reading {name}'s data...\n")
     name_cell = SURVEY.find(name)
-    user_scores = SURVEY.row_values(name_cell.row)
-    return user_scores
+    respondent_scores = SURVEY.row_values(name_cell.row)
+    return respondent_scores
+
+
+#def amend_data():
 
 
 def delete_row(name):
@@ -169,7 +172,7 @@ def get_questions():
     return questions[0][1:]
 
 
-def analyse_user_data(user_data):
+def analyse_respondent_data(respondent_data):
     """
     Conducts analysis on data passed through the main function following
     a "read" command, displaying the question responses and statistics
@@ -177,18 +180,18 @@ def analyse_user_data(user_data):
     """
     #notes = SURVEY.row_values(1)
     survey_data = SURVEY.get_all_values()
-    print(f"Analysing user data...\n")
-    user_name = user_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
+    print(f"Analysing respondent data...\n")
+    respondent_name = respondent_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Survey data being fed into averages function: {survey_data}\n")
     #print(f"Qs data being fed into averages function: {summarised_questions}\n")
     survey_averages = get_question_averages(survey_data, False)
-    print(f"Printing survey_averages from within analyse_user_data function: {survey_averages}")
-    print(f"Results for {user_name} are as follows:")
+    print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")
+    print(f"Results for {respondent_name} are as follows:")
     question_index = 0
-    for score in user_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
+    for score in respondent_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
         print(f"{SUMMARISED_QUESTIONS[question_index]} : {score}")
         question_index += 1
-    converted_scores = [int(x) for x in user_data]  # converts user data to a list of integers so that numerical analysis can be performed
+    converted_scores = [int(x) for x in respondent_data]  # converts data to a list of integers so that numerical analysis can be performed
     average_score = statistics.mean(converted_scores)
     score_variance = statistics.variance(converted_scores)
     if score_variance > 2:
@@ -197,8 +200,8 @@ def analyse_user_data(user_data):
         variance_string = "moderate level of variance."
     else:
         variance_string = "low level of variance, suggesting the respondent is very consistent in their perception about the qualities of the job." 
-    print(f"{user_name} gave an average score of {average_score} across all questions.")
-    print(f"{user_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
+    print(f"{respondent_name} gave an average score of {average_score} across all questions.")
+    print(f"{respondent_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
 
     min_score = min(converted_scores)
     print(f"Min score: {min_score}")  # TESTING
@@ -262,7 +265,7 @@ def get_question_averages(survey_data, full_analysis):
     print(f"Response values within get_question_averages, should be all numbers: {response_values}")
     
     overall_average = statistics.mean(response_values)
-    if full_analysis:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_user_data
+    if full_analysis:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_respondent_data
         print(f"Overall average score across organisation: {round(overall_average, 1)}")
     
     # initialises totals variable depending on the number of responses
@@ -333,8 +336,8 @@ def main():
         print(f"MAIN: user command is {user_command}") #TESTING
         match user_command:
             case 'add':
-                user_responses = get_user_data()
-                update_survey_sheet(user_responses)
+                responses = get_respondent_data()
+                update_survey_sheet(responses)
             case 'delete':
                 delete_name = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
                 validated_delete_name = validate_name(delete_name)
@@ -344,8 +347,8 @@ def main():
             case 'read':
                 read_name = input("Enter the exact name of the respondent you wish to see survey results for: \n")
                 validated_read_name = validate_name(read_name)
-                user_data = read_user_data(validated_read_name)
-                analyse_user_data(user_data)
+                respondent_data = read_respondent_data(validated_read_name)
+                analyse_respondent_data(respondent_data)
             case 'analyse':
                 analysed_data = analyse_survey()
                 make_recommendations(analysed_data)
