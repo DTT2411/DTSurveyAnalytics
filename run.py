@@ -112,8 +112,22 @@ def read_respondent_data(name):
     return respondent_scores
 
 
-def amend_data():
+#def amend_data():
+    # intiaite list variable
+    # initiate cell variable
     # ask user for the name of the individual record they wish to amend and pass this into "name_to_amend"
+    # ask user if they want to amend the entire record or just one response
+    # if entire record
+    #   loop over number of questions len(SUMMARISED_QUESTIONS)
+    #       print question
+    #       request input for value
+    #       validate value
+    #       add value to list 
+    #   use gspread function to update the entire row (need to append name with questions first)
+    # elif one response
+    #   ask user for the question they wish to amend
+    #   ask user for the value they wish to add (could combine this into one input separated by a space?)
+    #   contiunues entry with break statement to come out of loop?
 
 
 def delete_row(name):
