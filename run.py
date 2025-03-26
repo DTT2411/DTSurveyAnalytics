@@ -114,33 +114,25 @@ def read_respondent_data(name):
     return respondent_scores
 
 
-#def amend_data():
+#def amend_data(name_to_amend):
     # initiate list variable
     # row_to_amend = ""
 
     # initiate cell variable
     # cell_to_amend = ""
 
-    # PUT THIS NAME CALL INSIDE MAIN() FUNCTION FOR CONSISTENCY
-    # ask user for the name of the individual record they wish to amend (while true with validation and break?)
-    # while True:
-    #   name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
-    #   validated_name_to_amend = validate_name(name_to_amend)
-    #   
-
-    # validate name & pass this into "name_to_amend"
     # ask user if they want to amend the entire record or just one response 
     # if entire record
     #   loop over number of questions len(SUMMARISED_QUESTIONS)
     #       print question
     #       request input for value
     #       validate value
-    #       add value to list 
+    #       add value to list
     #   use gspread function to update the entire row (need to append name with questions first)
     # elif one response
     #   ask user for the question they wish to amend
     #   ask user for the value they wish to add (could combine this into one input separated by a space?)
-    #   contiunues entry with break statement to come out of loop?
+    #   continunous entry with break statement to come out of loop?
 
 
 def delete_row(name):
@@ -213,8 +205,8 @@ def analyse_respondent_data(respondent_data):
     respondent_name = respondent_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Survey data being fed into averages function: {survey_data}\n")
     # print(f"Qs data being fed into averages function: {summarised_questions}\n")
-    survey_averages = get_question_averages(survey_data, False)
-    print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")
+    survey_averages = get_averages(survey_data, False)
+    print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
     print(f"Results for {respondent_name} are as follows:")
     question_index = 0
     for score in respondent_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
@@ -261,7 +253,7 @@ def analyse_survey():
     #print(f"Summarised questions: {summarised_questions}\n")
     #print(f"Response values only, should only be numbers: {response_values}\n")
     print("See below for average scores for each question in the survey:\n")
-    question_averages = get_question_averages(survey_data, True)
+    question_averages = get_averages(survey_data, True)
     #print(f"Printing question averages from analyse_survey function after call: {question_averages}")
 
     question_index = 0
@@ -273,10 +265,9 @@ def analyse_survey():
     return question_averages
 
 
-def get_question_averages(survey_data, full_analysis):
+def get_averages(survey_data, full_analysis):
     """
-    Extracts only values (excludes questions & names) from survey data. Calculates and overall average score.
-    Calculates individual questio
+    Extracts values (excludes questions & names) from survey data. Calculates an overall average score.
     """
     print("Printing questions and length of q array in getqavgs function")
     print(SUMMARISED_QUESTIONS)
@@ -291,7 +282,7 @@ def get_question_averages(survey_data, full_analysis):
             else:
                 continue
     
-    print(f"Response values within get_question_averages, should be all numbers: {response_values}")
+    print(f"Response values within get_averages, should be all numbers: {response_values}")
     
     overall_average = statistics.mean(response_values)
     if full_analysis:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_respondent_data
@@ -303,7 +294,7 @@ def get_question_averages(survey_data, full_analysis):
     #print(f"Number of responses, should be 14: {number_of_responses}")
     for index in range(len(SUMMARISED_QUESTIONS)):
         question_totals.append(0)
-    print(f"Question totals from inside get_question_averages function: {question_totals}")
+    print(f"Question totals from inside get_averages function: {question_totals}")  # test
     #print(f"Initialised question totals, should all be 0: {question_totals}")
 
     #Gets totals for each question
@@ -316,8 +307,8 @@ def get_question_averages(survey_data, full_analysis):
             print(f"Current value being looked at: {dataset[index]}")  # test
             print(f"Index: {index}")  # test
             question_totals[index] += int(dataset[index])
-    print(f"List of total scores for each question: {question_totals}\n")
-    print(f"Number of responses which the totals will be divided by: {number_of_responses}")
+    print(f"List of total scores for each question: {question_totals}\n")  # test
+    print(f"Number of responses which the totals will be divided by: {number_of_responses}")  # test
 
     # for loop comprehensions to generate a list of averages then round all values to one decimal place
     question_averages = [x/number_of_responses for x in question_totals]
@@ -367,9 +358,9 @@ def main():
             case 'add':
                 responses = get_respondent_data()
                 update_survey_sheet(responses)
-            #case 'amend':
-                #name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
-                #validated_name_to_amend = validate_name(name_to_amend)
+            case 'amend':
+                name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
+                validated_name_to_amend = validate_name(name_to_amend)
                 #amend_data()
             case 'delete':
                 name_to_delete = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
