@@ -121,7 +121,7 @@ def read_respondent_data(name):
     # initiate cell variable
     # cell_to_amend = ""
 
-    # ask user if they want to amend the entire record or just one response 
+    # ask user if they want to amend the entire record or just one response (need to validate input somehow)
     # if entire record
     #   loop over number of questions len(SUMMARISED_QUESTIONS)
     #       print question
@@ -359,9 +359,10 @@ def main():
             case 'add':
                 responses = get_respondent_data()
                 update_survey_sheet(responses)
-            case 'amend':
-                name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
-                validated_name_to_amend = validate_name(name_to_amend)
+            #case 'amend':
+                #name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
+                #validated_name_to_amend = validate_name(name_to_amend)
+                #UPDATE: validate_user_command can be used to validate input! just need an additional parameter for 'amend'
                 #amend_data()
             case 'delete':
                 name_to_delete = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
