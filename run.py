@@ -43,7 +43,7 @@ def process_main_command():
         if validity_check:
             return main_command
         else:
-            print("Invalid command. Please enter a command from the list provided.")
+            print("Invalid command. Please enter a command from the list provided.\n")
 
 
 def process_update_command():
@@ -61,7 +61,7 @@ def process_update_command():
         if validity_check:
             return update_command
         else:
-            print("Invalid command. Please enter a command from the list provided.")
+            print("Invalid command. Please enter a command from the list provided.\n")
 
 
 def list_respondents():
@@ -73,6 +73,7 @@ def list_respondents():
     print("**See below for a list of all respondents.**\n")
     for respondent in respondent_names:
         print(respondent)
+    print("\n")
 
 
 def get_respondent_data():
@@ -99,7 +100,7 @@ def get_respondent_data():
                 try:
                     response = int(input("Answer: "))
                     if response in range(1,6):
-                        print(f"You entered {response}.\n")
+                        # print(f"You entered {response}.\n")
                         responses.append(response)
                         break
                     else:
@@ -226,11 +227,12 @@ def validate_command(command, menu):
     """
     Checks that the initial command passed by user to perform on data set is valid.
     """
-    print("Validating command...\n")
+    print("Validating command...")
     main_command_list = ['add', 'update', 'delete', 'list', 'read', 'analyse', 'exit']
     update_command_list = ['one', 'all']
     if menu == "main":
         if command in main_command_list:
+            print("Validated.\n")
             return True
         else:
             return False
@@ -292,7 +294,7 @@ def analyse_respondent_data(respondent_data):
         if converted_scores[i] == min_score:
             lowest_scored_questions.append(SUMMARISED_QUESTIONS[i])
         i += 1
-    print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.")
+    print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.\n")
 
 
 def analyse_survey():
@@ -416,16 +418,16 @@ def main():
     """
     while True:  # The program will keep requesting user commands until they input the "exit" command
         main_command = process_main_command()
-        print(f"MAIN: user command is {main_command}") #TESTING
+        #print(f"MAIN: user command is {main_command}") #TESTING
         match main_command:
             case 'add':
-                respondent_name = input("Please enter the name of the respondent: ")
+                respondent_name = input("Please enter the exact name you wish to add data for: ")
                 respondent_name_checked = check_existing_names(respondent_name)
                 responses = get_respondent_data()
                 responses.insert(0, respondent_name_checked)  # adds the respondent's name to the start of the responses list
                 update_survey_sheet(responses)
             case 'update':
-                name_to_update = input("Enter the name of the person whose results you wish to update: ")
+                name_to_update = input("Enter the exact name of the person whose results you wish to update: ")
                 validated_name_to_update = validate_name(name_to_update)
                 update_command = process_update_command()
                 update_data(validated_name_to_update, update_command)
