@@ -162,6 +162,7 @@ def validate_user_command(user_command):
         return False
 
 
+# better to just read this in as a global variable? 
 def get_questions():
     """
     Returns a list of the survey questions. The get_notes function returns 
@@ -178,12 +179,12 @@ def analyse_respondent_data(respondent_data):
     a "read" command, displaying the question responses and statistics
     for the given individual. 
     """
-    #notes = SURVEY.row_values(1)
+    # notes = SURVEY.row_values(1)
     survey_data = SURVEY.get_all_values()
     print(f"Analysing respondent data...\n")
     respondent_name = respondent_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     print(f"Survey data being fed into averages function: {survey_data}\n")
-    #print(f"Qs data being fed into averages function: {summarised_questions}\n")
+    # print(f"Qs data being fed into averages function: {summarised_questions}\n")
     survey_averages = get_question_averages(survey_data, False)
     print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")
     print(f"Results for {respondent_name} are as follows:")
@@ -192,8 +193,8 @@ def analyse_respondent_data(respondent_data):
         print(f"{SUMMARISED_QUESTIONS[question_index]} : {score}")
         question_index += 1
     converted_scores = [int(x) for x in respondent_data]  # converts data to a list of integers so that numerical analysis can be performed
-    average_score = statistics.mean(converted_scores)
-    score_variance = statistics.variance(converted_scores)
+    average_score = statistics.mean(converted_scores)  # calculates the mean score from the list
+    score_variance = statistics.variance(converted_scores)  # calculates the variance from the list
     if score_variance > 2:
         variance_string = "high level of variance, indicating significant disparity between the 'best' and 'worst' aspects of the job."
     elif score_variance > 1.3:
