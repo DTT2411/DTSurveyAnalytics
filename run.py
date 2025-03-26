@@ -135,7 +135,19 @@ def update_data(name_to_update, update_command):
 
     name_cell = SURVEY.find(name_to_update)
     row_to_update = name_cell.row
-    print(f"Row to update, based on being passed {name_to_update}: {row_to_update}")
+    while True:
+        try:
+            confirm = input(f"{name_to_update}'s responses are currently {read_respondent_data(name_to_update)[1:]}. Are you sure you wish to amend this data? (Y/N): ")
+            if confirm in ["Y", "y"]:
+                break
+            elif confirm in ["N", "n"]:
+                print("Update aborted. Returning to main menu.\n")
+                return
+            else:
+                print("Please response with 'Y' to proceed or 'N' to cancel.")
+        except ValueError:
+            print("Please response with 'Y' to proceed or 'N' to cancel.")
+    #print(f"Row to update, based on being passed {name_to_update}: {row_to_update}")
 
     if update_command == 'all':
         update_data_list = get_respondent_data()
@@ -160,7 +172,7 @@ def update_data(name_to_update, update_command):
             try:
                 update_value = int(input("Please enter the value: "))
                 if update_value in range(1, 6):
-                    print(f"A score of {update_value} will now be updated to Question{question_number} for {name_to_update}...")
+                    print(f"A score of {update_value} will now be updated to Q{question_number} for {name_to_update}...")
                     #print(f"Row to update: {row_to_update}")
                     #print(f"Col to update: {question_number + 1}")
                     SURVEY.update_cell(row_to_update, question_number + 1, update_value)
@@ -348,7 +360,7 @@ def get_averages(survey_data, full_analysis):
 
     #Gets totals for each question
     #print(survey_data)
-    #survey_data.pop(0)
+    survey_data.pop(0)
     #print(survey_data)
     for dataset in survey_data:
         #dataset.pop(0)
