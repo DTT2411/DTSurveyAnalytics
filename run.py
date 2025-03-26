@@ -112,7 +112,8 @@ def read_respondent_data(name):
     return respondent_scores
 
 
-#def amend_data():
+def amend_data():
+    # ask user for the name of the individual record they wish to amend and pass this into "name_to_amend"
 
 
 def delete_row(name):
@@ -340,9 +341,9 @@ def main():
                 responses = get_respondent_data()
                 update_survey_sheet(responses)
             case 'delete':
-                delete_name = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
-                validated_delete_name = validate_name(delete_name)
-                delete_row(validated_delete_name)
+                name_to_delete = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
+                validated_name_to_delete = validate_name(name_to_delete)
+                delete_row(validated_name_to_delete)
             case 'list':
                 list_respondents()
             case 'read':
