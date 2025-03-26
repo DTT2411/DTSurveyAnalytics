@@ -191,24 +191,34 @@ def update_data(name_to_update, update_command):
 
 def add_question():
     """
+    Adds a new question to the survey and spreadsheet, with a summarised heading
+    and the full text question held within the note. 
+    NB: CURRENTLY NEED TO RESTART PROGRAMME 
     """
     print("Adding new question to survey...\n")
     new_question = input("Please enter the full text question you wish to add: \n")
     new_summarised_question = input("Please enter the a summarised version (1 to 2 words): \n")
-    #next_question_column = len(SUMMARISED_QUESTIONS) + 2
+    next_question_column = len(SUMMARISED_QUESTIONS)
     #new_question_cell = 
     #col_val = SURVEY.column
-    cell_coordinate = f"{next_question_column}1"
+    column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    potential_coordinates = []
+    index = 0
+    for letter in column_ids:
+        potential_coordinates.append(letter + "1")
+        #print(f"Coordinate being added: {letter + "1"}")
+        index += 1
+    print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): {potential_coordinates}")
+    cell_coordinate = f"{potential_coordinates[next_question_column]}"
     print(f"New question: {new_question}")
     print(f"New heading: {new_summarised_question}")
-    
-    print(f"Column to insert to: {next_question_column}")
-    
+    print(f"Column to insert to: {cell_coordinate[0]}")
     print(f"Cell coordinate being passed: {cell_coordinate}")
-    #SURVEY.insert_note(cell_coordinate, new_question)
-    #SURVEY.update_cell(1, next_question_column, new_summarised_question)
+    SURVEY.insert_note(cell_coordinate, f"Q{next_question_column + 2} - {new_question}")
+    print(f"column length to put in cell add {next_question_column}")
+    SURVEY.update_cell(1, next_question_column + 2, f"Q{next_question_column + 2} - {new_summarised_question}")
     print("The question has successfully been added to the survey.\n")
-    return None
+
 
 def delete_row(name):
     """
