@@ -18,10 +18,9 @@ headings = data.pop(0)  # Extracts the first row of data (i.e. name and all ques
 headings.pop(0)  # Removes the name from list, leaving only the summarised questions
 SUMMARISED_QUESTIONS = headings
 
-def process_user_command():
+def process_main_command():
     """
-    Requests user to indicate what function they want to
-    perform via command:
+    Requests user to indicate what function they want to perform via command:
     - 'add' adds new survey data to existing spreadsheet
     - 'update' updates values for a given individual
     - 'delete' removes a given individual's set of responses from the spreadsheet
@@ -39,10 +38,10 @@ def process_user_command():
         print("- 'read' to read a specific individual's responses")
         print("- 'analyse' to conduct general analysis over all survey data")
         print("- 'exit' to exit the application\n")
-        user_command = input("Enter your command here: \n")
-        validity_check = validate_command(user_command, "main")
+        main_command = input("Enter your command here: \n")
+        validity_check = validate_command(main_command, "main")
         if validity_check:
-            return user_command
+            return main_command
         else:
             print("Invalid command. Please enter a command from the list provided.")
 
@@ -57,10 +56,10 @@ def process_update_command():
         print("Please enter a command to perform on the survey\n")
         print("- 'one' to update the response to a single question")
         print("- 'all' to update the full list of survey responses")
-        user_command = input("Enter your command here: \n")
-        validity_check = validate_command(user_command, "update")
+        update_command = input("Enter your command here: \n")
+        validity_check = validate_command(update_command, "update")
         if validity_check:
-            return user_command
+            return update_command
         else:
             print("Invalid command. Please enter a command from the list provided.")
 
@@ -94,9 +93,6 @@ def get_respondent_data():
     questions = get_questions()
     print(questions)
     while True:
-        respondent_name = input("Please enter your name: ")
-        respondent_name_checked = check_existing_names(respondent_name)
-        responses.append(respondent_name_checked)
         for question in questions:
             print(question + ": \n")
             while True:
@@ -132,26 +128,48 @@ def read_respondent_data(name):
     return respondent_scores
 
 
-def update_data(name_to_update):
+def update_data(name_to_update, update_command):
     print(f"Updating data...\n")
-    # initiate list variable
-    # row_to_update = ""
+    print(f"UPDATE_DATA: Name {name_to_update}\n")
+    print(f"UPDATE_DATA: Command {update_command}\n")
 
-    # initiate cell variable
-    # cell_to_update = ""
+    name_cell = SURVEY.find(name_to_update)
+    row_to_update = name_cell.row
+    print(f"Row to update, based on being passed {name_to_update}: {row_to_update}")
 
-    # ask user if they want to amend the entire record or just one response (need to validate input somehow)
-    # if entire record
-    #   loop over number of questions len(SUMMARISED_QUESTIONS)
-    #       print question
-    #       request input for value
-    #       validate value
-    #       add value to list
-    #   use gspread function to update the entire row (need to append name with questions first)
-    # elif one response
-    #   ask user for the question they wish to amend
-    #   ask user for the value they wish to add (could combine this into one input separated by a space?)
-    #   continunous entry with break statement to come out of loop?
+    if update_command == 'all':
+        update_data_list = get_respondent_data()
+        print(f"ALL: THIS WILL BE REPLACED WITH DATA SUBMISSION VIA GSPREAD")
+        print(f"Value responses {update_data_list} will now be updated for {name_to_update}...")
+        question_index = 2
+        for update_value in update_data_list:
+            SURVEY.update_cell(row_to_update, question_index, update_value)
+            question_index += 1
+
+    elif update_command == 'one':
+        while True:
+            try:
+                question_number = int(input("Which question would you like to update the value for?:"))
+                if question_number in range(1, len(SUMMARISED_QUESTIONS) + 1):
+                    print("Valid value!")
+                    break
+                else:
+                    print(f"Not a valid question number. Please enter a value between 1 and {len(SUMMARISED_QUESTIONS)}.")
+            except ValueError:
+                print(f"Not a valid question number. Please enter a value between 1 and {len(SUMMARISED_QUESTIONS)}.")
+        while True:
+            try:
+                update_value = int(input("Please enter the value: "))
+                if update_value in range(1, 6):
+                    print(f"{update_value} will now be updated to Question {question_number} for {name_to_update}...")
+                    print(f"Row to update: {row_to_update}")
+                    print(f"Col to update: {question_number + 1}")
+                    SURVEY.update_cell(row_to_update, question_number + 1, update_value)
+                    return
+                else:
+                    print("Not a number between 1 and 5. Please enter a valid value.")
+            except ValueError:
+                print("Not a number between 1 and 5. Please enter a valid value.")
 
 
 def delete_row(name):
@@ -380,18 +398,21 @@ def main():
     Run all program functions
     """
     while True:  # The program will keep requesting user commands until they input the "exit" command
-        user_command = process_user_command()
-        print(f"MAIN: user command is {user_command}") #TESTING
-        match user_command:
+        main_command = process_main_command()
+        print(f"MAIN: user command is {main_command}") #TESTING
+        match main_command:
             case 'add':
+                respondent_name = input("Please enter the name of the respondent: ")
+                respondent_name_checked = check_existing_names(respondent_name)
                 responses = get_respondent_data()
+                responses.insert(0, respondent_name_checked)  # adds the respondent's name to the start of the responses list
                 update_survey_sheet(responses)
             case 'update':
                 name_to_update = input("Enter the name of the person whose results you wish to update: ")
                 validated_name_to_update = validate_name(name_to_update)
                 print(f"valid name to update inside case statement in main {validated_name_to_update}")
-                #UPDATE: validate_command can be used to validate input! just need an additional parameter for 'update'
-                update_data(validated_name_to_update)
+                update_command = process_update_command()
+                update_data(validated_name_to_update, update_command)
             case 'delete':
                 name_to_delete = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
                 validated_name_to_delete = validate_name(name_to_delete)
