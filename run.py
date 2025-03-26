@@ -113,10 +113,21 @@ def read_respondent_data(name):
 
 
 #def amend_data():
-    # intiaite list variable
+    # initiate list variable
+    # row_to_amend = ""
+
     # initiate cell variable
-    # ask user for the name of the individual record they wish to amend and pass this into "name_to_amend"
-    # ask user if they want to amend the entire record or just one response
+    # cell_to_amend = ""
+
+    # PUT THIS NAME CALL INSIDE MAIN() FUNCTION FOR CONSISTENCY
+    # ask user for the name of the individual record they wish to amend (while true with validation and break?)
+    # while True:
+    #   name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
+    #   validated_name_to_amend = validate_name(name_to_amend)
+    #   
+
+    # validate name & pass this into "name_to_amend"
+    # ask user if they want to amend the entire record or just one response 
     # if entire record
     #   loop over number of questions len(SUMMARISED_QUESTIONS)
     #       print question
@@ -354,6 +365,10 @@ def main():
             case 'add':
                 responses = get_respondent_data()
                 update_survey_sheet(responses)
+            #case 'amend':
+                #name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
+                #validated_name_to_amend = validate_name(name_to_amend)
+                #amend_data()
             case 'delete':
                 name_to_delete = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
                 validated_name_to_delete = validate_name(name_to_delete)
