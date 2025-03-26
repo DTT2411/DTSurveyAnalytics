@@ -23,7 +23,7 @@ def process_user_command():
     Requests user to indicate what function they want to
     perform via command:
     - 'add' adds new survey data to existing spreadsheet
-    - 'amend' updates values for a given individual
+    - 'update' updates values for a given individual
     - 'delete' removes a given individual's set of responses from the spreadsheet
     - 'list' returns a list of names of individual respondents
     - 'read' returns a given individual's responses
@@ -33,19 +33,37 @@ def process_user_command():
     while True:
         print("Please enter a command to perform on the survey\n")
         print("- 'add' to add new survey data to existing spreadsheet")
-        print("- 'amend' to add amend existing survey data within the spreadsheet")
+        print("- 'update' to update existing survey data within the spreadsheet")
         print("- 'delete' to delete a record based on an inputted name")
         print("- 'list' to see a list of names of individual respondents")
         print("- 'read' to read a specific individual's responses")
         print("- 'analyse' to conduct general analysis over all survey data")
         print("- 'exit' to exit the application\n")
         user_command = input("Enter your command here: \n")
-        validity_check = validate_user_command(user_command)
+        validity_check = validate_command(user_command, "main")
         if validity_check:
             return user_command
         else:
             print("Invalid command. Please enter a command from the list provided.")
-    
+
+
+def process_update_command():
+    """
+    Requests user to indicate how they wish to amend the data:
+    - 'one' updates a single cell
+    - 'all' updates a full survey response
+    """
+    while True:
+        print("Please enter a command to perform on the survey\n")
+        print("- 'one' to update the response to a single question")
+        print("- 'all' to update the full list of survey responses")
+        user_command = input("Enter your command here: \n")
+        validity_check = validate_command(user_command, "update")
+        if validity_check:
+            return user_command
+        else:
+            print("Invalid command. Please enter a command from the list provided.")
+
 
 def list_respondents():
     """
@@ -114,12 +132,13 @@ def read_respondent_data(name):
     return respondent_scores
 
 
-#def amend_data(name_to_amend):
+def update_data(name_to_update):
+    print(f"Updating data...\n")
     # initiate list variable
-    # row_to_amend = ""
+    # row_to_update = ""
 
     # initiate cell variable
-    # cell_to_amend = ""
+    # cell_to_update = ""
 
     # ask user if they want to amend the entire record or just one response (need to validate input somehow)
     # if entire record
@@ -171,15 +190,22 @@ def check_existing_names(name):
     return name
 
 
-def validate_user_command(user_command):
+def validate_command(command, menu):
     """
     Checks that the initial command passed by user to perform on data set is valid.
     """
-    command_list = ['add', 'amend', 'delete', 'list', 'read', 'analyse', 'exit']
-    if user_command in command_list:
-        return True
-    else:
-        return False
+    main_command_list = ['add', 'update', 'delete', 'list', 'read', 'analyse', 'exit']
+    update_command_list = ['one', 'all']
+    if menu == "main":
+        if command in main_command_list:
+            return True
+        else:
+            return False
+    elif menu == "update":
+        if command in update_command_list:
+            return True
+        else:
+            return False
 
 
 # better to just read this in as a global variable? 
@@ -320,6 +346,7 @@ def get_averages(survey_data, full_analysis):
 
     return question_averages_rounded
 
+
 def make_recommendations(analysed_data):
     """
     Makes recommendations based on the average scores calculated across the dataset.
@@ -359,11 +386,12 @@ def main():
             case 'add':
                 responses = get_respondent_data()
                 update_survey_sheet(responses)
-            #case 'amend':
-                #name_to_amend = input("Enter the name of the person whose results you wish to amend: ")
-                #validated_name_to_amend = validate_name(name_to_amend)
-                #UPDATE: validate_user_command can be used to validate input! just need an additional parameter for 'amend'
-                #amend_data()
+            case 'update':
+                name_to_update = input("Enter the name of the person whose results you wish to update: ")
+                validated_name_to_update = validate_name(name_to_update)
+                print(f"valid name to update inside case statement in main {validated_name_to_update}")
+                #UPDATE: validate_command can be used to validate input! just need an additional parameter for 'update'
+                update_data(validated_name_to_update)
             case 'delete':
                 name_to_delete = input("Enter the exact name of the respondent you wish to delete survey results for: \n")
                 validated_name_to_delete = validate_name(name_to_delete)
