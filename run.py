@@ -281,8 +281,8 @@ def delete_question():
 
 def update_question_cells(number_of_deleted_question):
     """
-    Updates the numbers in the summarised and full versions of questions to the right of the deleted question to 
-    keep in numerical ascending order.
+    Following the deletion of a question, updates the numbers in the summarised and full versions of questions 
+    to the right of the deleted question to keep in numerical ascending order.
     """
     print(f"Column of deleted question as passed by main: {number_of_deleted_question}")
     #qvals = SURVEY.
@@ -418,11 +418,8 @@ def analyse_respondent_data(respondent_data):
     #survey_averages = get_averages(survey_data, False)
     #print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
     print(f"Results for {respondent_name} are as follows:\n")
-    question_index = 0
+    
     summarised_questions = get_questions("summarised")
-    for score in respondent_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
-        print(f"{summarised_questions[question_index]} : {score}")
-        question_index += 1
     converted_scores = [int(x) for x in respondent_data]  # converts data to a list of integers so that numerical analysis can be performed
     average_score = statistics.mean(converted_scores)  # calculates the mean score from the list
     score_variance = statistics.variance(converted_scores)  # calculates the variance from the list
@@ -435,16 +432,29 @@ def analyse_respondent_data(respondent_data):
     print(f"{respondent_name} gave an average score of {round(average_score, 1)} across all questions.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
 
+    survey_data = SURVEY.get_all_values()
+    survey_averages = get_averages(survey_data, "False")
+    #print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
+    
+    question_index = 0
+    for score in respondent_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
+        if float(score) < (float(survey_averages[question_index]) - 0.4):
+            print(f"{summarised_questions[question_index]} : {score}. Significantly lower than the organisation average score of {survey_averages[question_index]}")
+        elif float(score) > (float(survey_averages[question_index]) + 0.4):
+            print(f"{summarised_questions[question_index]} : {score}. Significantly higher than the organisation average score of {survey_averages[question_index]}")
+        else: 
+            print(f"{summarised_questions[question_index]} : {score}. Approximate to the organisation average score of {survey_averages[question_index]}")
+        question_index += 1
+
     min_score = min(converted_scores)
     #print(f"Min score: {min_score}")  # TESTING
     lowest_scored_questions = []
-    i = 0
-    print(f"Converted scores for each Q: {converted_scores}")
-    while i < SURVEY.col_count - 1:
-        print(f"Index within append loop for low scores: {i}")
-        if converted_scores[i] == min_score:
-            lowest_scored_questions.append(summarised_questions[i])
-        i += 1
+    count_min_index = 0
+    #print(f"Converted scores for each Q: {converted_scores}")
+    while count_min_index < SURVEY.col_count - 1:
+        if converted_scores[count_min_index] == min_score:
+            lowest_scored_questions.append(summarised_questions[count_min_index])
+        count_min_index += 1
     print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.\n")
 
 
@@ -496,7 +506,7 @@ def get_averages(survey_data, full_analysis):
     #print(f"Response values within get_averages, should be all numbers: {response_values}")
     
     overall_average = statistics.mean(response_values)
-    if full_analysis:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_respondent_data
+    if full_analysis is True:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_respondent_data
         print(f"Overall average score across organisation: {round(overall_average, 1)}\n")
     
     # initialises totals variable depending on the number of responses
