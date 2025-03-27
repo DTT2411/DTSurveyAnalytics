@@ -320,12 +320,14 @@ def update_question_cells(number_of_deleted_question):
         print(f"New full q string: {new_full_question}")
         print(f"{new_summarised_question} will be added to Row 1, column {position_index + 1}")
         print(f"{new_full_question} will be added to Row 1, column {position_index + 1}")
-        cell_coordinate = f"{potential_coordinates[SURVEY.col_count - 4 + question_index]}"
+        print(f"Potential coords: {potential_coordinates}")
+        print(f"Current: {potential_coordinates[SURVEY.col_count]}")
+        cell_coordinate = f"{potential_coordinates[position_index - 1]}"
+        #cell_coordinate = f"{potential_coordinates[SURVEY.col_count - 4 + question_index]}"
         print(f"Cell coordinate the note will be added to: {cell_coordinate}")
         
         SURVEY.update_cell(1, position_index + 1, new_summarised_question)
         SURVEY.insert_note(cell_coordinate, new_full_question)
-        
 
         position_index += 1
         question_index += 1
@@ -602,7 +604,8 @@ def main():
                 add_question()
             case 'delete q':
                 number_of_deleted_question = delete_question()
-                update_question_cells(number_of_deleted_question)
+                if number_of_deleted_question < SURVEY.col_count:
+                    update_question_cells(number_of_deleted_question)
             case 'analyse':
                 analysed_data = analyse_survey()
                 make_recommendations(analysed_data)
