@@ -168,13 +168,10 @@ def update_data(name_to_update, update_command):
             column_index += 1
         print("Update complete. Returning to main menu...\n")
     elif update_command == 'one':
-        summarised_questions = get_questions("summarised")
         while True:
             try:
                 question_number = int(input("Which question would you like to update the value for?:"))
-                print(f"Printing summarised questions from inside update data whole record: {summarised_questions}")
                 if question_number in range(1, SURVEY.col_count):
-                    #print("Valid value!")
                     break
                 else:
                     print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
@@ -417,7 +414,7 @@ def get_averages(survey_data, full_analysis):
     question_totals = []
     number_of_responses = len(survey_data) - 1  # survey data contains all column data including headings, so need to loop through the lenth minus 1
     #print(f"Number of responses, should be 14: {number_of_responses}")
-    summarised_questions = get_questions("summarised")
+    #summarised_questions = get_questions("summarised")
     for index in range(SURVEY.col_count - 1):
         question_totals.append(0)
     #print(f"Question totals from inside get_averages function: {question_totals}")  # test
