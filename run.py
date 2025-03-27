@@ -13,10 +13,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
 SURVEY = SHEET.worksheet("survey_results")
-#data = SURVEY.get_all_values()
-#headings = data.pop(0)  # Extracts the first row of data (i.e. name and all questions)
-#headings.pop(0)  # Removes the name from list, leaving only the summarised questions
-#SUMMARISED_QUESTIONS = headings
+
 
 def process_main_command():
     """
@@ -93,7 +90,6 @@ def get_respondent_data():
     print("3 - Moderate")
     print("2 - Poor")
     print("1 - Very Poor\n")
-
     responses = []
     questions = get_questions("full")
     print(f"Questions inside get_respondent_data after return: {questions}")
@@ -134,6 +130,12 @@ def read_respondent_data(name):
 
 
 def update_data(name_to_update, update_command):
+    """
+    Takes as parameters the name of the individual whose record is to be updated and whether user wishes
+    to update one field, or their entire response set. Displays the current response set and requests 
+    confirmation that the user wishes to proceed. Updates the relevant cell or row of cells before returning
+    to the main menu.
+    """
     print(f"Updating data...\n")
     print(f"UPDATE_DATA: Name {name_to_update}\n")
     print(f"UPDATE_DATA: Command {update_command}\n")
@@ -169,7 +171,7 @@ def update_data(name_to_update, update_command):
                 question_number = int(input("Which question would you like to update the value for?:"))
                 print(f"Printing summarised questions from inside update data whole record: {summarised_questions}")
                 if question_number in range(1, len(summarised_questions) + 1):
-                    print("Valid value!")
+                    #print("Valid value!")
                     break
                 else:
                     print(f"Not a valid question number. Please enter a value between 1 and {len(summarised_questions)}.")
