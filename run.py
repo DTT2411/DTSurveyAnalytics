@@ -154,9 +154,9 @@ def update_data(name_to_update, update_command):
                 print("Update aborted. Returning to main menu.\n")
                 return
             else:
-                print("Please response with 'Y' to proceed or 'N' to cancel.")
+                print("Please respond with 'Y' to proceed or 'N' to cancel.")
         except ValueError:
-            print("Please response with 'Y' to proceed or 'N' to cancel.")
+            print("Please respond with 'Y' to proceed or 'N' to cancel.")
     #print(f"Row to update, based on being passed {name_to_update}: {row_to_update}")
 
     if update_command == 'all':
@@ -197,7 +197,6 @@ def add_question():
     """
     Adds a new question to the survey and spreadsheet, with a summarised heading
     and the full text question held within the note. 
-    NB: CURRENTLY NEED TO RESTART PROGRAMME 
     """
     print("Adding new question to survey...\n")
     print("Please note that the responses for all previous respondents who have not answered the new question will be set to the median value (3).")
@@ -311,7 +310,7 @@ def get_questions(question_type):
         headings = survey_data.pop(0)  # Extracts the first row of data (i.e. name and all questions)
         headings.pop(0)  # Removes the name from list, leaving only the summarised questions
         summarised_questions = headings
-        print(f"get_questions function returning: {summarised_questions}")
+        #print(f"get_questions function returning: {summarised_questions}")
         return summarised_questions
     
 
