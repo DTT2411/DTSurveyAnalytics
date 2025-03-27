@@ -1,5 +1,6 @@
 import gspread
 import statistics
+import math
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -400,7 +401,6 @@ def get_questions(question_type):
         summarised_questions = headings
         #print(f"get_questions function returning: {summarised_questions}")
         return summarised_questions
-    
 
 
 def analyse_respondent_data(respondent_data):
@@ -424,28 +424,33 @@ def analyse_respondent_data(respondent_data):
     average_score = statistics.mean(converted_scores)  # calculates the mean score from the list
     score_variance = statistics.variance(converted_scores)  # calculates the variance from the list
     if score_variance > 2:
-        variance_string = "high level of variance, indicating significant disparity between the 'best' and 'worst' aspects of the job."
+        variance_string = "high level of variance, indicating significant \ndisparity between the 'best' and 'worst' aspects of the job."
     elif score_variance > 1.3:
         variance_string = "moderate level of variance."
     else:
-        variance_string = "low level of variance, suggesting the respondent is very consistent in their perception about the qualities of the job." 
-    print(f"{respondent_name} gave an average score of {round(average_score, 1)} across all questions.")
-    print(f"{respondent_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
-
+        variance_string = "low level of variance, suggesting the respondent \nis very consistent in their perception about the qualities of the job." 
+    question_index = 0
     survey_data = SURVEY.get_all_values()
     survey_averages = get_averages(survey_data, "False")
+    largest_output_fstring = len(f"{summarised_questions[question_index].ljust(35)}  #     Significantly higher than the organisation average score of ({survey_averages[question_index]})")
+    table_border_top = "—".join(["—"]*(math.ceil(largest_output_fstring/2) + 1))
+    print(table_border_top)
+    print("OVERALL RESULTS")
+    print(f"{respondent_name} gave an average score of {round(average_score, 1)} across all questions.")
+    print(f"{respondent_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
     #print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
-    
-    question_index = 0
+    #table_border_bottom = "—".join(["—"]*(math.ceil(largest_output_fstring/2) + 1))
+    print(table_border_top)
+    print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
     for score in respondent_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
         if float(score) < (float(survey_averages[question_index]) - 0.4):
-            print(f"{summarised_questions[question_index]} : {score}. Significantly lower than the organisation average score of {survey_averages[question_index]}")
+            print(f"{summarised_questions[question_index].ljust(35)}  {score}     Significantly lower than the organisation average score ({survey_averages[question_index]})")
         elif float(score) > (float(survey_averages[question_index]) + 0.4):
-            print(f"{summarised_questions[question_index]} : {score}. Significantly higher than the organisation average score of {survey_averages[question_index]}")
+            print(f"{summarised_questions[question_index].ljust(35)}  {score}     Significantly higher than the organisation average score ({survey_averages[question_index]})")
         else: 
-            print(f"{summarised_questions[question_index]} : {score}. Approximate to the organisation average score of {survey_averages[question_index]}")
+            print(f"{summarised_questions[question_index].ljust(35)}  {score}     Close to the organisation average score({survey_averages[question_index]})")
         question_index += 1
-
+    print(table_border_top)
     min_score = min(converted_scores)
     #print(f"Min score: {min_score}")  # TESTING
     lowest_scored_questions = []
@@ -455,7 +460,9 @@ def analyse_respondent_data(respondent_data):
         if converted_scores[count_min_index] == min_score:
             lowest_scored_questions.append(summarised_questions[count_min_index])
         count_min_index += 1
-    print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.\n")
+    print("AREAS OF CONCERN")
+    print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.")
+    print(table_border_top)
 
 
 def analyse_survey():
