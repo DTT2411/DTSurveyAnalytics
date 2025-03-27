@@ -13,10 +13,10 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
 SURVEY = SHEET.worksheet("survey_results")
-data = SURVEY.get_all_values()
-headings = data.pop(0)  # Extracts the first row of data (i.e. name and all questions)
-headings.pop(0)  # Removes the name from list, leaving only the summarised questions
-SUMMARISED_QUESTIONS = headings
+#data = SURVEY.get_all_values()
+#headings = data.pop(0)  # Extracts the first row of data (i.e. name and all questions)
+#headings.pop(0)  # Removes the name from list, leaving only the summarised questions
+#SUMMARISED_QUESTIONS = headings
 
 def process_main_command():
     """
@@ -95,8 +95,8 @@ def get_respondent_data():
     print("1 - Very Poor\n")
 
     responses = []
-    questions = get_questions()
-    print(questions)
+    questions = get_questions("full")
+    print(f"Questions inside get_respondent_data after return: {questions}")
     while True:
         for question in questions:
             print(question + ": \n")
@@ -163,16 +163,18 @@ def update_data(name_to_update, update_command):
             column_index += 1
         print("Update complete. Returning to main menu...\n")
     elif update_command == 'one':
+        summarised_questions = get_questions("summarised")
         while True:
             try:
                 question_number = int(input("Which question would you like to update the value for?:"))
-                if question_number in range(1, len(SUMMARISED_QUESTIONS) + 1):
+                print(f"Printing summarised questions from inside update data whole record: {summarised_questions}")
+                if question_number in range(1, len(summarised_questions) + 1):
                     print("Valid value!")
                     break
                 else:
-                    print(f"Not a valid question number. Please enter a value between 1 and {len(SUMMARISED_QUESTIONS)}.")
+                    print(f"Not a valid question number. Please enter a value between 1 and {len(summarised_questions)}.")
             except ValueError:
-                print(f"Not a valid question number. Please enter a value between 1 and {len(SUMMARISED_QUESTIONS)}.")
+                print(f"Not a valid question number. Please enter a value between 1 and {len(summarised_questions)}.")
         while True:
             try:
                 update_value = int(input("Please enter the value: "))
@@ -196,13 +198,17 @@ def add_question():
     NB: CURRENTLY NEED TO RESTART PROGRAMME 
     """
     print("Adding new question to survey...\n")
+    print("Please note that the responses for all previous respondents who have not answered the new question will be set to the median value (3).")
+    print("You can update the default values by using the 'update' function from the main menu.\n")
     new_question = input("Please enter the full text question you wish to add: \n")
     new_summarised_question = input("Please enter the a summarised version (1 to 2 words): \n")
-    next_question_column = len(SUMMARISED_QUESTIONS)
+    summarised_questions = get_questions("summarised")
+    next_question_column = len(summarised_questions)
     #new_question_cell = 
     #col_val = SURVEY.column
-    column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+    # Can't find a gspread method which returns the letter value of the column so need to zip this to a list - not ideal, need to find fix!
     potential_coordinates = []
+    column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] 
     index = 0
     for letter in column_ids:
         potential_coordinates.append(letter + "1")
@@ -216,9 +222,16 @@ def add_question():
     print(f"Cell coordinate being passed: {cell_coordinate}")
     SURVEY.insert_note(cell_coordinate, f"Q{next_question_column + 2} - {new_question}")
     print(f"column length to put in cell add {next_question_column}")
-    SURVEY.update_cell(1, next_question_column + 2, f"Q{next_question_column + 2} - {new_summarised_question}")
+    SURVEY.update_cell(1, next_question_column + 2, f"Q{next_question_column + 1} - {new_summarised_question}")
     print("The question has successfully been added to the survey.\n")
-
+    col_values = SURVEY.col_values(1)
+    number_of_rows = len(col_values)
+    print(number_of_rows)
+    cell_index = 2
+    while cell_index <= number_of_rows:
+        SURVEY.update_cell(cell_index, next_question_column + 2, 3)
+        print(f"put 3 in {cell_index} {next_question_column + 2}")
+        cell_index += 1
 
 def delete_row(name):
     """
@@ -237,7 +250,7 @@ def validate_name(name):
     in the spreadsheet. If no match is found, user will be prompted until a match is detected, then the 
     valid name is passed back to the main() function.
     """
-    print("Validating new name...")
+    print("Validating name...")
     existing_names = SURVEY.col_values(1)
     while name not in existing_names:
         name = input("The name you entered does not exist. Please submit the name of a respondent who has completed the survey.\n")
@@ -280,15 +293,25 @@ def validate_command(command, menu):
 
 
 # better to just read this in as a global variable? 
-def get_questions():
+def get_questions(question_type):
     """
     Returns a list of the survey questions. The get_notes function returns 
     a list of lists containing cell notes which needs to be unpacked before
     returning.
     """
     print(f"Reading questions from survey spreadsheet...\n")
-    questions = SURVEY.get_notes() 
-    return questions[0][1:]
+    if question_type == "full":
+        full_questions = SURVEY.get_notes()
+        print(f"Questions returns from inside get_questions: {full_questions[0][1:]}")
+        return full_questions[0][1:]
+    elif question_type == "summarised":
+        survey_data = SURVEY.get_all_values()
+        headings = survey_data.pop(0)  # Extracts the first row of data (i.e. name and all questions)
+        headings.pop(0)  # Removes the name from list, leaving only the summarised questions
+        summarised_questions = headings
+        print(f"get_questions function returning: {summarised_questions}")
+        return summarised_questions
+    
 
 
 def analyse_respondent_data(respondent_data):
@@ -298,17 +321,18 @@ def analyse_respondent_data(respondent_data):
     for the given individual. 
     """
     # notes = SURVEY.row_values(1)
-    survey_data = SURVEY.get_all_values()
+    #survey_data = SURVEY.get_all_values()
     print(f"Analysing respondent data...\n")
     respondent_name = respondent_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
     #print(f"Survey data being fed into averages function: {survey_data}\n")
     # print(f"Qs data being fed into averages function: {summarised_questions}\n")
-    survey_averages = get_averages(survey_data, False)
+    #survey_averages = get_averages(survey_data, False)
     #print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
     print(f"Results for {respondent_name} are as follows:\n")
     question_index = 0
+    summarised_questions = get_questions("summarised")
     for score in respondent_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
-        print(f"{SUMMARISED_QUESTIONS[question_index]} : {score}")
+        print(f"{summarised_questions[question_index]} : {score}")
         question_index += 1
     converted_scores = [int(x) for x in respondent_data]  # converts data to a list of integers so that numerical analysis can be performed
     average_score = statistics.mean(converted_scores)  # calculates the mean score from the list
@@ -319,7 +343,7 @@ def analyse_respondent_data(respondent_data):
         variance_string = "moderate level of variance."
     else:
         variance_string = "low level of variance, suggesting the respondent is very consistent in their perception about the qualities of the job." 
-    print(f"{respondent_name} gave an average score of {average_score} across all questions.")
+    print(f"{respondent_name} gave an average score of {round(average_score, 1)} across all questions.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
 
     min_score = min(converted_scores)
@@ -328,7 +352,7 @@ def analyse_respondent_data(respondent_data):
     i = 0
     while i < 10:
         if converted_scores[i] == min_score:
-            lowest_scored_questions.append(SUMMARISED_QUESTIONS[i])
+            lowest_scored_questions.append(summarised_questions[i])
         i += 1
     print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.\n")
 
@@ -346,17 +370,17 @@ def analyse_survey():
     #names = []  # May not be required, might only need to pop names off if they're not used
     #print(f"Names list: {names}\n")  
     #print(f"Names list without NAME heading: {names[1:]}\n")
-    #print(f"Printing summarised questions from inside analyse_survey, should exclude name: {SUMMARISED_QUESTIONS}")
+    #print(f"Printing summarised questions from inside analyse_survey, should exclude name: {summarised_questions}")
     #print(f"List of responses: {survey_data}\n")
     #print(f"Summarised questions: {summarised_questions}\n")
     #print(f"Response values only, should only be numbers: {response_values}\n")
     print("See below for average scores for each question in the survey:\n")
     question_averages = get_averages(survey_data, True)
     #print(f"Printing question averages from analyse_survey function after call: {question_averages}")
-
+    summarised_questions = get_questions("summarised")
     question_index = 0
     for average_score in question_averages:  # this for loop prints out a list of strings containing a shortened version of the question along with the average organisational score
-        print(f"{SUMMARISED_QUESTIONS[question_index]} : {average_score}")
+        print(f"{summarised_questions[question_index]} : {average_score}")
         question_index += 1
 
     print("Analysis complete. Returning to main menu...\n")
@@ -371,7 +395,7 @@ def get_averages(survey_data, full_analysis):
     #print("Printing questions and length of q array in getqavgs function")
     #print(SUMMARISED_QUESTIONS)
     #print(len(SUMMARISED_QUESTIONS))
-
+    summarised_questions = get_questions("summarised")
     response_values = []
     for data_row in survey_data:
         data_row.pop(0)
@@ -391,7 +415,7 @@ def get_averages(survey_data, full_analysis):
     question_totals = []
     number_of_responses = len(survey_data) - 1  # survey data contains all column data including headings, so need to loop through the lenth minus 1
     #print(f"Number of responses, should be 14: {number_of_responses}")
-    for index in range(len(SUMMARISED_QUESTIONS)):
+    for index in range(len(summarised_questions)):
         question_totals.append(0)
     #print(f"Question totals from inside get_averages function: {question_totals}")  # test
     #print(f"Initialised question totals, should all be 0: {question_totals}")
@@ -430,11 +454,12 @@ def make_recommendations(analysed_data):
     low_scores = []
     high_scores = []
     question_index = 0
+    summarised_questions = get_questions("summarised")
     for score in float_data:
         if score <= 2.5:  # If the average score is below 2.5 it is deemed "Low". Arbitrary, can be changed.
-            low_scores.append(SUMMARISED_QUESTIONS[question_index])
+            low_scores.append(summarised_questions[question_index])
         elif score >= 3.5:  # If the average score is above 3.5 it is deemed "High". Arbitrary, can be changed.
-            high_scores.append(SUMMARISED_QUESTIONS[question_index])
+            high_scores.append(summarised_questions[question_index])
         question_index += 1
     print(f"Low scoring questions: {low_scores}")
     print(f"High scoring questions: {high_scores}\n")
@@ -452,6 +477,8 @@ def main():
     """
     Run all program functions
     """
+    #test = get_questions("summarised")
+    #print(test)
     while True:  # The program will keep requesting user commands until they input the "exit" command
         main_command = process_main_command()
         #print(f"MAIN: user command is {main_command}") #TESTING
