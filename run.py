@@ -208,14 +208,14 @@ def add_question():
     next_question_column = SURVEY.col_count
     print(next_question_column)
     # Can't find a gspread method which returns the letter value of the column so need to zip this to a list - not ideal, need to find fix!
-    potential_coordinates = []
-    column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ"] 
-    index = 0
-    for letter in column_ids:
-        potential_coordinates.append(letter + "1")
-        #print(f"Coordinate being added: {letter + "1"}")
-        index += 1
-    print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): {potential_coordinates}")
+    potential_coordinates = get_potential_question_coordinates()
+    #column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ"] 
+    #index = 0
+    #for letter in column_ids:
+    #    potential_coordinates.append(letter + "1")
+    #    #print(f"Coordinate being added: {letter + "1"}")
+    #    index += 1
+    #print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): {potential_coordinates}")
     cell_coordinate = f"{potential_coordinates[next_question_column - 2]}"
     #print(f"New question: {new_question}")
     #print(f"New heading: {new_summarised_question}")
@@ -233,6 +233,19 @@ def add_question():
         SURVEY.update_cell(cell_index, next_question_column, 3)
         print(f"put 3 in {cell_index} {next_question_column}")
         cell_index += 1
+
+
+def get_potential_question_coordinates():
+    potential_coordinates = []
+    column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ"] 
+    index = 0
+    for letter in column_ids:
+        potential_coordinates.append(letter + "1")
+        #print(f"Coordinate being added: {letter + "1"}")
+        index += 1
+    print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): {potential_coordinates}")
+    return potential_coordinates
+
 
 def delete_row(name):
     """
@@ -275,26 +288,45 @@ def update_question_cells(number_of_deleted_question):
     #qvals = SURVEY.
     #name_cell = SURVEY.find(name)
     question_replacing_deleted = SURVEY.col_values(number_of_deleted_question + 1)  # col_values is 1-indexed so has to be shifted
+    potential_coordinates = get_potential_question_coordinates()
+    full_questions = get_questions("full")
+    #question_column = SURVEY.col_count
     print(f"Question which has taken the place in column where deleted q was: {question_replacing_deleted[0]}")
     position_index = number_of_deleted_question
     question_index = 0
     print(f"Position Index: {position_index}")
-    print(f"Position Index: {question_index}")
+    print(f"Question Index: {question_index}")
     print(f"Col count: {SURVEY.col_count}")
     while position_index < SURVEY.col_count:
-        old_question_string = SURVEY.cell(1, position_index + 1).value
-        print(f"Old Q string: {old_question_string}")
-        split_string = old_question_string.split(" ")
-        print(f"Split question string: {split_string}")
-        new_question_number = int(split_string[0][1:]) - 1
+        old_summary_string = SURVEY.cell(1, position_index + 1).value
+        print(f"Position index: {position_index}")
+        print(f"Full question at current position index: {full_questions[position_index - 1]}")
+        old_question_string = full_questions[position_index - 1]
+        print(f"Old Q summary string: {old_summary_string}")
+        print(f"Old Q full string: {old_question_string}")
+        split_summary_string = old_summary_string.split(" ")
+        split_question_string = old_question_string.split(" ")
+        print(f"Split summary question string: {split_summary_string}")
+        print(f"Split full question string: {split_question_string}")
+        new_question_number = int(split_summary_string[0][1:]) - 1
         print(new_question_number)
-        split_string[0] = f"Q{new_question_number}"
-        new_question_string = ' '.join(split_string)
+        split_summary_string[0] = f"Q{new_question_number}"
+        split_question_string[0] = f"Q{new_question_number}"
+        new_summarised_question = ' '.join(split_summary_string)
+        new_full_question = ' '.join(split_question_string)
         #new_question_string = f"Q{new_question_number} {split_string[1]} {split_string[2]}"
         #new_question_string = f"Q{position_index}{question_replacing_deleted[question_index][2:]}"
-        print(f"New q string: {new_question_string}")
-        print(f"{new_question_string} will be added to Row 1, column {position_index + 1}")
-        SURVEY.update_cell(1, position_index + 1, new_question_string)
+        print(f"New summary q string: {new_summarised_question}")
+        print(f"New full q string: {new_full_question}")
+        print(f"{new_summarised_question} will be added to Row 1, column {position_index + 1}")
+        print(f"{new_full_question} will be added to Row 1, column {position_index + 1}")
+        cell_coordinate = f"{potential_coordinates[SURVEY.col_count - 4 + question_index]}"
+        print(f"Cell coordinate the note will be added to: {cell_coordinate}")
+        
+        SURVEY.update_cell(1, position_index + 1, new_summarised_question)
+        SURVEY.insert_note(cell_coordinate, new_full_question)
+        
+
         position_index += 1
         question_index += 1
 
