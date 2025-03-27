@@ -244,6 +244,27 @@ def delete_row(name):
     print(f"Deletion complete. {name}'s entry has been removed from the survey.\n")
 
 
+def delete_question():
+    #list all current Qs
+    full_questions = get_questions("full")
+    print("List of existing Qs:")
+    for q in full_questions:
+        print(q)
+    print("\n")
+    #print(q for q in full_questions)
+    while True:
+        try:
+            question_number = int(input("Which question would you like to delete?: "))
+            if question_number in range(1, SURVEY.col_count):
+                print(f"Deleting question {question_number} from survey...\n")
+                SURVEY.delete_columns(question_number + 1)
+                print("Deletion complete. Returning to main menu...\n")
+                break
+            else:
+                print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
+        except ValueError:
+            print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
+
 #  REFACTOR? validate_name & check_existing_names perform similar, but inverse functions. 
 def validate_name(name):
     """
@@ -303,7 +324,7 @@ def get_questions(question_type):
     print(f"Reading questions from survey spreadsheet...\n")
     if question_type == "full":
         full_questions = SURVEY.get_notes()
-        print(f"Questions returns from inside get_questions: {full_questions[0][1:]}")
+        #print(f"Questions returns from inside get_questions: {full_questions[0][1:]}")
         return full_questions[0][1:]
     elif question_type == "summarised":
         survey_data = SURVEY.get_all_values()
@@ -351,7 +372,9 @@ def analyse_respondent_data(respondent_data):
     #print(f"Min score: {min_score}")  # TESTING
     lowest_scored_questions = []
     i = 0
-    while i < 10:
+    print(f"Converted scores for each Q: {converted_scores}")
+    while i < SURVEY.col_count - 1:
+        print(f"Index within append loop for low scores: {i}")
         if converted_scores[i] == min_score:
             lowest_scored_questions.append(summarised_questions[i])
         i += 1
@@ -512,6 +535,8 @@ def main():
                 analyse_respondent_data(respondent_data)
             case 'add q':
                 add_question()
+            case 'delete q':
+                delete_question()
             case 'analyse':
                 analysed_data = analyse_survey()
                 make_recommendations(analysed_data)
