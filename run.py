@@ -258,12 +258,45 @@ def delete_question():
             if question_number in range(1, SURVEY.col_count):
                 print(f"Deleting question {question_number} from survey...\n")
                 SURVEY.delete_columns(question_number + 1)
-                print("Deletion complete. Returning to main menu...\n")
-                break
+                print("Deletion complete.\n")
+                return question_number
             else:
                 print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
         except ValueError:
             print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
+
+
+def update_question_cells(number_of_deleted_question):
+    """
+    Updates the numbers in the summarised and full versions of questions to the right of the deleted question to 
+    keep in numerical ascending order.
+    """
+    print(f"Column of deleted question as passed by main: {number_of_deleted_question}")
+    #qvals = SURVEY.
+    #name_cell = SURVEY.find(name)
+    question_replacing_deleted = SURVEY.col_values(number_of_deleted_question + 1)  # col_values is 1-indexed so has to be shifted
+    print(f"Question which has taken the place in column where deleted q was: {question_replacing_deleted[0]}")
+    position_index = number_of_deleted_question
+    question_index = 0
+    print(f"Position Index: {position_index}")
+    print(f"Position Index: {question_index}")
+    print(f"Col count: {SURVEY.col_count}")
+    while position_index < SURVEY.col_count:
+        old_question_string = SURVEY.cell(1, position_index + 1).value
+        print(f"Old Q string: {old_question_string}")
+        split_string = old_question_string.split(" ")
+        print(f"Split question string: {split_string}")
+        new_question_number = int(split_string[0][1:]) - 1
+        print(new_question_number)
+        split_string[0] = f"Q{new_question_number}"
+        new_question_string = ' '.join(split_string)
+        #new_question_string = f"Q{new_question_number} {split_string[1]} {split_string[2]}"
+        #new_question_string = f"Q{position_index}{question_replacing_deleted[question_index][2:]}"
+        print(f"New q string: {new_question_string}")
+        print(f"{new_question_string} will be added to Row 1, column {position_index + 1}")
+        SURVEY.update_cell(1, position_index + 1, new_question_string)
+        position_index += 1
+        question_index += 1
 
 #  REFACTOR? validate_name & check_existing_names perform similar, but inverse functions. 
 def validate_name(name):
@@ -536,7 +569,8 @@ def main():
             case 'add q':
                 add_question()
             case 'delete q':
-                delete_question()
+                number_of_deleted_question = delete_question()
+                update_question_cells(number_of_deleted_question)
             case 'analyse':
                 analysed_data = analyse_survey()
                 make_recommendations(analysed_data)
