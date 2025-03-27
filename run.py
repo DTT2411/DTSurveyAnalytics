@@ -110,12 +110,15 @@ def get_respondent_data():
         return responses
 
 
-def update_survey_sheet(new_data_row):
+def update_survey_sheet(new_data):
     """
     Updates the survey spreadsheet with the list of new responses.
     """
     print(f"Updating survey results spreadsheet...\n")
-    SURVEY.append_row(new_data_row)
+    #if type == "respondent":
+    SURVEY.append_row(new_data)
+    #elif type == "question":
+    #SURVEY.add_cols(new_data)
     print(f"Update complete!\n")
 
 
@@ -170,13 +173,13 @@ def update_data(name_to_update, update_command):
             try:
                 question_number = int(input("Which question would you like to update the value for?:"))
                 print(f"Printing summarised questions from inside update data whole record: {summarised_questions}")
-                if question_number in range(1, len(summarised_questions) + 1):
+                if question_number in range(1, SURVEY.col_count):
                     #print("Valid value!")
                     break
                 else:
-                    print(f"Not a valid question number. Please enter a value between 1 and {len(summarised_questions)}.")
+                    print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
             except ValueError:
-                print(f"Not a valid question number. Please enter a value between 1 and {len(summarised_questions)}.")
+                print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
         while True:
             try:
                 update_value = int(input("Please enter the value: "))
@@ -204,35 +207,35 @@ def add_question():
     print("You can update the default values by using the 'update' function from the main menu.\n")
     new_question = input("Please enter the full text question you wish to add: \n")
     new_summarised_question = input("Please enter the a summarised version (1 to 2 words): \n")
-    summarised_questions = get_questions("summarised")
-    next_question_column = len(summarised_questions)
-    #new_question_cell = 
-    #col_val = SURVEY.column
+    SURVEY.add_cols(1)
+    #summarised_questions = get_questions("summarised")
+    next_question_column = SURVEY.col_count
+    print(next_question_column)
     # Can't find a gspread method which returns the letter value of the column so need to zip this to a list - not ideal, need to find fix!
     potential_coordinates = []
-    column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] 
+    column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ"] 
     index = 0
     for letter in column_ids:
         potential_coordinates.append(letter + "1")
         #print(f"Coordinate being added: {letter + "1"}")
         index += 1
     print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): {potential_coordinates}")
-    cell_coordinate = f"{potential_coordinates[next_question_column]}"
-    print(f"New question: {new_question}")
-    print(f"New heading: {new_summarised_question}")
+    cell_coordinate = f"{potential_coordinates[next_question_column - 2]}"
+    #print(f"New question: {new_question}")
+    #print(f"New heading: {new_summarised_question}")
     print(f"Column to insert to: {cell_coordinate[0]}")
     print(f"Cell coordinate being passed: {cell_coordinate}")
-    SURVEY.insert_note(cell_coordinate, f"Q{next_question_column + 2} - {new_question}")
+    SURVEY.insert_note(cell_coordinate, f"Q{next_question_column - 1} - {new_question}")
     print(f"column length to put in cell add {next_question_column}")
-    SURVEY.update_cell(1, next_question_column + 2, f"Q{next_question_column + 1} - {new_summarised_question}")
+    SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1} - {new_summarised_question}")
     print("The question has successfully been added to the survey.\n")
     col_values = SURVEY.col_values(1)
     number_of_rows = len(col_values)
     print(number_of_rows)
     cell_index = 2
     while cell_index <= number_of_rows:
-        SURVEY.update_cell(cell_index, next_question_column + 2, 3)
-        print(f"put 3 in {cell_index} {next_question_column + 2}")
+        SURVEY.update_cell(cell_index, next_question_column, 3)
+        print(f"put 3 in {cell_index} {next_question_column}")
         cell_index += 1
 
 def delete_row(name):
@@ -395,9 +398,6 @@ def get_averages(survey_data, full_analysis):
     an overall average score for each question.
     """
     #print("Printing questions and length of q array in getqavgs function")
-    #print(SUMMARISED_QUESTIONS)
-    #print(len(SUMMARISED_QUESTIONS))
-    summarised_questions = get_questions("summarised")
     response_values = []
     for data_row in survey_data:
         data_row.pop(0)
@@ -417,7 +417,8 @@ def get_averages(survey_data, full_analysis):
     question_totals = []
     number_of_responses = len(survey_data) - 1  # survey data contains all column data including headings, so need to loop through the lenth minus 1
     #print(f"Number of responses, should be 14: {number_of_responses}")
-    for index in range(len(summarised_questions)):
+    summarised_questions = get_questions("summarised")
+    for index in range(SURVEY.col_count - 1):
         question_totals.append(0)
     #print(f"Question totals from inside get_averages function: {question_totals}")  # test
     #print(f"Initialised question totals, should all be 0: {question_totals}")
@@ -481,6 +482,12 @@ def main():
     """
     #test = get_questions("summarised")
     #print(test)
+    print(f"#rows: {SURVEY.row_count}")
+    print(f"#cols: {SURVEY.col_count}")
+
+    #summarised_questions = get_questions("summarised")
+    #print(f"#cols based on old variable: {len(summarised_questions)}")
+
     while True:  # The program will keep requesting user commands until they input the "exit" command
         main_command = process_main_command()
         #print(f"MAIN: user command is {main_command}") #TESTING
