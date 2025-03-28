@@ -410,35 +410,36 @@ def validate_command(command, menu):
     valid.
     """
     print("Validating command...")
-    main_admin_command_list = ['add', 'update', 'delete', 'list', 'read', 'add q',
-                         'delete q', 'analyse', 'exit']
+    main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
+                               'add q', 'delete q', 'analyse', 'exit']
     main_respondent_command_list = ['add', 'update', 'exit']
     update_command_list = ['one', 'all']
     user_type_list = ['admin', 'respondent']
-    if menu == "main admin":
-        if command in main_admin_command_list:
-            print("Validated.\n")
-            return True
-        else:
-            return False
-    if menu == "main respondent":
-        if command in main_respondent_command_list:
-            print("Validated.\n")
-            return True
-        else:
-            return False
-    if menu == "user type":
-        if command in user_type_list:
-            print("Validated.\n")
-            return True
-        else:
-            return False
-    elif menu == "update":
-        if command in update_command_list:
-            print("Validated.\n")
-            return True
-        else:
-            return False
+    match menu:
+        case 'main admin':
+            if command in main_admin_command_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
+        case 'main respondent':
+            if command in main_respondent_command_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
+        case 'user type':
+            if command in user_type_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
+        case 'update':
+            if command in update_command_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
 
 
 def get_questions(question_type):
