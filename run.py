@@ -93,7 +93,6 @@ def get_respondent_data():
     print("1 - Very Poor\n")
     responses = []
     questions = get_questions("full")
-    print(f"Questions inside get_respondent_data after return: {questions}")
     while True:
         for question in questions:
             print(question + ": \n")
@@ -101,7 +100,6 @@ def get_respondent_data():
                 try:
                     response = int(input("Answer: "))
                     if response in range(1,6):
-                        # print(f"You entered {response}.\n")
                         responses.append(response)
                         break
                     else:
@@ -116,10 +114,7 @@ def update_survey_sheet(new_data):
     Updates the survey spreadsheet with the list of new responses.
     """
     print(f"Updating survey results spreadsheet...\n")
-    #if type == "respondent":
     SURVEY.append_row(new_data)
-    #elif type == "question":
-    #SURVEY.add_cols(new_data)
     print(f"Update complete!\n")
 
 
@@ -141,9 +136,8 @@ def update_data(name_to_update, update_command):
     to the main menu.
     """
     print(f"Updating data...\n")
-    print(f"UPDATE_DATA: Name {name_to_update}\n")
-    print(f"UPDATE_DATA: Command {update_command}\n")
-
+    #print(f"UPDATE_DATA: Name {name_to_update}\n")
+    #print(f"UPDATE_DATA: Command {update_command}\n")
     name_cell = SURVEY.find(name_to_update)
     row_to_update = name_cell.row
     while True:
@@ -158,12 +152,10 @@ def update_data(name_to_update, update_command):
                 print("Please respond with 'Y' to proceed or 'N' to cancel.")
         except ValueError:
             print("Please respond with 'Y' to proceed or 'N' to cancel.")
-    #print(f"Row to update, based on being passed {name_to_update}: {row_to_update}")
-
     if update_command == 'all':
         update_data_list = get_respondent_data()
         print(f"Value responses {update_data_list} will now be updated for {name_to_update}...")
-        column_index = 2  # The values start from the 2nd column onwards
+        column_index = 2  # The values start from the 2nd column onwards and .update_cell is 1-indexed, so the loop index must start at 2 to insert correctly
         for update_value in update_data_list:
             SURVEY.update_cell(row_to_update, column_index, update_value)
             column_index += 1
@@ -171,7 +163,7 @@ def update_data(name_to_update, update_command):
     elif update_command == 'one':
         while True:
             try:
-                question_number = int(input("Which question would you like to update the value for?:"))
+                question_number = int(input("Which question would you like to update the value for?: "))
                 if question_number in range(1, SURVEY.col_count):
                     break
                 else:
@@ -180,11 +172,9 @@ def update_data(name_to_update, update_command):
                 print(f"Not a valid question number. Please enter a value between 1 and {SURVEY.col_count - 1}.")
         while True:
             try:
-                update_value = int(input("Please enter the value: "))
+                update_value = int(input("Please enter the value you wish to add: "))
                 if update_value in range(1, 6):
                     print(f"A score of {update_value} will now be updated to Q{question_number} for {name_to_update}...")
-                    #print(f"Row to update: {row_to_update}")
-                    #print(f"Col to update: {question_number + 1}")
                     SURVEY.update_cell(row_to_update, question_number + 1, update_value)
                     print("Update complete. Returning to main menu...\n")
                     return
@@ -479,6 +469,7 @@ def analyse_survey():
     print(f"Analysing survey data...\n")
     # intialise survey_data variable, pulling all data from survey
     survey_data = SURVEY.get_all_values()
+    print(get_border())
     #print(f"Survey data: {survey_data}\n")
     #names = []  # May not be required, might only need to pop names off if they're not used
     #print(f"Names list: {names}\n")  
@@ -487,12 +478,12 @@ def analyse_survey():
     #print(f"List of responses: {survey_data}\n")
     #print(f"Summarised questions: {summarised_questions}\n")
     #print(f"Response values only, should only be numbers: {response_values}\n")
-    print("See below for average scores for each question in the survey:\n")
     question_averages = get_averages(survey_data, True)
     #print(f"Printing question averages from analyse_survey function after call: {question_averages}")
     summarised_questions = get_questions("summarised")
     #table_border = "—"*100
     print(get_border())
+    print("AVERAGE SCORES\n")
     question_index = 0
     for average_score in question_averages:  # this for loop prints out a list of strings containing a shortened version of the question along with the average organisational score
         print(f"{summarised_questions[question_index]} : {average_score}")
@@ -520,7 +511,8 @@ def get_averages(survey_data, full_analysis):
     
     overall_average = statistics.mean(response_values)
     if full_analysis is True:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_respondent_data
-        print(f"Overall average score across organisation: {round(overall_average, 1)}\n")
+        print("OVERALL SCORE")
+        print(f"Overall average score across organisation: {round(overall_average, 1)}")
     
     # initialises totals variable depending on the number of responses
     question_totals = []
@@ -559,7 +551,7 @@ def make_recommendations(analysed_data):
     """
     Makes recommendations based on the average scores calculated across the dataset.
     """
-    print("Recommendations for your organisation based on overall survey results...\n")
+    print("HIGHLIGHTS\n")
     #print(analysed_data)
     float_data = [float(x) for x in analysed_data]  # converts the list of strings of averages into floats for numerical comparison
     #print(float_data)
@@ -582,6 +574,7 @@ def make_recommendations(analysed_data):
     # print([heading for heading in low_scores_headings])
     for heading in low_scores_headings:
         print(f"{heading}")
+    print(get_border())
     print("Analysis complete. Returning to main menu...\n")
 
 
