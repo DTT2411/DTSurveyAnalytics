@@ -28,6 +28,8 @@ def process_main_command(user_type):
     - 'delete q' deletes an exiting question within the survey
     - 'analyse' returns general analysis over all survey data
     - 'exit' exits the program
+    Admin level users have access to all functions.
+    Respondent level users can only access 'add', 'update' and 'exit'
     """
     print(f"PROCESS_MAIN_COMMAND - user type is: {user_type}")
     if user_type == "admin":
@@ -35,35 +37,37 @@ def process_main_command(user_type):
             print("Please enter a command to perform on the survey\n")
             print("- 'add' to add new survey data to existing spreadsheet")
             print("- 'update' to update existing survey data within the "
-                "spreadsheet")
+                  "spreadsheet")
             print("- 'delete' to delete a record based on an inputted name")
             print("- 'list' to see a list of names of individual respondents")
             print("- 'read' to read a specific individual's responses")
             print("- 'add q' to add a new question to the survey")
             print("- 'delete q' to delete a question from the survey and all "
-                "associated data")
-            print("- 'analyse' to conduct general analysis over all survey data")
+                  "associated data")
+            print("- 'analyse' to conduct general analysis over all survey "
+                  "data")
             print("- 'exit' to exit the application\n")
             main_command = input("Enter your command here: \n")
-            validity_check = validate_command(main_command, "main")
+            validity_check = validate_command(main_command, "main admin")
             if validity_check:
                 return main_command
             else:
                 print("Invalid command. Please enter a command from the list "
-                    "provided.\n")
+                      "provided.\n")
     elif user_type == "respondent":
+        while True:
             print("Please enter a command to perform on the survey\n")
             print("- 'add' to add new survey data to existing spreadsheet")
             print("- 'update' to update existing survey data within the "
-                "spreadsheet")
+                  "spreadsheet")
             print("- 'exit' to exit the application\n")
             main_command = input("Enter your command here: \n")
-            validity_check = validate_command(main_command, "main")
+            validity_check = validate_command(main_command, "main respondent")
             if validity_check:
                 return main_command
             else:
                 print("Invalid command. Please enter a command from the list "
-                    "provided.\n")
+                      "provided.\n")
 
 def process_update_command():
     """
@@ -406,12 +410,19 @@ def validate_command(command, menu):
     valid.
     """
     print("Validating command...")
-    main_command_list = ['add', 'update', 'delete', 'list', 'read', 'add q',
+    main_admin_command_list = ['add', 'update', 'delete', 'list', 'read', 'add q',
                          'delete q', 'analyse', 'exit']
+    main_respondent_command_list = ['add', 'update', 'exit']
     update_command_list = ['one', 'all']
     user_type_list = ['admin', 'respondent']
-    if menu == "main":
-        if command in main_command_list:
+    if menu == "main admin":
+        if command in main_admin_command_list:
+            print("Validated.\n")
+            return True
+        else:
+            return False
+    if menu == "main respondent":
+        if command in main_respondent_command_list:
             print("Validated.\n")
             return True
         else:
