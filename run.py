@@ -69,6 +69,7 @@ def process_main_command(user_type):
                 print("Invalid command. Please enter a command from the list "
                       "provided.\n")
 
+
 def process_update_command():
     """
     Requests user to indicate how they wish to amend the data:
@@ -86,6 +87,44 @@ def process_update_command():
         else:
             print("Invalid command. Please enter a command from the list "
                   "provided.\n")
+
+
+def validate_command(command, menu):
+    """
+    Checks that the initial command passed by user to perform on data set is
+    valid.
+    """
+    print("Validating command...")
+    main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
+                               'add q', 'delete q', 'analyse', 'exit']
+    main_respondent_command_list = ['add', 'update', 'exit']
+    update_command_list = ['one', 'all']
+    user_type_list = ['admin', 'respondent']
+    match menu:
+        case 'main admin':
+            if command in main_admin_command_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
+        case 'main respondent':
+            if command in main_respondent_command_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
+        case 'user type':
+            if command in user_type_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
+        case 'update':
+            if command in update_command_list:
+                print("Validated.\n")
+                return True
+            else:
+                return False
 
 
 def list_respondents():
@@ -145,6 +184,37 @@ def update_survey_sheet(new_data):
     print("Update complete!\n")
 
 
+def validate_name(name):
+    """
+    Takes the name input by user following "read" command and checks whether
+    it matches any of the names in the spreadsheet. If no match is found, user
+    will be prompted until a match is detected, then the valid name is passed
+    back to the main() function.
+    """
+    print("Validating name...")
+    existing_names = SURVEY.col_values(1)
+    while name not in existing_names:
+        name = input("The name you entered does not exist. Please submit the "
+                     "name of a respondent who has completed the survey.\n")
+    return name
+
+
+def check_existing_names(name):
+    """
+    Takes the name input by user following "add" command and checks whether it
+    matches any of the names in the spreadsheet. If the name matches, user will
+    be prompted until a new name is submitted, then the valid name is passed
+    back to the main() function.
+    """
+    print("Checking existing names...\n")
+    existing_names = SURVEY.col_values(1)
+    while name in existing_names:
+        print("The name you entered already exists - you have already "
+              "completed the survey!\n")
+        name = input("Please enter the name of a new respondent.\n")
+    return name
+
+
 def read_respondent_data(name):
     """
     Reads a row of data from the spreadsheet based on the respondent name.
@@ -153,6 +223,74 @@ def read_respondent_data(name):
     name_cell = SURVEY.find(name)
     respondent_scores = SURVEY.row_values(name_cell.row)
     return respondent_scores
+
+
+def analyse_respondent_data(respondent_data):
+    """
+    Conducts analysis on data passed through the main function following
+    a "read" command, displaying the question responses and statistics
+    for the given individual.
+    """
+    print("Analysing respondent data...\n")
+    # removes the name from the row, leaving just the scores
+    respondent_name = respondent_data.pop(0)
+    print(f"Results for {respondent_name} are as follows:\n")
+    summarised_questions = get_questions("summarised")
+    # converts scores to integers so that numerical analysis can be performed
+    converted_scores = [int(x) for x in respondent_data]
+    # calculates the mean score from the list
+    average_score = statistics.mean(converted_scores)
+    # calculates the variance from the list
+    score_variance = statistics.variance(converted_scores)
+    if score_variance > 2:
+        variance_string = "high level of variance, indicating significant \n"
+        "disparity between the 'best' and 'worst' aspects of the job."
+    elif score_variance > 1.3:
+        variance_string = "moderate level of variance."
+    else:
+        variance_string = "low level of variance, suggesting the respondent\n"
+        "is very consistent in their perception about the qualities of the "
+        "job."
+    question_index = 0
+    survey_data = SURVEY.get_all_values()
+    survey_averages = get_averages(survey_data, "False")
+    print(get_border())
+    print("OVERALL RESULTS")
+    print(f"{respondent_name} gave an average score of "
+          f"{round(average_score, 1)} across all questions.")
+    print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
+          f"their scores. This is a {variance_string}")
+    print(get_border())
+    print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
+    for score in respondent_data:
+        if float(score) < (float(survey_averages[question_index]) - 0.4):
+            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
+                  "    Significantly lower than the organisation average score"
+                  f" ({survey_averages[question_index]})")
+        elif float(score) > (float(survey_averages[question_index]) + 0.4):
+            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
+                  "    Significantly higher than the organisation average "
+                  f"score ({survey_averages[question_index]})")
+        else:
+            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
+                  f"    Close to the organisation average score ("
+                  f"{survey_averages[question_index]})")
+        question_index += 1
+    print(get_border())
+    min_score = min(converted_scores)
+    # print(f"Min score: {min_score}")  # TESTING
+    lowest_scored_questions = []
+    count_min_index = 0
+    # print(f"Converted scores for each Q: {converted_scores}")
+    while count_min_index < SURVEY.col_count - 1:
+        if converted_scores[count_min_index] == min_score:
+            lowest_scored_questions.append(
+                summarised_questions[count_min_index])
+        count_min_index += 1
+    print("AREAS OF CONCERN")
+    print(f"Lowest scored question(s) scored {min_score} as follows: "
+          f"{lowest_scored_questions}.")
+    print(get_border())
 
 
 def update_data(name_to_update, update_command):
@@ -373,75 +511,6 @@ def update_question_cells(number_of_deleted_question):
         question_index += 1
 
 
-def validate_name(name):
-    """
-    Takes the name input by user following "read" command and checks whether
-    it matches any of the names in the spreadsheet. If no match is found, user
-    will be prompted until a match is detected, then the valid name is passed
-    back to the main() function.
-    """
-    print("Validating name...")
-    existing_names = SURVEY.col_values(1)
-    while name not in existing_names:
-        name = input("The name you entered does not exist. Please submit the "
-                     "name of a respondent who has completed the survey.\n")
-    return name
-
-
-def check_existing_names(name):
-    """
-    Takes the name input by user following "add" command and checks whether it
-    matches any of the names in the spreadsheet. If the name matches, user will
-    be prompted until a new name is submitted, then the valid name is passed
-    back to the main() function.
-    """
-    print("Checking existing names...\n")
-    existing_names = SURVEY.col_values(1)
-    while name in existing_names:
-        print("The name you entered already exists - you have already "
-              "completed the survey!\n")
-        name = input("Please enter the name of a new respondent.\n")
-    return name
-
-
-def validate_command(command, menu):
-    """
-    Checks that the initial command passed by user to perform on data set is
-    valid.
-    """
-    print("Validating command...")
-    main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
-                               'add q', 'delete q', 'analyse', 'exit']
-    main_respondent_command_list = ['add', 'update', 'exit']
-    update_command_list = ['one', 'all']
-    user_type_list = ['admin', 'respondent']
-    match menu:
-        case 'main admin':
-            if command in main_admin_command_list:
-                print("Validated.\n")
-                return True
-            else:
-                return False
-        case 'main respondent':
-            if command in main_respondent_command_list:
-                print("Validated.\n")
-                return True
-            else:
-                return False
-        case 'user type':
-            if command in user_type_list:
-                print("Validated.\n")
-                return True
-            else:
-                return False
-        case 'update':
-            if command in update_command_list:
-                print("Validated.\n")
-                return True
-            else:
-                return False
-
-
 def get_questions(question_type):
     """
     Returns a list of the survey questions. The get_notes function returns
@@ -460,74 +529,6 @@ def get_questions(question_type):
         headings.pop(0)
         summarised_questions = headings
         return summarised_questions
-
-
-def analyse_respondent_data(respondent_data):
-    """
-    Conducts analysis on data passed through the main function following
-    a "read" command, displaying the question responses and statistics
-    for the given individual.
-    """
-    print("Analysing respondent data...\n")
-    # removes the name from the row, leaving just the scores
-    respondent_name = respondent_data.pop(0)
-    print(f"Results for {respondent_name} are as follows:\n")
-    summarised_questions = get_questions("summarised")
-    # converts scores to integers so that numerical analysis can be performed
-    converted_scores = [int(x) for x in respondent_data]
-    # calculates the mean score from the list
-    average_score = statistics.mean(converted_scores)
-    # calculates the variance from the list
-    score_variance = statistics.variance(converted_scores)
-    if score_variance > 2:
-        variance_string = "high level of variance, indicating significant \n"
-        "disparity between the 'best' and 'worst' aspects of the job."
-    elif score_variance > 1.3:
-        variance_string = "moderate level of variance."
-    else:
-        variance_string = "low level of variance, suggesting the respondent\n"
-        "is very consistent in their perception about the qualities of the "
-        "job."
-    question_index = 0
-    survey_data = SURVEY.get_all_values()
-    survey_averages = get_averages(survey_data, "False")
-    print(get_border())
-    print("OVERALL RESULTS")
-    print(f"{respondent_name} gave an average score of "
-          f"{round(average_score, 1)} across all questions.")
-    print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
-          f"their scores. This is a {variance_string}")
-    print(get_border())
-    print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
-    for score in respondent_data:
-        if float(score) < (float(survey_averages[question_index]) - 0.4):
-            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
-                  "    Significantly lower than the organisation average score"
-                  f" ({survey_averages[question_index]})")
-        elif float(score) > (float(survey_averages[question_index]) + 0.4):
-            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
-                  "    Significantly higher than the organisation average "
-                  f"score ({survey_averages[question_index]})")
-        else:
-            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
-                  f"   Close to the organisation average score("
-                  f"{survey_averages[question_index]})")
-        question_index += 1
-    print(get_border())
-    min_score = min(converted_scores)
-    # print(f"Min score: {min_score}")  # TESTING
-    lowest_scored_questions = []
-    count_min_index = 0
-    # print(f"Converted scores for each Q: {converted_scores}")
-    while count_min_index < SURVEY.col_count - 1:
-        if converted_scores[count_min_index] == min_score:
-            lowest_scored_questions.append(
-                summarised_questions[count_min_index])
-        count_min_index += 1
-    print("AREAS OF CONCERN")
-    print(f"Lowest scored question(s) scored {min_score} as follows: "
-          f"{lowest_scored_questions}.")
-    print(get_border())
 
 
 def get_border():
@@ -629,14 +630,13 @@ def main():
     """
     Run all program functions
     """
-    #validate_command is False
     while True:
         print("Please enter your user type. Options:")
         print("- 'admin' can add or update responses on behalf others, "
               "read individual or whole survey data, add and delete "
               "questions.")
         print("- 'respondent' can add and update their own responses.")
-        user_type = input("Please enter which type of user you are: ")
+        user_type = input("Enter user type: ")
         validated_user_type = validate_command(user_type, "user type")
         if validated_user_type is True:
             break
