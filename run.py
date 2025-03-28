@@ -316,42 +316,30 @@ def update_question_cells(number_of_deleted_question):
     versions of questions to the right of the deleted question to keep in
     numerical ascending order.
     """
-    print(f"Column of deleted question as passed by main: "
-          f"{number_of_deleted_question}")
-    # qvals = SURVEY.
-    # name_cell = SURVEY.find(name)
-    question_replacing_deleted = SURVEY.col_values(
-        number_of_deleted_question + 1)  # col_values is 1-indexed so has to be shifted
+    # print(f"Column of deleted question as passed by main: "
+    #      f"{number_of_deleted_question}")
+    # question_replacing_deleted = SURVEY.col_values(
+    #    number_of_deleted_question + 1)
     potential_coordinates = get_potential_question_coordinates()
     full_questions = get_questions("full")
-    # question_column = SURVEY.col_count
-    print(f"Question which has taken the place in column where deleted q was: "
-          f"{question_replacing_deleted[0]}")
+    # print(f"Question which has taken the place in column where deleted q was: "
+    #      f"{question_replacing_deleted[0]}")
     position_index = number_of_deleted_question
     question_index = 0
-    print(f"Position Index: {position_index}")
-    print(f"Question Index: {question_index}")
-    print(f"Col count: {SURVEY.col_count}")
+    # print(f"Position Index: {position_index}")
+    # print(f"Question Index: {question_index}")
+    # print(f"Col count: {SURVEY.col_count}")
     while position_index < SURVEY.col_count:
+        # Rebuilds the question and heading strings based on deleted Q
         old_summary_string = SURVEY.cell(1, position_index + 1).value
-        print(f"Position index: {position_index}")
-        print(f"Full question at current position index: "
-              f"{full_questions[position_index - 1]}")
         old_question_string = full_questions[position_index - 1]
-        print(f"Old Q summary string: {old_summary_string}")
-        print(f"Old Q full string: {old_question_string}")
         split_summary_string = old_summary_string.split(" ")
         split_question_string = old_question_string.split(" ")
-        print(f"Split summary question string: {split_summary_string}")
-        print(f"Split full question string: {split_question_string}")
         new_question_number = int(split_summary_string[0][1:]) - 1
-        print(new_question_number)
         split_summary_string[0] = f"Q{new_question_number}"
         split_question_string[0] = f"Q{new_question_number}"
         new_summarised_question = ' '.join(split_summary_string)
         new_full_question = ' '.join(split_question_string)
-        # new_question_string = f"Q{new_question_number} {split_string[1]} {split_string[2]}"
-        # new_question_string = f"Q{position_index}{question_replacing_deleted[question_index][2:]}"
         print(f"New summary q string: {new_summarised_question}")
         print(f"New full q string: {new_full_question}")
         print(f"{new_summarised_question} will be added to Row 1, column "
@@ -361,16 +349,13 @@ def update_question_cells(number_of_deleted_question):
         print(f"Potential coords: {potential_coordinates}")
         print(f"Current: {potential_coordinates[SURVEY.col_count]}")
         cell_coordinate = f"{potential_coordinates[position_index - 1]}"
-        # cell_coordinate = f"{potential_coordinates[SURVEY.col_count - 4 + question_index]}"
         print(f"Cell coordinate the note will be added to: {cell_coordinate}")
         SURVEY.update_cell(1, position_index + 1, new_summarised_question)
         SURVEY.insert_note(cell_coordinate, new_full_question)
-
         position_index += 1
         question_index += 1
 
 
-#  REFACTOR? validate_name & check_existing_names perform similar, but inverse functions.
 def validate_name(name):
     """
     Takes the name input by user following "read" command and checks whether
@@ -435,7 +420,6 @@ def get_questions(question_type):
     # print(f"Reading questions from survey spreadsheet...\n")
     if question_type == "full":
         full_questions = SURVEY.get_notes()
-        # print(f"Questions returns from inside get_questions: {full_questions[0][1:]}")
         return full_questions[0][1:]
     elif question_type == "summarised":
         survey_data = SURVEY.get_all_values()
@@ -444,7 +428,6 @@ def get_questions(question_type):
         # Removes the name from list, leaving only the summarised questions
         headings.pop(0)
         summarised_questions = headings
-        # print(f"get_questions function returning: {summarised_questions}")
         return summarised_questions
 
 
@@ -454,10 +437,9 @@ def analyse_respondent_data(respondent_data):
     a "read" command, displaying the question responses and statistics
     for the given individual.
     """
-    # notes = SURVEY.row_values(1)
-    # survey_data = SURVEY.get_all_values()
     print("Analysing respondent data...\n")
-    respondent_name = respondent_data.pop(0)  # removes the first value in the row (i.e. name) so we can convert the remaining numbers in the string to int for analysis
+    # removes the name from the row, leaving just the scores
+    respondent_name = respondent_data.pop(0)
     # print(f"Survey data being fed into averages function: {survey_data}\n")
     # print(f"Qs data being fed into averages function: {summarised_questions}\n")
     # survey_averages = get_averages(survey_data, False)
@@ -535,24 +517,15 @@ def analyse_survey():
     highlighting questions with low scores i.e. areas to work on
     """
     print("Analysing survey data...\n")
-    # intialise survey_data variable, pulling all data from survey
     survey_data = SURVEY.get_all_values()
     print(get_border())
-    # print(f"Survey data: {survey_data}\n")
-    # names = []  # May not be required, might only need to pop names off if they're not used
-    # print(f"Names list: {names}\n")
-    # print(f"Names list without NAME heading: {names[1:]}\n")
-    # print(f"Printing summarised questions from inside analyse_survey, should exclude name: {summarised_questions}")
-    # print(f"List of responses: {survey_data}\n")
-    # print(f"Summarised questions: {summarised_questions}\n")
-    # print(f"Response values only, should only be numbers: {response_values}\n")
     question_averages = get_averages(survey_data, True)
-    # print(f"Printing question averages from analyse_survey function after call: {question_averages}")
     summarised_questions = get_questions("summarised")
     print(get_border())
     print("AVERAGE SCORES\n")
     question_index = 0
-    for average_score in question_averages:  # this for loop prints out a list of strings containing a shortened version of the question along with the average organisational score
+    # prints all summarised Qs and avergae organisational score
+    for average_score in question_averages:
         print(f"{summarised_questions[question_index]} : {average_score}")
         question_index += 1
     print(get_border())
@@ -565,7 +538,6 @@ def get_averages(survey_data, full_analysis):
     and returns an overall average score for each question. Outputs
     organisation average score if full analysis is being conducted.
     """
-    # print("Printing questions and length of q array in getqavgs function")
     response_values = []
     for data_row in survey_data:
         data_row.pop(0)
@@ -574,42 +546,22 @@ def get_averages(survey_data, full_analysis):
                 response_values.append(int(value))
             else:
                 continue
-    # print(f"Response values within get_averages, should be all numbers: {response_values}")
     overall_average = statistics.mean(response_values)
-    if full_analysis is True:  # Only outputs the organisational score if the function is being called from analyse_survey, not analyse_respondent_data
+    if full_analysis is True:
         print("OVERALL SCORE")
         print(f"Overall average score across organisation: "
               f"{round(overall_average, 1)}")
-    # initialises totals variable depending on the number of responses
     question_totals = []
-    number_of_responses = len(survey_data) - 1  # survey data contains all column data including headings, so need to loop through the lenth minus 1
-    # print(f"Number of responses, should be 14: {number_of_responses}")
-    # summarised_questions = get_questions("summarised")
+    number_of_responses = len(survey_data) - 1
     for index in range(SURVEY.col_count - 1):
         question_totals.append(0)
-    # print(f"Question totals from inside get_averages function: {question_totals}")  # test
-    # print(f"Initialised question totals, should all be 0: {question_totals}")
-
-    # Gets totals for each question
-    # print(survey_data)
     survey_data.pop(0)
-    # print(survey_data)
     for dataset in survey_data:
-        # dataset.pop(0)
         for index in range(len(dataset)):
-            # print(f"Current value being looked at: {dataset[index]}")  # test
-            # print(f"Index: {index}")  # test
             question_totals[index] += int(dataset[index])
-    # print(f"List of total scores for each question: {question_totals}\n")  # test
-    # print(f"Number of responses which the totals will be divided by: {number_of_responses}")  # test
-
-    # for loop comprehensions to generate a list of averages then round all values to one decimal place
     question_averages = [x/number_of_responses for x in question_totals]
-    question_averages_rounded = ['%.1f' % x for x in question_averages]  # alternative method of rounding since round() does not work with lists
-    # print(f"List of average scores for each question: {question_averages_rounded}\n")
-    # print("Q1 below")
-    # print(question_averages_rounded[0])
-
+    # alternative method of rounding since round() does not work with lists
+    question_averages_rounded = ['%.1f' % x for x in question_averages]
     return question_averages_rounded
 
 
@@ -619,9 +571,7 @@ def make_recommendations(analysed_data):
     dataset.
     """
     print("HIGHLIGHTS\n")
-    # print(analysed_data)
-    float_data = [float(x) for x in analysed_data]  # converts the list of strings of averages into floats for numerical comparison
-    # print(float_data)
+    float_data = [float(x) for x in analysed_data]
     low_scores = []
     high_scores = []
     question_index = 0
@@ -636,11 +586,10 @@ def make_recommendations(analysed_data):
     print(f"High scoring questions: {high_scores}\n")
     low_scores_headings = []
     for question in low_scores:
-        # removes text before words from questions (e.g. "Q1 - ")
+        # removes text before words from questions (e.g. "Q1 - ") before append
         low_scores_headings.append(question[5:])
     print("Based on the average scores, major areas of concern for the "
           "organisation should be: ")
-    # print([heading for heading in low_scores_headings])
     for heading in low_scores_headings:
         print(f"{heading}")
     print(get_border())
@@ -651,24 +600,15 @@ def main():
     """
     Run all program functions
     """
-    # test = get_questions("summarised")
-    # print(test)
-    # print(f"#rows: {SURVEY.row_count}")
-    # print(f"#cols: {SURVEY.col_count}")
-
-    # summarised_questions = get_questions("summarised")
-    # print(f"#cols based on old variable: {len(summarised_questions)}")
-
-    while True:  # The program will keep requesting user commands until they input the "exit" command
+    while True: # loops until user enters 'exit' command
         main_command = process_main_command()
-        # print(f"MAIN: user command is {main_command}") #TESTING
         match main_command:
             case 'add':
                 respondent_name = input("Please enter the exact name you wish "
                                         "to add data for: ")
                 respondent_name_checked = check_existing_names(respondent_name)
                 responses = get_respondent_data()
-                responses.insert(0, respondent_name_checked)  # adds the respondent's name to the start of the responses list
+                responses.insert(0, respondent_name_checked)
                 update_survey_sheet(responses)
             case 'update':
                 name_to_update = input("Enter the exact name of the person "
@@ -694,7 +634,7 @@ def main():
                 add_question()
             case 'delete q':
                 number_of_deleted_question = delete_question()
-                # Skips the need to update question titles if the question removed was on the last row
+                # Skips if the last question was deleted, no need to update
                 if number_of_deleted_question < SURVEY.col_count:
                     update_question_cells(number_of_deleted_question)
             case 'analyse':
