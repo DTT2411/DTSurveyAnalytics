@@ -25,6 +25,7 @@ def process_main_command(user_type):
     - 'list' returns a list of names of individual respondents
     - 'read' returns a given individual's responses
     - 'add q' adds a new question to the survey
+    - 'read q' returns a list of responses for a given question
     - 'delete q' deletes an exiting question within the survey
     - 'analyse' returns general analysis over all survey data
     - 'exit' exits the program
@@ -42,6 +43,7 @@ def process_main_command(user_type):
             print("- 'list' to see a list of names of individual respondents")
             print("- 'read' to read a specific individual's responses")
             print("- 'add q' to add a new question to the survey")
+            print("- 'read q' to read all responses for a given question")
             print("- 'delete q' to delete a question from the survey and all "
                   "associated data")
             print("- 'analyse' to conduct general analysis over all survey "
@@ -96,7 +98,8 @@ def validate_command(command, menu):
     """
     print("Validating command...")
     main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
-                               'add q', 'delete q', 'analyse', 'exit']
+                               'add q', 'read q', 'delete q', 'analyse',
+                               'exit']
     main_respondent_command_list = ['add', 'update', 'exit']
     update_command_list = ['one', 'all']
     user_type_list = ['admin', 'respondent']
@@ -199,6 +202,28 @@ def validate_name(name):
     return name
 
 
+def validate_question():
+    """
+    Requests question number input by user following "read q" command and
+    checks it is valid i.e. is a number between 1 and the number of the last
+    column in the spreadsheet.
+    """
+    print("Validating question...")
+    while True:
+        try:
+            question_number = int(input("Which question would you like to "
+                                        "read the values for?: "))
+            if question_number in range(1, SURVEY.col_count):
+                break
+            else:
+                print(f"Not a valid question number. Please enter a value "
+                      f"between 1 and {SURVEY.col_count - 1}.")
+        except ValueError:
+            print(f"Not a valid question number. Please enter a value "
+                  f"between 1 and {SURVEY.col_count - 1}.")
+    return question_number
+
+
 def check_existing_names(name):
     """
     Takes the name input by user following "add" command and checks whether it
@@ -208,6 +233,7 @@ def check_existing_names(name):
     """
     print("Checking existing names...\n")
     existing_names = SURVEY.col_values(1)
+    existing_names.pop(0)  # removes "Name" column header from list
     while name in existing_names:
         print("The name you entered already exists - you have already "
               "completed the survey!\n")
@@ -223,6 +249,28 @@ def read_respondent_data(name):
     name_cell = SURVEY.find(name)
     respondent_scores = SURVEY.row_values(name_cell.row)
     return respondent_scores
+
+
+def read_question_data(question_number):
+    """
+    Outputs a list of respondent names and their scores for a given question.
+    """
+    existing_names = SURVEY.col_values(1)
+    existing_names.pop(0)
+    responses = SURVEY.col_values(question_number+1)
+    summarised_question = responses.pop(0)
+    longest_name = len(max(existing_names, key=len))
+    print(get_border())
+    print(f"LISTING RESULTS FOR {summarised_question}:\n")
+    name_index = 0
+    for response in responses:
+        print(f"{existing_names[name_index].ljust(longest_name+5)}{response}")
+        name_index += 1
+    #print(f"Summarised Q {summarised_question}")
+    #print(f"Responses {responses}")
+    
+    #print(f"Extracting column values from column {question_number} : will return {SURVEY.col_values(question_number+1)}")
+    print("END SO FAR")
 
 
 def analyse_respondent_data(respondent_data):
@@ -542,9 +590,9 @@ def get_border():
 
 def analyse_survey():
     """
-    Conducts analysis of the overall survey data set, returning
-    summarised information for each question, overall statistics,
-    highlighting questions with low scores i.e. areas to work on
+    Conducts analysis of the overall survey data set, returning summarised
+    information for each question, overall statistics, highlighting questions
+    with low scores i.e. areas to work on
     """
     print("Analysing survey data...\n")
     survey_data = SURVEY.get_all_values()
@@ -592,7 +640,6 @@ def get_averages(survey_data, full_analysis):
         for index in range(len(dataset)):
             question_totals[index] += int(dataset[index])
     question_averages = [x/number_of_responses for x in question_totals]
-    # alternative method of rounding since round() does not work with lists
     question_averages_rounded = ['%.1f' % x for x in question_averages]
     return question_averages_rounded
 
@@ -684,6 +731,9 @@ def main():
                 analyse_respondent_data(respondent_data)
             case 'add q':
                 add_question()
+            case 'read q':
+                question_number = validate_question()
+                read_question_data(question_number)
             case 'delete q':
                 number_of_deleted_question = delete_question()
                 # Skips if the last question was deleted, no need to update
