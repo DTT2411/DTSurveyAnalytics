@@ -15,7 +15,7 @@ SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
 SURVEY = SHEET.worksheet("survey_results")
 
 
-def process_main_command():
+def process_main_command(user_type):
     """
     Requests user to indicate what function they want to perform via command:
     - 'add' adds new survey data to existing spreadsheet
@@ -29,27 +29,41 @@ def process_main_command():
     - 'analyse' returns general analysis over all survey data
     - 'exit' exits the program
     """
-    while True:
-        print("Please enter a command to perform on the survey\n")
-        print("- 'add' to add new survey data to existing spreadsheet")
-        print("- 'update' to update existing survey data within the "
-              "spreadsheet")
-        print("- 'delete' to delete a record based on an inputted name")
-        print("- 'list' to see a list of names of individual respondents")
-        print("- 'read' to read a specific individual's responses")
-        print("- 'add q' to add a new question to the survey")
-        print("- 'delete q' to delete a question from the survey and all "
-              "associated data")
-        print("- 'analyse' to conduct general analysis over all survey data")
-        print("- 'exit' to exit the application\n")
-        main_command = input("Enter your command here: \n")
-        validity_check = validate_command(main_command, "main")
-        if validity_check:
-            return main_command
-        else:
-            print("Invalid command. Please enter a command from the list "
-                  "provided.\n")
-
+    print(f"PROCESS_MAIN_COMMAND - user type is: {user_type}")
+    if user_type == "admin":
+        while True:
+            print("Please enter a command to perform on the survey\n")
+            print("- 'add' to add new survey data to existing spreadsheet")
+            print("- 'update' to update existing survey data within the "
+                "spreadsheet")
+            print("- 'delete' to delete a record based on an inputted name")
+            print("- 'list' to see a list of names of individual respondents")
+            print("- 'read' to read a specific individual's responses")
+            print("- 'add q' to add a new question to the survey")
+            print("- 'delete q' to delete a question from the survey and all "
+                "associated data")
+            print("- 'analyse' to conduct general analysis over all survey data")
+            print("- 'exit' to exit the application\n")
+            main_command = input("Enter your command here: \n")
+            validity_check = validate_command(main_command, "main")
+            if validity_check:
+                return main_command
+            else:
+                print("Invalid command. Please enter a command from the list "
+                    "provided.\n")
+    elif user_type == "respondent":
+            print("Please enter a command to perform on the survey\n")
+            print("- 'add' to add new survey data to existing spreadsheet")
+            print("- 'update' to update existing survey data within the "
+                "spreadsheet")
+            print("- 'exit' to exit the application\n")
+            main_command = input("Enter your command here: \n")
+            validity_check = validate_command(main_command, "main")
+            if validity_check:
+                return main_command
+            else:
+                print("Invalid command. Please enter a command from the list "
+                    "provided.\n")
 
 def process_update_command():
     """
@@ -395,8 +409,15 @@ def validate_command(command, menu):
     main_command_list = ['add', 'update', 'delete', 'list', 'read', 'add q',
                          'delete q', 'analyse', 'exit']
     update_command_list = ['one', 'all']
+    user_type_list = ['admin', 'respondent']
     if menu == "main":
         if command in main_command_list:
+            print("Validated.\n")
+            return True
+        else:
+            return False
+    if menu == "user type":
+        if command in user_type_list:
             print("Validated.\n")
             return True
         else:
@@ -409,7 +430,6 @@ def validate_command(command, menu):
             return False
 
 
-# better to just read this in as a global variable?
 def get_questions(question_type):
     """
     Returns a list of the survey questions. The get_notes function returns
@@ -597,19 +617,40 @@ def main():
     """
     Run all program functions
     """
+    #validate_command is False
+    while True:
+        print("Please enter your user type. Options:")
+        print("- 'admin' can add or update responses on behalf others, "
+              "read individual or whole survey data, add and delete "
+              "questions.")
+        print("- 'respondent' can add and update their own responses.")
+        user_type = input("Please enter which type of user you are: ")
+        validated_user_type = validate_command(user_type, "user type")
+        if validated_user_type is True:
+            break
+        else:
+            print("You did not enter a valid user type. Please enter 'admin' "
+                  "or 'respondent'")
     while True:  # loops until user enters 'exit' command
-        main_command = process_main_command()
+        main_command = process_main_command(user_type)
         match main_command:
             case 'add':
-                respondent_name = input("Please enter the exact name you wish "
-                                        "to add data for: ")
+                if user_type == "admin":
+                    respondent_name = input("Please enter the exact name you "
+                                            "wish to add data for: ")
+                elif user_type == "respondent":
+                    respondent_name = input("Please enter your full name: ")
                 respondent_name_checked = check_existing_names(respondent_name)
                 responses = get_respondent_data()
                 responses.insert(0, respondent_name_checked)
                 update_survey_sheet(responses)
             case 'update':
-                name_to_update = input("Enter the exact name of the person "
-                                       "whose results you wish to update: ")
+                if user_type == "admin":
+                    name_to_update = input("Enter the exact name of the person"
+                                           " whose results you wish to update:"
+                                           " ")
+                elif user_type == "respondent":
+                    name_to_update = input("Please enter your full name: ")
                 validated_name_to_update = validate_name(name_to_update)
                 update_command = process_update_command()
                 update_data(validated_name_to_update, update_command)
