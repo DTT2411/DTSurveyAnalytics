@@ -553,11 +553,13 @@ def analyse_survey():
     summarised_questions = get_questions("summarised")
     print(get_border())
     print("AVERAGE SCORES\n")
-    question_index = 0
+    q_index = 0
     # prints all summarised Qs and avergae organisational score
+    longest_q = len(max(summarised_questions, key=len))
     for average_score in question_averages:
-        print(f"{summarised_questions[question_index]} : {average_score}")
-        question_index += 1
+        print(f"{summarised_questions[q_index].ljust(longest_q + 5)} "
+              f"{average_score}")
+        q_index += 1
     print(get_border())
     return question_averages
 
