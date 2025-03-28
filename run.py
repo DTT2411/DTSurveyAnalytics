@@ -169,7 +169,9 @@ def update_data(name_to_update, update_command):
         update_data_list = get_respondent_data()
         print(f"Value responses {update_data_list} will now be updated for "
               f"{name_to_update}...")
-        column_index = 2  # The values start from the 2nd column onwards and .update_cell is 1-indexed, so the loop index must start at 2 to insert correctly
+        # The values start from the 2nd column onwards and .update_cell
+        # is 1-indexed, so the loop index must start at 2 to insert correctly
+        column_index = 2
         for update_value in update_data_list:
             SURVEY.update_cell(row_to_update, column_index, update_value)
             column_index += 1
@@ -259,7 +261,6 @@ def get_potential_question_coordinates():
     index = 0
     for letter in column_ids:
         potential_coordinates.append(letter + "1")
-        # print(f"Coordinate being added: {letter + "1"}")
         index += 1
     print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): "
           f"{potential_coordinates}")
@@ -322,8 +323,6 @@ def update_question_cells(number_of_deleted_question):
     #    number_of_deleted_question + 1)
     potential_coordinates = get_potential_question_coordinates()
     full_questions = get_questions("full")
-    # print(f"Question which has taken the place in column where deleted q was: "
-    #      f"{question_replacing_deleted[0]}")
     position_index = number_of_deleted_question
     question_index = 0
     # print(f"Position Index: {position_index}")
@@ -440,15 +439,14 @@ def analyse_respondent_data(respondent_data):
     print("Analysing respondent data...\n")
     # removes the name from the row, leaving just the scores
     respondent_name = respondent_data.pop(0)
-    # print(f"Survey data being fed into averages function: {survey_data}\n")
-    # print(f"Qs data being fed into averages function: {summarised_questions}\n")
-    # survey_averages = get_averages(survey_data, False)
-    # print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
     print(f"Results for {respondent_name} are as follows:\n")
     summarised_questions = get_questions("summarised")
-    converted_scores = [int(x) for x in respondent_data]  # converts data to a list of integers so that numerical analysis can be performed
-    average_score = statistics.mean(converted_scores)  # calculates the mean score from the list
-    score_variance = statistics.variance(converted_scores)  # calculates the variance from the list
+    # converts scores to integers so that numerical analysis can be performed
+    converted_scores = [int(x) for x in respondent_data]
+    # calculates the mean score from the list
+    average_score = statistics.mean(converted_scores)
+    # calculates the variance from the list
+    score_variance = statistics.variance(converted_scores)
     if score_variance > 2:
         variance_string = "high level of variance, indicating significant \n"
         "disparity between the 'best' and 'worst' aspects of the job."
@@ -467,7 +465,6 @@ def analyse_respondent_data(respondent_data):
           f"{round(average_score, 1)} across all questions.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
           f"their scores. This is a {variance_string}")
-    # print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
     print(get_border())
     print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
     for score in respondent_data:
@@ -600,7 +597,7 @@ def main():
     """
     Run all program functions
     """
-    while True: # loops until user enters 'exit' command
+    while True:  # loops until user enters 'exit' command
         main_command = process_main_command()
         match main_command:
             case 'add':
