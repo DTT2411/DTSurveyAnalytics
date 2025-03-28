@@ -389,7 +389,7 @@ def get_questions(question_type):
     a list of lists containing cell notes which needs to be unpacked before
     returning.
     """
-    print(f"Reading questions from survey spreadsheet...\n")
+    #print(f"Reading questions from survey spreadsheet...\n")
     if question_type == "full":
         full_questions = SURVEY.get_notes()
         #print(f"Questions returns from inside get_questions: {full_questions[0][1:]}")
@@ -432,15 +432,15 @@ def analyse_respondent_data(respondent_data):
     question_index = 0
     survey_data = SURVEY.get_all_values()
     survey_averages = get_averages(survey_data, "False")
-    largest_output_fstring = len(f"{summarised_questions[question_index].ljust(35)}  #     Significantly higher than the organisation average score of ({survey_averages[question_index]})")
-    table_border_top = "—".join(["—"]*(math.ceil(largest_output_fstring/2) + 1))
-    print(table_border_top)
+    #largest_output_fstring = len(f"{summarised_questions[question_index].ljust(35)}  #     Significantly higher than the organisation average score of ({survey_averages[question_index]})")
+    #table_border = "—".join(["—"]*(math.ceil(largest_output_fstring/2) + 1))
+    print(get_border())
     print("OVERALL RESULTS")
     print(f"{respondent_name} gave an average score of {round(average_score, 1)} across all questions.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in their scores. This is a {variance_string}")
     #print(f"Printing survey_averages from within analyse_respondent_data function: {survey_averages}")  # test
     #table_border_bottom = "—".join(["—"]*(math.ceil(largest_output_fstring/2) + 1))
-    print(table_border_top)
+    print(get_border())
     print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
     for score in respondent_data:  # this for loop prints out a list of strings containing a shortened version of the question along with the individual's score
         if float(score) < (float(survey_averages[question_index]) - 0.4):
@@ -450,7 +450,7 @@ def analyse_respondent_data(respondent_data):
         else: 
             print(f"{summarised_questions[question_index].ljust(35)}  {score}     Close to the organisation average score({survey_averages[question_index]})")
         question_index += 1
-    print(table_border_top)
+    print(get_border())
     min_score = min(converted_scores)
     #print(f"Min score: {min_score}")  # TESTING
     lowest_scored_questions = []
@@ -462,7 +462,12 @@ def analyse_respondent_data(respondent_data):
         count_min_index += 1
     print("AREAS OF CONCERN")
     print(f"Lowest scored question(s) scored {min_score} as follows: {lowest_scored_questions}.")
-    print(table_border_top)
+    print(get_border())
+
+
+def get_border():
+    table_border = "—"*100
+    return table_border
 
 
 def analyse_survey():
@@ -486,14 +491,15 @@ def analyse_survey():
     question_averages = get_averages(survey_data, True)
     #print(f"Printing question averages from analyse_survey function after call: {question_averages}")
     summarised_questions = get_questions("summarised")
+    #table_border = "—"*100
+    print(get_border())
     question_index = 0
     for average_score in question_averages:  # this for loop prints out a list of strings containing a shortened version of the question along with the average organisational score
         print(f"{summarised_questions[question_index]} : {average_score}")
         question_index += 1
-
-    print("Analysis complete. Returning to main menu...\n")
+    print(get_border())
     return question_averages
-
+    
 
 def get_averages(survey_data, full_analysis):
     """
@@ -576,7 +582,7 @@ def make_recommendations(analysed_data):
     # print([heading for heading in low_scores_headings])
     for heading in low_scores_headings:
         print(f"{heading}")
-    print("\n")
+    print("Analysis complete. Returning to main menu...\n")
 
 
 def main():
@@ -585,8 +591,8 @@ def main():
     """
     #test = get_questions("summarised")
     #print(test)
-    print(f"#rows: {SURVEY.row_count}")
-    print(f"#cols: {SURVEY.col_count}")
+    #print(f"#rows: {SURVEY.row_count}")
+    #print(f"#cols: {SURVEY.col_count}")
 
     #summarised_questions = get_questions("summarised")
     #print(f"#cols based on old variable: {len(summarised_questions)}")
@@ -621,7 +627,7 @@ def main():
                 add_question()
             case 'delete q':
                 number_of_deleted_question = delete_question()
-                if number_of_deleted_question < SURVEY.col_count:
+                if number_of_deleted_question < SURVEY.col_count:  # Skips the need to update question titles if the question removed was on the last row
                     update_question_cells(number_of_deleted_question)
             case 'analyse':
                 analysed_data = analyse_survey()
