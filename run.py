@@ -71,11 +71,12 @@ def list_respondents():
     Returns a list of the names of all survey respondents
     """
     respondent_column = SHEET.worksheet("survey_results").col_values(1)
-    respondent_names = respondent_column[1:] 
-    print("**See below for a list of all respondents.**\n")
+    respondent_names = respondent_column[1:]
+    print(get_border())
+    print("RESPONDENT LIST\n")
     for respondent in respondent_names:
         print(respondent)
-    print("\n")
+    print(get_border())
 
 
 def get_respondent_data():
@@ -120,7 +121,7 @@ def update_survey_sheet(new_data):
 
 def read_respondent_data(name):
     """
-    Reads a row of data from the spreadsheet based on the respondent name, which is passed by user.
+    Reads a row of data from the spreadsheet based on the respondent name.
     """
     print(f"Reading {name}'s data...\n")
     name_cell = SURVEY.find(name)
@@ -187,7 +188,7 @@ def update_data(name_to_update, update_command):
 def add_question():
     """
     Adds a new question to the survey and spreadsheet, with a summarised heading
-    and the full text question held within the note. 
+    and the full text question held within the cell's note.
     """
     print("Adding new question to survey...\n")
     print("Please note that the responses for all previous respondents who have not answered the new question will be set to the median value (3).")
@@ -195,21 +196,10 @@ def add_question():
     new_question = input("Please enter the full text question you wish to add: \n")
     new_summarised_question = input("Please enter the a summarised version (1 to 2 words): \n")
     SURVEY.add_cols(1)
-    #summarised_questions = get_questions("summarised")
     next_question_column = SURVEY.col_count
     print(next_question_column)
-    # Can't find a gspread method which returns the letter value of the column so need to zip this to a list - not ideal, need to find fix!
     potential_coordinates = get_potential_question_coordinates()
-    #column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ"] 
-    #index = 0
-    #for letter in column_ids:
-    #    potential_coordinates.append(letter + "1")
-    #    #print(f"Coordinate being added: {letter + "1"}")
-    #    index += 1
-    #print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): {potential_coordinates}")
     cell_coordinate = f"{potential_coordinates[next_question_column - 2]}"
-    #print(f"New question: {new_question}")
-    #print(f"New heading: {new_summarised_question}")
     print(f"Column to insert to: {cell_coordinate[0]}")
     print(f"Cell coordinate being passed: {cell_coordinate}")
     SURVEY.insert_note(cell_coordinate, f"Q{next_question_column - 1} - {new_question}")
@@ -227,6 +217,10 @@ def add_question():
 
 
 def get_potential_question_coordinates():
+    """
+    Creates a list of potential cell names to be used then calling the .insert_note gspread function, 
+    since this only accepts alphabetical column values (e.g. A1, K1)
+    """
     potential_coordinates = []
     column_ids = ["B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ"] 
     index = 0
@@ -249,6 +243,11 @@ def delete_row(name):
 
 
 def delete_question():
+    """
+    Provides a list of existing question then prompts user to give the number of the question they
+    wish to delete from the survey. The column is then deleted and the number of the deleted question
+    is returned to the main function. 
+    """
     #list all current Qs
     full_questions = get_questions("full")
     print("List of existing Qs:")
@@ -272,8 +271,9 @@ def delete_question():
 
 def update_question_cells(number_of_deleted_question):
     """
-    Following the deletion of a question, updates the numbers in the summarised and full versions of questions 
-    to the right of the deleted question to keep in numerical ascending order.
+    Following the deletion of a question, if the question was not the last one in the survey, this function
+    updates the numbers in the summarised and full versions of questions to the right of the deleted question 
+    to keep in numerical ascending order.
     """
     print(f"Column of deleted question as passed by main: {number_of_deleted_question}")
     #qvals = SURVEY.
