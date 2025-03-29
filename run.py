@@ -22,6 +22,7 @@ def get_user_type():
     Requests user to indicate what access type they have:
     - 'admin' can use all features and functions
     - 'respondent' can only input and update their own data
+    Keeps prompting user until a valid command is entered.
     """
     while True:
         print("Please enter your user type:")
