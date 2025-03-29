@@ -348,31 +348,42 @@ def analyse_respondent_data(respondent_data):
     # converts scores to integers so that numerical analysis can be performed
     converted_scores = [int(x) for x in respondent_data]
     # calculates the mean score from the list
-    average_score = statistics.mean(converted_scores)
+    average_score = round(statistics.mean(converted_scores), 1)
     # calculates the variance from the list
-    score_variance = statistics.variance(converted_scores)
+    score_variance = round(statistics.variance(converted_scores), 1)
+    survey_data = SURVEY.get_all_values()
+    survey_averages = get_averages(survey_data, "False")
+    float_averages = [float(x) for x in survey_averages]
+    organisation_average = round(statistics.mean(float_averages), 1)
     if score_variance > 2:
         variance_string = "high level of variance, indicating significant \n" \
-        "disparity between the 'best' and 'worst' aspects of the job."
+            "disparity between the 'best' and 'worst' aspects of the job."
     elif score_variance > 1.3:
         variance_string = "moderate level of variance."
     else:
         variance_string = "low level of variance, suggesting the \n" \
-        "respondent is very consistent in their perception about the "
-        "qualities of the job."
-    question_index = 0
-    survey_data = SURVEY.get_all_values()
-    survey_averages = get_averages(survey_data, "False")
+            "respondent is very consistent in their perception about the " \
+            "qualities of the job."
     print(get_border())
     print(colored('OVERALL RESULTS\n', 'green', attrs=['bold']))
     print(f"{respondent_name} gave an average score of "
-          f"{round(average_score, 1)} across all questions.")
+          f"{average_score} across all questions.")
+    if average_score > organisation_average + 0.4:
+        print(f"This is significantly higher than the overall organisation "
+              f"average score of {organisation_average}.")
+    elif average_score < organisation_average - 0.4:
+        print(f"This is significantly lower than the overall organisation "
+              f"average score of {organisation_average}.")
+    else:
+        print(f"This is close to the organisation average score of "
+              f"{organisation_average}.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
           f"their scores. This is a {variance_string}")
     print(get_border())
     # print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
     print(colored("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON",
                   'green', attrs=['bold']))
+    question_index = 0
     for score in respondent_data:
         if float(score) < (float(survey_averages[question_index]) - 0.4):
             print(f"{summarised_questions[question_index].ljust(35)}  {score} "
