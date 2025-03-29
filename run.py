@@ -15,6 +15,27 @@ SHEET = GSPREAD_CLIENT.open("DT_survey_analytics")
 SURVEY = SHEET.worksheet("survey_results")
 
 
+def get_user_type():
+    """
+    Requests user to indicate what access type they have:
+    - 'admin' can use all features and functions
+    - 'respondent' can only input and update their own data
+    """
+    while True:
+        print("Please enter your user type:")
+        print("- 'admin' can add or update responses on behalf others, "
+              "read individual or whole survey data, add and delete "
+              "questions.")
+        print("- 'respondent' can add and update their own responses.\n")
+        user_type = input("Enter user type: ")
+        validated_user_type = validate_command(user_type, "user type")
+        if validated_user_type is True:
+            return user_type
+        else:
+            print("You did not enter a valid user type. Please enter "
+                  "'admin' or 'respondent'")
+
+
 def process_main_command(user_type):
     """
     Requests user to indicate what function they want to perform via command:
@@ -697,21 +718,9 @@ def make_recommendations(analysed_data):
 
 def main():
     """
-    Run all program functions
+    Run all program functions.
     """
-    while True:
-        print("Please enter your user type:")
-        print("- 'admin' can add or update responses on behalf others, "
-              "read individual or whole survey data, add and delete "
-              "questions.")
-        print("- 'respondent' can add and update their own responses.\n")
-        user_type = input("Enter user type: ")
-        validated_user_type = validate_command(user_type, "user type")
-        if validated_user_type is True:
-            break
-        else:
-            print("You did not enter a valid user type. Please enter 'admin' "
-                  "or 'respondent'")
+    user_type = get_user_type()
     while True:  # loops until user enters 'exit' command
         main_command = process_main_command(user_type)
         match main_command:
