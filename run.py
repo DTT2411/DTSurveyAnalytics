@@ -30,9 +30,12 @@ def get_user_type():
               "data, add and delete questions.")
         print("- " + colored("'respondent'", 'blue') + " can add and update "
               "their own responses.")
+        print("- " + colored("'exit'", 'blue') + " to exit the application.")
         print("Enter " + colored("'home'", 'blue') + " in any field to return "
               "to this menu.")
         user_type = input("Enter user type: ")
+        if user_type == "exit":
+            quit()
         validated_user_type = validate_command(user_type, "user type")
         if validated_user_type is True:
             return user_type
@@ -138,7 +141,7 @@ def validate_command(command, menu):
                                'exit', 'home']
     main_respondent_command_list = ['add', 'update', 'exit', 'home']
     update_command_list = ['one', 'all', 'home']
-    user_type_list = ['admin', 'respondent', 'home']
+    user_type_list = ['admin', 'respondent', 'exit', 'home']
     match menu:
         case 'main admin':
             if command in main_admin_command_list:
