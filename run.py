@@ -78,7 +78,6 @@ def process_main_command(user_type):
     Admin level users have access to all functions.
     Respondent level users can only access 'add', 'update' and 'exit'
     """
-    # print(f"PROCESS_MAIN_COMMAND - user type is: {user_type}")
     if user_type == "admin":
         while True:
             print("Please enter a command to perform on the survey:\n")
@@ -198,7 +197,8 @@ def main_menu_check(user_input):
 
 def list_respondents():
     """
-    Returns a list of the names of all survey respondents
+    Reads the first column of data from the spreadsheet. Removes heading ("Name").
+    Prints the list of names with a corresponding counter.
     """
     respondent_column = SHEET.worksheet("survey_results").col_values(1)
     respondent_names = respondent_column[1:]
