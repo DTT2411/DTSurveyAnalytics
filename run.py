@@ -83,7 +83,7 @@ def process_update_command():
         print("- 'one' to update the response to a single question")
         print("- 'all' to update the full list of survey responses")
         update_command = input("Enter your command here: ")
-        home_menu_check(update_command)
+        main_menu_check(update_command)
         validity_check = validate_command(update_command, "update")
         if validity_check:
             return update_command
@@ -131,7 +131,7 @@ def validate_command(command, menu):
                 return False
 
 
-def home_menu_check(user_input):
+def main_menu_check(user_input):
     """
     If the user has entered "home" into any input field, return to the
     main menu.
@@ -179,7 +179,7 @@ def get_respondent_data():
             while True:
                 try:
                     response = input("Answer: ")
-                    home_menu_check(response)
+                    main_menu_check(response)
                     if int(response) in range(1, 6):
                         responses.append(response)
                         break
@@ -233,7 +233,7 @@ def validate_question():
         try:
             question_number = input("Which question would you like to read "
                                     "the values for?: ")
-            home_menu_check(question_number)
+            main_menu_check(question_number)
             if int(question_number) in range(1, SURVEY.col_count):
                 break
             else:
@@ -252,7 +252,7 @@ def check_existing_names(name):
     be prompted until a new name is submitted, then the valid name is passed
     back to the main() function.
     """
-    home_menu_check(name)
+    main_menu_check(name)
     print("Checking existing names...\n")
     existing_names = SURVEY.col_values(1)
     existing_names.pop(0)  # removes "Name" column header from list
@@ -378,7 +378,7 @@ def update_data(name_to_update, update_command):
                             f"{read_respondent_data(name_to_update)[1:]}. "
                             "Are you sure you wish to amend this data? "
                             "(Y/N): ")
-            home_menu_check(confirm)
+            main_menu_check(confirm)
             if confirm in ["Y", "y"]:
                 break
             elif confirm in ["N", "n"]:
@@ -404,7 +404,7 @@ def update_data(name_to_update, update_command):
             try:
                 question_number = input("Which question would you like to "
                                         "update the value for?: ")
-                home_menu_check(question_number)
+                main_menu_check(question_number)
                 if int(question_number) in range(1, SURVEY.col_count):
                     break
                 else:
@@ -417,7 +417,7 @@ def update_data(name_to_update, update_command):
             try:
                 update_value = input("Please enter the value you wish to "
                                      "add: ")
-                home_menu_check(update_value)
+                main_menu_check(update_value)
                 if int(update_value) in range(1, 6):
                     print(f"A score of {update_value} will now be updated to "
                           f"Q{question_number} for {name_to_update}...")
@@ -446,10 +446,10 @@ def add_question():
           "from the main menu.\n")
     new_question = input("Please enter the full text question you wish to "
                          "add: \n")
-    home_menu_check(new_question)
+    main_menu_check(new_question)
     new_summarised_question = input("Please enter the a summarised version "
                                     "(1 to 2 words): \n")
-    home_menu_check(new_summarised_question)
+    main_menu_check(new_summarised_question)
     SURVEY.add_cols(1)
     next_question_column = SURVEY.col_count
     # print(next_question_column)
@@ -526,7 +526,7 @@ def delete_question():
         try:
             question_number = input("Which question would you like to "
                                     "delete?: ")
-            home_menu_check(question_number)
+            main_menu_check(question_number)
             if int(question_number) in range(1, SURVEY.col_count):
                 print(f"Deleting question {question_number} from survey...\n")
                 SURVEY.delete_columns(int(question_number) + 1)
@@ -721,7 +721,7 @@ def main():
                                             "wish to add data for: ")
                 elif user_type == "respondent":
                     respondent_name = input("Please enter your full name: ")
-                home_menu_check(respondent_name)
+                main_menu_check(respondent_name)
                 respondent_name_checked = check_existing_names(respondent_name)
                 responses = get_respondent_data()
                 responses.insert(0, respondent_name_checked)
@@ -733,7 +733,7 @@ def main():
                                            " ")
                 elif user_type == "respondent":
                     name_to_update = input("Please enter your full name: ")
-                home_menu_check(name_to_update)
+                main_menu_check(name_to_update)
                 validated_name_to_update = validate_name(name_to_update)
                 update_command = process_update_command()
                 update_data(validated_name_to_update, update_command)
@@ -741,7 +741,7 @@ def main():
                 name_to_delete = input("Enter the exact name of the respondent"
                                        "you wish to delete survey results for:"
                                        " \n")
-                home_menu_check(name_to_delete)
+                main_menu_check(name_to_delete)
                 validated_name_to_delete = validate_name(name_to_delete)
                 delete_row(validated_name_to_delete)
             case 'list':
@@ -749,7 +749,7 @@ def main():
             case 'read':
                 read_name = input("Enter the exact name of the respondent you "
                                   "wish to see survey results for: \n")
-                home_menu_check(read_name)
+                main_menu_check(read_name)
                 validated_read_name = validate_name(read_name)
                 respondent_data = read_respondent_data(validated_read_name)
                 analyse_respondent_data(respondent_data)
