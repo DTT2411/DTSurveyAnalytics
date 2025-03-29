@@ -400,19 +400,28 @@ def analyse_respondent_data(respondent_data):
         question_index += 1
     print(get_border())
     min_score = min(converted_scores)
+    max_score = max(converted_scores)
     # print(f"Min score: {min_score}")  # TESTING
     lowest_scored_questions = []
-    count_min_index = 0
+    highest_scored_questions = []
+    count_index = 0
     # print(f"Converted scores for each Q: {converted_scores}")
-    while count_min_index < SURVEY.col_count - 1:
-        if converted_scores[count_min_index] == min_score:
+    while count_index < SURVEY.col_count - 1:
+        if converted_scores[count_index] == min_score:
             lowest_scored_questions.append(
-                summarised_questions[count_min_index])
-        count_min_index += 1
+                summarised_questions[count_index])
+        elif converted_scores[count_index] == max_score:
+            highest_scored_questions.append(
+                summarised_questions[count_index])
+        count_index += 1
     print(colored('HIGHLIGHTS\n', 'green', attrs=['bold']))
-    print(f"Lowest scored question(s) scored {min_score} as follows: "
-          f"{lowest_scored_questions}.")
+    print(f"Highest scored question(s) scored {max_score} as follows: ")
+    [print(question) for question in highest_scored_questions]
+    print("")
+    print(f"Lowest scored question(s) scored {min_score} as follows: ")
+    [print(question) for question in lowest_scored_questions]
     print(get_border())
+    print(colored("Analysis complete. Returning to main menu...\n", "yellow"))
 
 
 def update_data(name_to_update, update_command):
