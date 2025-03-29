@@ -201,6 +201,7 @@ def validate_name(name):
     while name not in existing_names:
         name = input("The name you entered does not exist. Please submit the "
                      "name of a respondent who has completed the survey.\n")
+    print("Name validated.")
     return name
 
 
@@ -210,7 +211,12 @@ def validate_question():
     checks it is valid i.e. is a number between 1 and the number of the last
     column in the spreadsheet.
     """
-    print("Validating question...")
+    print("Validating question...\n")
+    full_questions = get_questions("full")
+    print("List of existing Qs:")
+    for q in full_questions:
+        print(q)
+    print("")
     while True:
         try:
             question_number = int(input("Which question would you like to "
