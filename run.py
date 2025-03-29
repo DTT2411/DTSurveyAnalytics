@@ -50,9 +50,7 @@ def validate_admin():
     enter the admin password, which is contained outside of the application
     in a text file named "admin_password.txt".
     """
-    admin_password_file = open('admin_password.txt', 'r')
-    admin_password = admin_password_file.read()
-    print(admin_password)
+    admin_password = open('admin_password.txt', 'r').read()
     response = input("Please enter the administrator password: \n")
     if response == admin_password:
         print(colored("Password correct. Going to admin command menu...\n",
@@ -560,7 +558,6 @@ def add_question():
     main_menu_check(new_summarised_question)
     SURVEY.add_cols(1)
     next_question_column = SURVEY.col_count
-    print(f"QUESTION BEING ADDED TO COLUMN: {next_question_column}")
     SURVEY.insert_note(1, next_question_column, 1, next_question_column,
                        f"Q{next_question_column - 1} - {new_question}")
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
