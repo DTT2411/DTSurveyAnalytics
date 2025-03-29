@@ -305,10 +305,10 @@ def validate_question():
 
 def check_existing_names(name):
     """
-    Takes the name input by user following "add" command and checks whether it
-    matches any of the names in the spreadsheet. If the name matches, user will
-    be prompted until a new name is submitted, then the valid name is passed
-    back to the main() function.
+    Takes the name input by user and checks whether it matches any of the
+    names in the spreadsheet. If the name matches, user will be prompted until
+    a new name is submitted, then the valid name is passed back to the main
+    function.
     """
     main_menu_check(name)
     print(colored("Checking existing names...\n", "yellow"))
@@ -324,7 +324,8 @@ def check_existing_names(name):
 
 def read_respondent_data(name):
     """
-    Reads a row of data from the spreadsheet based on the respondent name.
+    Reads a row of data from the spreadsheet, based on the respondent name,
+    returned as a list of scores.
     """
     print(colored(f"Reading {name}'s data...\n", "yellow"))
     name_cell = SURVEY.find(name)
