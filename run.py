@@ -504,6 +504,7 @@ def get_potential_question_coordinates():
     column values (e.g. A1, K1)
     """
     potential_coordinates = []
+    # Limits the number of columns to put questions in to len(column_ids)
     column_ids = ["B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
                   "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y",
                   "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI",
