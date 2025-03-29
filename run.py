@@ -32,10 +32,10 @@ def process_main_command(user_type):
     Admin level users have access to all functions.
     Respondent level users can only access 'add', 'update' and 'exit'
     """
-    print(f"PROCESS_MAIN_COMMAND - user type is: {user_type}")
+    #print(f"PROCESS_MAIN_COMMAND - user type is: {user_type}")
     if user_type == "admin":
         while True:
-            print("Please enter a command to perform on the survey\n")
+            print("Please enter a command to perform on the survey:\n")
             print("- 'add' to add new survey data to existing spreadsheet")
             print("- 'update' to update existing survey data within the "
                   "spreadsheet")
@@ -58,7 +58,7 @@ def process_main_command(user_type):
                       "provided.\n")
     elif user_type == "respondent":
         while True:
-            print("Please enter a command to perform on the survey\n")
+            print("Please enter a command to perform on the survey:\n")
             print("- 'add' to add new survey data to existing spreadsheet")
             print("- 'update' to update existing survey data within the "
                   "spreadsheet")
@@ -138,8 +138,10 @@ def list_respondents():
     respondent_names = respondent_column[1:]
     print(get_border())
     print("RESPONDENT LIST\n")
+    respondent_number = 1
     for respondent in respondent_names:
-        print(respondent)
+        print(f"{respondent_number}. {respondent}")
+        respondent_number += 1
     print(get_border())
 
 
@@ -266,10 +268,6 @@ def read_question_data(question_number):
     for response in responses:
         print(f"{existing_names[name_index].ljust(longest_name+5)}{response}")
         name_index += 1
-    #print(f"Summarised Q {summarised_question}")
-    #print(f"Responses {responses}")
-    
-    #print(f"Extracting column values from column {question_number} : will return {SURVEY.col_values(question_number+1)}")
     print("END SO FAR")
 
 
@@ -279,7 +277,7 @@ def analyse_respondent_data(respondent_data):
     a "read" command, displaying the question responses and statistics
     for the given individual.
     """
-    print("Analysing respondent data...\n")
+    print("Analysing data...\n")
     # removes the name from the row, leaving just the scores
     respondent_name = respondent_data.pop(0)
     print(f"Results for {respondent_name} are as follows:\n")
@@ -291,14 +289,14 @@ def analyse_respondent_data(respondent_data):
     # calculates the variance from the list
     score_variance = statistics.variance(converted_scores)
     if score_variance > 2:
-        variance_string = "high level of variance, indicating significant \n"
+        variance_string = "high level of variance, indicating significant \n" \
         "disparity between the 'best' and 'worst' aspects of the job."
     elif score_variance > 1.3:
         variance_string = "moderate level of variance."
     else:
-        variance_string = "low level of variance, suggesting the respondent\n"
-        "is very consistent in their perception about the qualities of the "
-        "job."
+        variance_string = "low level of variance, suggesting the \n" \
+        "respondent is very consistent in their perception about the "
+        "qualities of the job."
     question_index = 0
     survey_data = SURVEY.get_all_values()
     survey_averages = get_averages(survey_data, "False")
@@ -429,25 +427,27 @@ def add_question():
                                     "(1 to 2 words): \n")
     SURVEY.add_cols(1)
     next_question_column = SURVEY.col_count
-    print(next_question_column)
+    #print(next_question_column)
     potential_coordinates = get_potential_question_coordinates()
     cell_coordinate = f"{potential_coordinates[next_question_column - 2]}"
-    print(f"Column to insert to: {cell_coordinate[0]}")
-    print(f"Cell coordinate being passed: {cell_coordinate}")
+    #print(f"Column to insert to: {cell_coordinate[0]}")
+    #print(f"Cell coordinate being passed: {cell_coordinate}")
     SURVEY.insert_note(cell_coordinate, f"Q{next_question_column - 1} - "
                        f"{new_question}")
-    print(f"column length to put in cell add {next_question_column}")
+    #print(f"column length to put in cell add {next_question_column}")
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
                        f" - {new_summarised_question}")
-    print("The question has successfully been added to the survey.\n")
+    print("Adding question heading...\n")
     col_values = SURVEY.col_values(1)
     number_of_rows = len(col_values)
-    print(number_of_rows)
+    #print(number_of_rows)
     cell_index = 2
+    print("Adding default value to past respondents...\n")
     while cell_index <= number_of_rows:
         SURVEY.update_cell(cell_index, next_question_column, 3)
-        print(f"put 3 in {cell_index} {next_question_column}")
+        #print(f"put 3 in {cell_index} {next_question_column}")
         cell_index += 1
+    print("The question has successfully been added to the survey.\n")
 
 
 def get_potential_question_coordinates():
@@ -466,8 +466,8 @@ def get_potential_question_coordinates():
     for letter in column_ids:
         potential_coordinates.append(letter + "1")
         index += 1
-    print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): "
-          f"{potential_coordinates}")
+    #print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): "
+    #      f"{potential_coordinates}")
     return potential_coordinates
 
 
@@ -495,7 +495,7 @@ def delete_question():
     print("List of existing Qs:")
     for q in full_questions:
         print(q)
-    print("\n")
+    print("")
     # print(q for q in full_questions)
     while True:
         try:
@@ -521,17 +521,11 @@ def update_question_cells(number_of_deleted_question):
     versions of questions to the right of the deleted question to keep in
     numerical ascending order.
     """
-    # print(f"Column of deleted question as passed by main: "
-    #      f"{number_of_deleted_question}")
-    # question_replacing_deleted = SURVEY.col_values(
-    #    number_of_deleted_question + 1)
+    print("Updating question headings...\n")
     potential_coordinates = get_potential_question_coordinates()
     full_questions = get_questions("full")
     position_index = number_of_deleted_question
     question_index = 0
-    # print(f"Position Index: {position_index}")
-    # print(f"Question Index: {question_index}")
-    # print(f"Col count: {SURVEY.col_count}")
     while position_index < SURVEY.col_count:
         # Rebuilds the question and heading strings based on deleted Q
         old_summary_string = SURVEY.cell(1, position_index + 1).value
@@ -543,20 +537,21 @@ def update_question_cells(number_of_deleted_question):
         split_question_string[0] = f"Q{new_question_number}"
         new_summarised_question = ' '.join(split_summary_string)
         new_full_question = ' '.join(split_question_string)
-        print(f"New summary q string: {new_summarised_question}")
-        print(f"New full q string: {new_full_question}")
-        print(f"{new_summarised_question} will be added to Row 1, column "
-              f"{position_index + 1}")
-        print(f"{new_full_question} will be added to Row 1, column "
-              f"{position_index + 1}")
-        print(f"Potential coords: {potential_coordinates}")
-        print(f"Current: {potential_coordinates[SURVEY.col_count]}")
+        #print(f"New summary q string: {new_summarised_question}")
+        #print(f"New full q string: {new_full_question}")
+        #print(f"{new_summarised_question} will be added to Row 1, column "
+        #      f"{position_index + 1}")
+        #print(f"{new_full_question} will be added to Row 1, column "
+        #      f"{position_index + 1}")
+        #print(f"Potential coords: {potential_coordinates}")
+        #print(f"Current: {potential_coordinates[SURVEY.col_count]}")
         cell_coordinate = f"{potential_coordinates[position_index - 1]}"
-        print(f"Cell coordinate the note will be added to: {cell_coordinate}")
+        #print(f"Cell coordinate the note will be added to: {cell_coordinate}")
         SURVEY.update_cell(1, position_index + 1, new_summarised_question)
         SURVEY.insert_note(cell_coordinate, new_full_question)
         position_index += 1
         question_index += 1
+    print("Updating complete.\n")
 
 
 def get_questions(question_type):
@@ -667,8 +662,8 @@ def make_recommendations(analysed_data):
     for question in low_scores:
         # removes text before words from questions (e.g. "Q1 - ") before append
         low_scores_headings.append(question[5:])
-    print("Based on the average scores, major areas of concern for the "
-          "organisation should be: ")
+    print("Based on the average scores, areas of concern for the organisation "
+          "should be: ")
     for heading in low_scores_headings:
         print(f"{heading}")
     print(get_border())
@@ -680,11 +675,11 @@ def main():
     Run all program functions
     """
     while True:
-        print("Please enter your user type. Options:")
+        print("Please enter your user type:")
         print("- 'admin' can add or update responses on behalf others, "
               "read individual or whole survey data, add and delete "
               "questions.")
-        print("- 'respondent' can add and update their own responses.")
+        print("- 'respondent' can add and update their own responses.\n")
         user_type = input("Enter user type: ")
         validated_user_type = validate_command(user_type, "user type")
         if validated_user_type is True:
@@ -746,6 +741,6 @@ def main():
                 print("The application will now close.")
                 quit()
 
-
+print("")
 print("Welcome to DT Survey Analytics.\n")
 main()
