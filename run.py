@@ -580,7 +580,7 @@ def add_question():
                   "yellow"))
 
 
-def delete_row(name):
+def delete_respondent(name):
     """
     Takes the validated name input by the user and deletes the corresponding
     row in the spreadsheet.
@@ -835,7 +835,7 @@ def main():
                                        "for: \n")
                 main_menu_check(name_to_delete)
                 validated_name_to_delete = validate_name(name_to_delete)
-                delete_row(validated_name_to_delete)
+                delete_respondent(validated_name_to_delete)
             case 'list':
                 list_respondents()
             case 'read':
