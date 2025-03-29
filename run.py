@@ -26,7 +26,8 @@ def get_user_type():
         print("- 'admin' can add or update responses on behalf others, "
               "read individual or whole survey data, add and delete "
               "questions.")
-        print("- 'respondent' can add and update their own responses.\n")
+        print("- 'respondent' can add and update their own responses.")
+        print("Enter 'home' in any field to return to this main menu.\n")
         user_type = input("Enter user type: ")
         validated_user_type = validate_command(user_type, "user type")
         if validated_user_type is True:
@@ -121,10 +122,10 @@ def validate_command(command, menu):
     print("Validating command...")
     main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
                                'add q', 'read q', 'delete q', 'analyse',
-                               'exit']
-    main_respondent_command_list = ['add', 'update', 'exit']
-    update_command_list = ['one', 'all']
-    user_type_list = ['admin', 'respondent']
+                               'exit', 'home']
+    main_respondent_command_list = ['add', 'update', 'exit', 'home']
+    update_command_list = ['one', 'all', 'home']
+    user_type_list = ['admin', 'respondent', 'home']
     match menu:
         case 'main admin':
             if command in main_admin_command_list:
@@ -723,6 +724,7 @@ def main():
     user_type = get_user_type()
     while True:  # loops until user enters 'exit' command
         main_command = process_main_command(user_type)
+        main_menu_check(main_command)
         match main_command:
             case 'add':
                 if user_type == "admin":
