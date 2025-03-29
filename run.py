@@ -560,10 +560,9 @@ def add_question():
     main_menu_check(new_summarised_question)
     SURVEY.add_cols(1)
     next_question_column = SURVEY.col_count
-    potential_coordinates = get_potential_question_coordinates()
-    cell_coordinate = f"{potential_coordinates[next_question_column - 2]}"
-    SURVEY.insert_note(cell_coordinate, f"Q{next_question_column - 1} - "
-                       f"{new_question}")
+    print(f"QUESTION BEING ADDED TO COLUMN: {next_question_column}")
+    SURVEY.insert_note(1, next_question_column, 1, next_question_column,
+                       f"Q{next_question_column - 1} - {new_question}")
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
                        f" - {new_summarised_question}")
     print(colored("Adding question heading...\n", "yellow"))
@@ -576,26 +575,6 @@ def add_question():
         cell_index += 1
     print(colored("The question has successfully been added to the survey.\n",
                   "yellow"))
-
-
-def get_potential_question_coordinates():
-    """
-    Creates a list of potential cell names to be used then calling the
-    .insert_note gspread function, since this only accepts alphabetical
-    column values (e.g. A1, K1)
-    """
-    potential_coordinates = []
-    # Limits the number of columns to put questions in to len(column_ids)
-    column_ids = ["B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-                  "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y",
-                  "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI",
-                  "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS",
-                  "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
-    index = 0
-    for letter in column_ids:
-        potential_coordinates.append(letter + "1")
-        index += 1
-    return potential_coordinates
 
 
 def delete_row(name):
@@ -670,9 +649,10 @@ def update_question_cells(number_of_deleted_question):
     numerical ascending order.
     """
     print(colored("Updating question headings...\n", "yellow"))
-    potential_coordinates = get_potential_question_coordinates()
     full_questions = get_questions("full")
     position_index = number_of_deleted_question
+    print(f"NUMBER OF DELETED QUESTION: {number_of_deleted_question}")
+    column_to_update = number_of_deleted_question + 1
     question_index = 0
     while position_index < SURVEY.col_count:
         # Rebuilds the question and heading strings based on deleted Q
@@ -685,9 +665,9 @@ def update_question_cells(number_of_deleted_question):
         split_question_string[0] = f"Q{new_question_number}"
         new_summarised_question = ' '.join(split_summary_string)
         new_full_question = ' '.join(split_question_string)
-        cell_coordinate = f"{potential_coordinates[position_index - 1]}"
         SURVEY.update_cell(1, position_index + 1, new_summarised_question)
-        SURVEY.insert_note(cell_coordinate, new_full_question)
+        SURVEY.insert_note(1, column_to_update, 1, column_to_update,
+                           new_full_question)
         position_index += 1
         question_index += 1
     print(colored("Updating complete.\n", "yellow"))
