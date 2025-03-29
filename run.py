@@ -606,8 +606,27 @@ def delete_row(name):
     Takes the validated name input by the user and deletes the corresponding
     row in the spreadsheet.
     """
-    print(colored(f"Deleting {name}'s data...\n", "yellow"))
     name_cell = SURVEY.find(name)
+    while True:
+        try:
+            confirm = input(f"{name}'s responses are currently "
+                            f"{read_respondent_data(name)[1:]}.\n"
+                            "Are you sure you wish to delete this data? "
+                            "(Y/N): ")
+            main_menu_check(confirm)
+            if confirm in ["Y", "y"]:
+                break
+            elif confirm in ["N", "n"]:
+                print(colored("Delete aborted. Returning to main menu.\n",
+                              "yellow"))
+                main()
+            else:
+                print(colored("Please respond with 'Y' to proceed or 'N' to "
+                              "cancel."))
+        except ValueError:
+            print(colored("Please respond with 'Y' to proceed or 'N' to "
+                          "cancel.", "yellow"))
+    print(colored(f"Deleting {name}'s data...\n", "yellow"))
     SURVEY.delete_rows(name_cell.row)
     print(colored(f"Deletion complete. {name}'s entry has been removed from "
                   f"the survey.\n", "yellow"))
