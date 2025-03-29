@@ -338,10 +338,11 @@ def read_question_data(question_number):
     Outputs a list of respondent names and their scores for a given question.
     """
     existing_names = SURVEY.col_values(1)
-    existing_names.pop(0)
-    responses = SURVEY.col_values(question_number+1)
+    existing_names.pop(0)  # removes "Name" column header from list
+    responses = SURVEY.col_values(question_number + 1)
+    # The first item in responses will be the column heading i.e. summarised Q
     summarised_question = responses.pop(0)
-    float_responses = [float(response) for response in responses]
+    # gets length of the longest name in the list to help with spacing output
     longest_name = len(max(existing_names, key=len))
     print(get_border())
     print(colored(f"LISTING RESULTS FOR {summarised_question}:\n", 'green',
@@ -350,11 +351,13 @@ def read_question_data(question_number):
     print(colored("Name", "green").ljust(longest_name+12)+colored("Score",
                                                                   "green"))
     for response in responses:
+        #  prints name & score for each respondent, spaced with .ljust method
         print(f"{existing_names[name_index].ljust(longest_name+5)}{response}")
         name_index += 1
     survey_data = SURVEY.get_all_values()
     survey_averages = get_averages(survey_data, "False")
     float_averages = [float(avg) for avg in survey_averages]
+    float_responses = [float(response) for response in responses]
     organisation_average = round(statistics.mean(float_averages), 1)
     question_average = round(statistics.mean(float_responses), 1)
     print(get_border())
