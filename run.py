@@ -215,7 +215,7 @@ def list_respondents():
     print(get_border())
 
 
-def input_respondent_data():
+def add_respondent_data():
     """
     Gets survey input from the user. Checks the user inputs an integer between
     1 and 5, continues prompting until valid valid input is received.
@@ -495,7 +495,7 @@ def update_data(name_to_update, update_command):
             print(colored("Please respond with 'Y' to proceed or 'N' to "
                           "cancel.", "yellow"))
     if update_command == 'all':
-        update_data_list = input_respondent_data()
+        update_data_list = add_respondent_data()
         print(colored(f"Value responses {update_data_list} will now be updated"
                       f" for {name_to_update}...", "yellow"))
         # The values start from the 2nd column onwards and .update_cell method
@@ -815,7 +815,7 @@ def main():
                     respondent_name = input("Please enter your full name: ")
                 main_menu_check(respondent_name)
                 respondent_name_checked = check_existing_names(respondent_name)
-                responses = input_respondent_data()
+                responses = add_respondent_data()
                 responses.insert(0, respondent_name_checked)
                 update_survey_sheet(responses)
             case 'update':
