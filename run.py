@@ -45,7 +45,7 @@ def get_user_type():
                   "'admin' or 'respondent'\n", "yellow"))
 
 
-def validate_admin():
+def password_check():
     """
     Checks that the user has administrator priveleges by requesting them to
     enter the admin password, which is contained outside of the application
@@ -802,7 +802,7 @@ def main():
     """
     user_type = get_user_type()
     if user_type == "admin":
-        validate_admin()
+        password_check()
     while True:  # loops until user enters 'exit' command
         main_command = process_main_command(user_type)
         main_menu_check(main_command)
