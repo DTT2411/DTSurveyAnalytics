@@ -443,7 +443,8 @@ def update_data(name_to_update, update_command):
         for update_value in update_data_list:
             SURVEY.update_cell(row_to_update, column_index, update_value)
             column_index += 1
-        print(colored("Update complete. Returning to main menu...\n", "yellow"))
+        print(colored("Update complete. Returning to main menu...\n",
+                      "yellow"))
     elif update_command == 'one':
         while True:
             try:
