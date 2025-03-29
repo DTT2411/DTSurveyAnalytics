@@ -746,7 +746,7 @@ def make_recommendations(analysed_data):
     Makes recommendations based on the average scores calculated across the
     dataset.
     """
-    print(colored('HIGHLIGHTS\n', 'green', attrs=['bold']))
+    print(colored('HIGHLIGHTS', 'green', attrs=['bold']))
     float_data = [float(x) for x in analysed_data]
     low_scores = []
     high_scores = []
@@ -758,8 +758,12 @@ def make_recommendations(analysed_data):
         elif score >= 3.5:  # If the average score is above 3.5 it is "High".
             high_scores.append(summarised_questions[question_index])
         question_index += 1
-    print(f"Low scoring questions: {low_scores}")
-    print(f"High scoring questions: {high_scores}\n")
+    print("Low scoring questions:")
+    [print(question) for question in low_scores]
+    print("")
+    print("High scoring questions:")
+    [print(question) for question in high_scores]
+    print("")
     low_scores_headings = []
     for question in low_scores:
         # removes text before words from questions (e.g. "Q1 - ") before append
