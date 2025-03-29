@@ -44,6 +44,25 @@ def get_user_type():
                   "'admin' or 'respondent'\n", "yellow"))
 
 
+def validate_admin():
+    """
+    Checks that the user has administrator priveleges by requesting them to
+    enter the admin password, which is contained outside of the application
+    in a text file named "admin_password.txt".
+    """
+    admin_password_file = open('admin_password.txt', 'r')
+    admin_password = admin_password_file.read()
+    print(admin_password)
+    response = input("Please enter the administrator password: \n")
+    if response == admin_password:
+        print(colored("Password correct. Going to admin command menu...\n",
+                      "yellow"))
+        return
+    else:
+        print(colored("Password invalid. Returning to main menu...", "yellow"))
+        main()
+
+
 def process_main_command(user_type):
     """
     Requests user to indicate what function they want to perform via command:
@@ -346,7 +365,7 @@ def read_question_data(question_number):
         print(f"The average score for this question was {question_average}, "
               f"which is lower than the average score across all questions "
               f"({organisation_average}).")
-    else: 
+    else:
         print(f"The average score for this question was {question_average}, "
               f"which is close to the average score across all questions "
               f"({organisation_average}).")
@@ -534,7 +553,7 @@ def add_question():
     print("Please note that the responses for all previous respondents who "
           "have not answered the new question will be set to the median value "
           "(3).")
-    print("You can update the default values by using the " + 
+    print("You can update the default values by using the " +
           colored("'update'", "blue") + " function from the main menu.\n")
     new_question = input("Please enter the full text question you wish to "
                          "add: \n")
@@ -783,6 +802,8 @@ def main():
     Run all program functions.
     """
     user_type = get_user_type()
+    if user_type == "admin":
+        validate_admin()
     while True:  # loops until user enters 'exit' command
         main_command = process_main_command(user_type)
         main_menu_check(main_command)
