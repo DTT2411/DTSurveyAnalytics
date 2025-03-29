@@ -199,6 +199,37 @@ def main_menu_check(user_input):
         main()
 
 
+def get_respondent_name(main_command, user_type):
+    """
+    Requests user to input the respondent name. The input string depends on
+    the user type and command passed from previous menus.
+    """
+    admin_string = "Please enter the exact name of the respondent you wish to "
+    respondent_string = "Please enter your full name to "
+    if user_type == "admin":
+        match main_command:
+            case 'add':
+                respondent_name = input(f"{admin_string}add data for: ")
+                return respondent_name
+            case 'update':
+                respondent_name = input(f"{admin_string}update data for: ")
+                return respondent_name
+            case 'delete':
+                respondent_name = input(f"{admin_string}delete data for: ")
+                return respondent_name
+            case 'read':
+                respondent_name = input(f"{admin_string}read data for:")
+    elif user_type == "respondent":
+        match main_command:
+            case 'add':
+                respondent_name = input(f"{respondent_string}add your data: ")
+                return respondent_name
+            case 'update':
+                respondent_name = input(f"{respondent_string}update your "
+                                        "data: ")
+                return respondent_name
+
+
 def list_respondents():
     """
     Reads the first column of data from the spreadsheet. Removes heading
@@ -808,41 +839,29 @@ def main():
         main_menu_check(main_command)
         match main_command:
             case 'add':
-                if user_type == "admin":
-                    respondent_name = input("Please enter the exact name you "
-                                            "wish to add data for: ")
-                elif user_type == "respondent":
-                    respondent_name = input("Please enter your full name: ")
+                respondent_name = get_respondent_name('add', user_type)
                 main_menu_check(respondent_name)
                 respondent_name_checked = check_existing_names(respondent_name)
                 responses = add_respondent_data()
                 responses.insert(0, respondent_name_checked)
                 update_survey_sheet(responses)
             case 'update':
-                if user_type == "admin":
-                    name_to_update = input("Enter the exact name of the person"
-                                           " whose results you wish to update:"
-                                           " ")
-                elif user_type == "respondent":
-                    name_to_update = input("Please enter your full name: ")
-                main_menu_check(name_to_update)
-                validated_name_to_update = validate_name(name_to_update)
+                respondent_name = get_respondent_name('update', user_type)
+                main_menu_check(respondent_name)
+                validated_name_to_update = validate_name(respondent_name)
                 update_command = process_update_command()
                 update_data(validated_name_to_update, update_command)
             case 'delete':
-                name_to_delete = input("Enter the exact name of the respondent"
-                                       " you wish to delete survey results "
-                                       "for: \n")
-                main_menu_check(name_to_delete)
-                validated_name_to_delete = validate_name(name_to_delete)
+                respondent_name = get_respondent_name('delete', user_type)
+                main_menu_check(respondent_name)
+                validated_name_to_delete = validate_name(respondent_name)
                 delete_respondent(validated_name_to_delete)
             case 'list':
                 list_respondents()
             case 'read':
-                read_name = input("Enter the exact name of the respondent you "
-                                  "wish to see survey results for: \n")
-                main_menu_check(read_name)
-                validated_read_name = validate_name(read_name)
+                respondent_name = get_respondent_name('read', user_type)
+                main_menu_check(respondent_name)
+                validated_read_name = validate_name(respondent_name)
                 respondent_data = read_respondent_data(validated_read_name)
                 analyse_respondent_data(respondent_data)
             case 'add q':
