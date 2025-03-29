@@ -406,7 +406,7 @@ def analyse_respondent_data(respondent_data):
             "respondent is very consistent in their perception about the " \
             "qualities of the job."
     print(get_border())
-    print(colored('OVERALL RESULTS\n', 'green', attrs=['bold']))
+    print(colored('OVERALL RESULTS', 'green', attrs=['bold']))
     print(f"{respondent_name} gave an average score of "
           f"{average_score} across all questions.")
     if average_score > organisation_average + 0.4:
@@ -452,7 +452,7 @@ def analyse_respondent_data(respondent_data):
             highest_scored_questions.append(
                 summarised_questions[count_index])
         count_index += 1
-    print(colored('HIGHLIGHTS\n', 'green', attrs=['bold']))
+    print(colored('HIGHLIGHTS', 'green', attrs=['bold']))
     print(f"Highest scored question(s) scored {max_score} as follows: ")
     [print(question) for question in highest_scored_questions]
     print("")
