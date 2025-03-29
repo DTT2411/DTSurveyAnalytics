@@ -1,5 +1,7 @@
 import gspread
 import statistics
+from termcolor import colored
+
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -23,11 +25,13 @@ def get_user_type():
     """
     while True:
         print("Please enter your user type:")
-        print("- 'admin' can add or update responses on behalf others, "
-              "read individual or whole survey data, add and delete "
-              "questions.")
-        print("- 'respondent' can add and update their own responses.")
-        print("Enter 'home' in any field to return to this main menu.\n")
+        print("- " + colored("'admin'", 'blue') + "can add or update "
+              "responses on behalf others, read individual or whole survey "
+              "data, add and delete questions.")
+        print("- " + colored("'respondent'", 'blue') + "can add and update "
+              "their own responses.")
+        print("Enter " + colored("'home'", 'blue') + "in any field to return "
+              "to this menu.")
         user_type = input("Enter user type: ")
         validated_user_type = validate_command(user_type, "user type")
         if validated_user_type is True:
@@ -58,19 +62,26 @@ def process_main_command(user_type):
     if user_type == "admin":
         while True:
             print("Please enter a command to perform on the survey:\n")
-            print("- 'add' to add new survey data to existing spreadsheet")
-            print("- 'update' to update existing survey data within the "
-                  "spreadsheet")
-            print("- 'delete' to delete a record based on an inputted name")
-            print("- 'list' to see a list of names of individual respondents")
-            print("- 'read' to read a specific individual's responses")
-            print("- 'add q' to add a new question to the survey")
-            print("- 'read q' to read all responses for a given question")
-            print("- 'delete q' to delete a question from the survey and all "
-                  "associated data")
-            print("- 'analyse' to conduct general analysis over all survey "
-                  "data")
-            print("- 'exit' to exit the application\n")
+            print("- " + colored("'add'", 'blue') + " to add new survey data "
+                  "to existing spreadsheet.")
+            print("- " + colored("'update'", 'blue') + " to update existing "
+                  "survey data within the spreadsheet")
+            print("- " + colored("'delete'", 'blue') + " to delete a record "
+                  "based on an inputted name")
+            print("- " + colored("'list'", 'blue') + " to see a list of names "
+                  "of individual respondents")
+            print("- " + colored("'read'", 'blue') + " to read a specific "
+                  "individual's responses")
+            print("- " + colored("'add q'", 'blue') + " to add a new question "
+                  "to the survey")
+            print("- " + colored("'read q'", 'blue') + " to read all responses"
+                  " for a given question")
+            print("- " + colored("'delete q'", 'blue') + " to delete a "
+                  "question from the survey and all associated data")
+            print("- " + colored("'analyse'", 'blue') + " to conduct general "
+                  "analysis over all survey data")
+            print("- " + colored("'exit'", 'blue') + " to exit the "
+                  "application\n")
             main_command = input("Enter your command here: ")
             validity_check = validate_command(main_command, "main admin")
             if validity_check:
@@ -81,10 +92,12 @@ def process_main_command(user_type):
     elif user_type == "respondent":
         while True:
             print("Please enter a command to perform on the survey:\n")
-            print("- 'add' to add new survey data to existing spreadsheet")
-            print("- 'update' to update existing survey data within the "
-                  "spreadsheet")
-            print("- 'exit' to exit the application\n")
+            print("- " + colored("'add'", 'blue') + " to add new survey data "
+                  "to existing spreadsheet.")
+            print("- " + colored("'update'", 'blue') + " to update existing "
+                  "survey data within the spreadsheet")
+            print("- " + colored("'exit'", 'blue') + " to exit the "
+                  "application\n")
             main_command = input("Enter your command here: ")
             validity_check = validate_command(main_command, "main respondent")
             if validity_check:
@@ -171,6 +184,7 @@ def list_respondents():
     respondent_names = respondent_column[1:]
     print(get_border())
     print("RESPONDENT LIST\n")
+    print(colored("RESPONDENT LIST\n", 'green', attrs=['bold']))
     respondent_number = 1
     for respondent in respondent_names:
         print(f"{respondent_number}. {respondent}")
@@ -247,7 +261,7 @@ def validate_question():
     """
     print("Validating question...\n")
     full_questions = get_questions("full")
-    print("List of existing Qs:")
+    print(colored("List of existing Qs:", 'green', attrs=['bold']))
     for q in full_questions:
         print(q)
     print("")
@@ -305,7 +319,8 @@ def read_question_data(question_number):
     summarised_question = responses.pop(0)
     longest_name = len(max(existing_names, key=len))
     print(get_border())
-    print(f"LISTING RESULTS FOR {summarised_question}:\n")
+    print(colored(f"LISTING RESULTS FOR {summarised_question}:\n", 'green',
+                  attrs=['bold']))
     name_index = 0
     for response in responses:
         print(f"{existing_names[name_index].ljust(longest_name+5)}{response}")
@@ -343,13 +358,15 @@ def analyse_respondent_data(respondent_data):
     survey_data = SURVEY.get_all_values()
     survey_averages = get_averages(survey_data, "False")
     print(get_border())
-    print("OVERALL RESULTS")
+    print(colored('OVERALL RESULTS\n', 'green', attrs=['bold']))
     print(f"{respondent_name} gave an average score of "
           f"{round(average_score, 1)} across all questions.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
           f"their scores. This is a {variance_string}")
     print(get_border())
-    print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
+    # print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
+    print(colored("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON",
+                  'green', attrs=['bold']))
     for score in respondent_data:
         if float(score) < (float(survey_averages[question_index]) - 0.4):
             print(f"{summarised_questions[question_index].ljust(35)}  {score} "
@@ -375,7 +392,7 @@ def analyse_respondent_data(respondent_data):
             lowest_scored_questions.append(
                 summarised_questions[count_min_index])
         count_min_index += 1
-    print("AREAS OF CONCERN")
+    print(colored('HIGHLIGHTS\n', 'green', attrs=['bold']))
     print(f"Lowest scored question(s) scored {min_score} as follows: "
           f"{lowest_scored_questions}.")
     print(get_border())
@@ -540,7 +557,7 @@ def delete_question():
     """
     # list all current Qs
     full_questions = get_questions("full")
-    print("List of existing Qs:")
+    print(colored("List of existing Qs:", 'green', attrs=['bold']))
     for q in full_questions:
         print(q)
     print("")
@@ -643,7 +660,7 @@ def analyse_survey():
     question_averages = get_averages(survey_data, True)
     summarised_questions = get_questions("summarised")
     print(get_border())
-    print("AVERAGE SCORES\n")
+    print(colored('AVERAGE SCORES\n', 'green', attrs=['bold']))
     q_index = 0
     # prints all summarised Qs and avergae organisational score
     longest_q = len(max(summarised_questions, key=len))
@@ -671,7 +688,7 @@ def get_averages(survey_data, full_analysis):
                 continue
     overall_average = statistics.mean(response_values)
     if full_analysis is True:
-        print("OVERALL SCORE")
+        print(colored('OVERALL SCORE', 'green', attrs=['bold']))
         print(f"Overall average score across organisation: "
               f"{round(overall_average, 1)}")
     question_totals = []
@@ -692,7 +709,7 @@ def make_recommendations(analysed_data):
     Makes recommendations based on the average scores calculated across the
     dataset.
     """
-    print("HIGHLIGHTS\n")
+    print(colored('HIGHLIGHTS\n', 'green', attrs=['bold']))
     float_data = [float(x) for x in analysed_data]
     low_scores = []
     high_scores = []
@@ -784,5 +801,5 @@ def main():
 
 
 print("")
-print("Welcome to DT Survey Analytics.\n")
+print(colored('Welcome to DT Survey Analytics.\n', 'green', attrs=['bold']))
 main()
