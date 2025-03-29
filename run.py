@@ -321,6 +321,7 @@ def read_question_data(question_number):
     existing_names.pop(0)
     responses = SURVEY.col_values(question_number+1)
     summarised_question = responses.pop(0)
+    float_responses = [float(response) for response in responses]
     longest_name = len(max(existing_names, key=len))
     print(get_border())
     print(colored(f"LISTING RESULTS FOR {summarised_question}:\n", 'green',
@@ -331,7 +332,26 @@ def read_question_data(question_number):
     for response in responses:
         print(f"{existing_names[name_index].ljust(longest_name+5)}{response}")
         name_index += 1
-    print("\n")
+    survey_data = SURVEY.get_all_values()
+    survey_averages = get_averages(survey_data, "False")
+    float_averages = [float(avg) for avg in survey_averages]
+    organisation_average = round(statistics.mean(float_averages), 1)
+    question_average = round(statistics.mean(float_responses), 1)
+    print(get_border())
+    if question_average > organisation_average + 0.4:
+        print(f"The average score for this question was {question_average}, "
+              f"which is higher than the average score across all questions "
+              f"({organisation_average}).")
+    elif question_average < organisation_average - 0.4:
+        print(f"The average score for this question was {question_average}, "
+              f"which is lower than the average score across all questions "
+              f"({organisation_average}).")
+    else: 
+        print(f"The average score for this question was {question_average}, "
+              f"which is close to the average score across all questions "
+              f"({organisation_average}).")
+    print(get_border())
+    print(colored("Analysis complete. Returning to main menu...\n", "yellow"))
 
 
 def analyse_respondent_data(respondent_data):
