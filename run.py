@@ -76,7 +76,8 @@ def process_main_command(user_type):
     - 'analyse' returns general analysis over all survey data
     - 'exit' exits the program
     Admin level users have access to all functions.
-    Respondent level users can only access 'add', 'update' and 'exit'
+    Respondent level users can only access 'add', 'update' and 'exit'.
+    Keeps prompting user until a valid command is entered.
     """
     if user_type == "admin":
         while True:
@@ -131,6 +132,7 @@ def process_update_command():
     Requests user to indicate how they wish to amend the data:
     - 'one' updates a single cell
     - 'all' updates a full survey response
+    Keeps prompting user until a valid command is entered.
     """
     while True:
         print("Please enter a command to perform on the survey:\n")
