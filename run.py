@@ -25,20 +25,20 @@ def get_user_type():
     """
     while True:
         print("Please enter your user type:")
-        print("- " + colored("'admin'", 'blue') + "can add or update "
+        print("- " + colored("'admin'", 'blue') + " can add or update "
               "responses on behalf others, read individual or whole survey "
               "data, add and delete questions.")
-        print("- " + colored("'respondent'", 'blue') + "can add and update "
+        print("- " + colored("'respondent'", 'blue') + " can add and update "
               "their own responses.")
-        print("Enter " + colored("'home'", 'blue') + "in any field to return "
+        print("Enter " + colored("'home'", 'blue') + " in any field to return "
               "to this menu.")
         user_type = input("Enter user type: ")
         validated_user_type = validate_command(user_type, "user type")
         if validated_user_type is True:
             return user_type
         else:
-            print("You did not enter a valid user type. Please enter "
-                  "'admin' or 'respondent'")
+            print(colored("You did not enter a valid user type. Please enter "
+                  "'admin' or 'respondent'\n", "yellow"))
 
 
 def process_main_command(user_type):
@@ -87,8 +87,8 @@ def process_main_command(user_type):
             if validity_check:
                 return main_command
             else:
-                print("Invalid command. Please enter a command from the list "
-                      "provided.\n")
+                print(colored("Invalid command. Please enter a command from "
+                              "the list provided.\n", "yellow"))
     elif user_type == "respondent":
         while True:
             print("Please enter a command to perform on the survey:\n")
@@ -103,8 +103,8 @@ def process_main_command(user_type):
             if validity_check:
                 return main_command
             else:
-                print("Invalid command. Please enter a command from the list "
-                      "provided.\n")
+                print(colored("Invalid command. Please enter a command from "
+                              "the list provided.\n", "yellow"))
 
 
 def process_update_command():
@@ -123,8 +123,8 @@ def process_update_command():
         if validity_check:
             return update_command
         else:
-            print("Invalid command. Please enter a command from the list "
-                  "provided.\n")
+            print(colored("Invalid command. Please enter a command from the "
+                          "list provided.\n", "yellow"))
 
 
 def validate_command(command, menu):
@@ -132,7 +132,7 @@ def validate_command(command, menu):
     Checks that the initial command passed by user to perform on data set is
     valid.
     """
-    print("Validating command...")
+    print(colored("Validating command...", "yellow"))
     main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
                                'add q', 'read q', 'delete q', 'analyse',
                                'exit', 'home']
@@ -142,25 +142,25 @@ def validate_command(command, menu):
     match menu:
         case 'main admin':
             if command in main_admin_command_list:
-                print("Validated.\n")
+                print(colored("Validated.\n", "yellow"))
                 return True
             else:
                 return False
         case 'main respondent':
             if command in main_respondent_command_list:
-                print("Validated.\n")
+                print(colored("Validated.\n", "yellow"))
                 return True
             else:
                 return False
         case 'user type':
             if command in user_type_list:
-                print("Validated.\n")
+                print(colored("Validated.\n", "yellow"))
                 return True
             else:
                 return False
         case 'update':
             if command in update_command_list:
-                print("Validated.\n")
+                print(colored("Validated.\n", "yellow"))
                 return True
             else:
                 return False
@@ -172,7 +172,7 @@ def main_menu_check(user_input):
     main menu.
     """
     if user_input == "home":
-        print("Returning to main menu...\n")
+        print(colored("Returning to main menu...\n", "yellow"))
         main()
 
 
@@ -183,7 +183,6 @@ def list_respondents():
     respondent_column = SHEET.worksheet("survey_results").col_values(1)
     respondent_names = respondent_column[1:]
     print(get_border())
-    print("RESPONDENT LIST\n")
     print(colored("RESPONDENT LIST\n", 'green', attrs=['bold']))
     respondent_number = 1
     for respondent in respondent_names:
@@ -199,7 +198,7 @@ def get_respondent_data():
     responses are added to a list variable which is passed back to the main()
     function.
     """
-    print("Adding survey data...\n")
+    print(colored("Adding survey data...\n", "yellow"))
     print("Please enter a value between 1 to 5 for the following questions, "
           "where appropriate.\n")
     print("5 - Excellent")
@@ -220,11 +219,11 @@ def get_respondent_data():
                         responses.append(response)
                         break
                     else:
-                        print("Not a number between 1 and 5. Please enter a "
-                              "valid value.")
+                        print(colored("Not a number between 1 and 5. Please "
+                                      "enter a valid value.", "yellow"))
                 except ValueError:
-                    print("Not a number between 1 and 5. Please enter a valid "
-                          "value.")
+                    print(colored("Not a number between 1 and 5. Please enter "
+                                  "a valid value.", "yellow"))
         return responses
 
 
@@ -232,9 +231,9 @@ def update_survey_sheet(new_data):
     """
     Updates the survey spreadsheet with the list of new responses.
     """
-    print("Updating survey results spreadsheet...\n")
+    print(colored("Updating survey results spreadsheet...\n,", "yellow"))
     SURVEY.append_row(new_data)
-    print("Update complete!\n")
+    print(colored("Update complete!\n", "yellow"))
 
 
 def validate_name(name):
@@ -244,12 +243,12 @@ def validate_name(name):
     will be prompted until a match is detected, then the valid name is passed
     back to the main() function.
     """
-    print("Validating name...")
+    print(colored("Validating name...\n", "yellow"))
     existing_names = SURVEY.col_values(1)
     while name not in existing_names:
         name = input("The name you entered does not exist. Please submit the "
                      "name of a respondent who has completed the survey.\n")
-    print("Name validated.")
+    print(colored("Name validated.\n", "yellow"))
     return name
 
 
@@ -259,7 +258,7 @@ def validate_question():
     checks it is valid i.e. is a number between 1 and the number of the last
     column in the spreadsheet.
     """
-    print("Validating question...\n")
+    print(colored("Validating question...\n", "yellow"))
     full_questions = get_questions("full")
     print(colored("List of existing Qs:", 'green', attrs=['bold']))
     for q in full_questions:
@@ -273,11 +272,12 @@ def validate_question():
             if int(question_number) in range(1, SURVEY.col_count):
                 break
             else:
-                print(f"Not a valid question number. Please enter a value "
-                      f"between 1 and {SURVEY.col_count - 1}.")
+                print(colored(f"Not a valid question number. Please enter a "
+                              f"value between 1 and {SURVEY.col_count - 1}.",
+                              "yellow"))
         except ValueError:
-            print(f"Not a valid question number. Please enter a value "
-                  f"between 1 and {SURVEY.col_count - 1}.")
+            print(colored(f"Not a valid question number. Please enter a value "
+                  f"between 1 and {SURVEY.col_count - 1}.", "yellow"))
     return int(question_number)
 
 
@@ -289,13 +289,14 @@ def check_existing_names(name):
     back to the main() function.
     """
     main_menu_check(name)
-    print("Checking existing names...\n")
+    print(colored("Checking existing names...\n", "yellow"))
     existing_names = SURVEY.col_values(1)
     existing_names.pop(0)  # removes "Name" column header from list
     while name in existing_names:
-        print("The name you entered already exists - you have already "
-              "completed the survey!\n")
+        print(colored("The name you entered already exists - you have already "
+              "completed the survey!\n", "yellow"))
         name = input("Please enter the name of a new respondent.\n")
+    print(colored("New respondent confirmed.\n", "yellow"))
     return name
 
 
@@ -303,7 +304,7 @@ def read_respondent_data(name):
     """
     Reads a row of data from the spreadsheet based on the respondent name.
     """
-    print(f"Reading {name}'s data...\n")
+    print(colored(f"Reading {name}'s data...\n", "yellow"))
     name_cell = SURVEY.find(name)
     respondent_scores = SURVEY.row_values(name_cell.row)
     return respondent_scores
@@ -334,7 +335,7 @@ def analyse_respondent_data(respondent_data):
     a "read" command, displaying the question responses and statistics
     for the given individual.
     """
-    print("Analysing data...\n")
+    print(colored("Analysing data...\n", "yellow"))
     # removes the name from the row, leaving just the scores
     respondent_name = respondent_data.pop(0)
     print(f"Results for {respondent_name} are as follows:\n")
@@ -421,23 +422,26 @@ def update_data(name_to_update, update_command):
             if confirm in ["Y", "y"]:
                 break
             elif confirm in ["N", "n"]:
-                print("Update aborted. Returning to main menu.\n")
+                print(colored("Update aborted. Returning to main menu.\n",
+                              "yellow"))
                 main()
             else:
-                print("Please respond with 'Y' to proceed or 'N' to cancel.")
+                print(colored("Please respond with 'Y' to proceed or 'N' to "
+                              "cancel."))
         except ValueError:
-            print("Please respond with 'Y' to proceed or 'N' to cancel.")
+            print(colored("Please respond with 'Y' to proceed or 'N' to "
+                          "cancel.", "yellow"))
     if update_command == 'all':
         update_data_list = get_respondent_data()
-        print(f"Value responses {update_data_list} will now be updated for "
-              f"{name_to_update}...")
+        print(colored(f"Value responses {update_data_list} will now be updated"
+                      f" for {name_to_update}...", "yellow"))
         # The values start from the 2nd column onwards and .update_cell
         # is 1-indexed, so the loop index must start at 2 to insert correctly
         column_index = 2
         for update_value in update_data_list:
             SURVEY.update_cell(row_to_update, column_index, update_value)
             column_index += 1
-        print("Update complete. Returning to main menu...\n")
+        print(colored("Update complete. Returning to main menu...\n", "yellow"))
     elif update_command == 'one':
         while True:
             try:
@@ -447,29 +451,33 @@ def update_data(name_to_update, update_command):
                 if int(question_number) in range(1, SURVEY.col_count):
                     break
                 else:
-                    print(f"Not a valid question number. Please enter a value "
-                          f"between 1 and {SURVEY.col_count - 1}.")
+                    print(colored(f"Not a valid question number. Please enter "
+                                  f"a value between 1 and "
+                                  f"{SURVEY.col_count - 1}.", "yellow"))
             except ValueError:
-                print(f"Not a valid question number. Please enter a value "
-                      f"between 1 and {SURVEY.col_count - 1}.")
+                print(colored(f"Not a valid question number. Please enter a "
+                              f"value between 1 and {SURVEY.col_count - 1}.",
+                              "yellow"))
         while True:
             try:
                 update_value = input("Please enter the value you wish to "
                                      "add: ")
                 main_menu_check(update_value)
                 if int(update_value) in range(1, 6):
-                    print(f"A score of {update_value} will now be updated to "
-                          f"Q{question_number} for {name_to_update}...")
+                    print(colored(f"A score of {update_value} will now be "
+                                  f"updated to Q{question_number} for "
+                                  f"{name_to_update}...", "yellow"))
                     SURVEY.update_cell(row_to_update, question_number + 1,
                                        int(update_value))
-                    print("Update complete. Returning to main menu...\n")
+                    print(colored("Update complete. Returning to main menu... "
+                                  "\n", "yellow"))
                     return
                 else:
-                    print("Not a number between 1 and 5. Please enter a valid "
-                          "value.")
+                    print(colored("Not a number between 1 and 5. Please enter "
+                                  "a valid value.", "yellow"))
             except ValueError:
-                print("Not a number between 1 and 5. Please enter a valid "
-                      "value.")
+                print(colored("Not a number between 1 and 5. Please enter a "
+                              "valid value.", "yellow"))
 
 
 def add_question():
@@ -477,7 +485,7 @@ def add_question():
     Adds a new question to the survey and spreadsheet, with a summarised
     heading and the full text question held within the cell's note.
     """
-    print("Adding new question to survey...\n")
+    print(colored("Adding new question to survey...\n", "yellow"))
     print("Please note that the responses for all previous respondents who "
           "have not answered the new question will be set to the median value "
           "(3).")
@@ -501,17 +509,18 @@ def add_question():
     # print(f"column length to put in cell add {next_question_column}")
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
                        f" - {new_summarised_question}")
-    print("Adding question heading...\n")
+    print(colored("Adding question heading...\n", "yellow"))
     col_values = SURVEY.col_values(1)
     number_of_rows = len(col_values)
     # print(number_of_rows)
     cell_index = 2
-    print("Adding default value to past respondents...\n")
+    print(colored("Adding default value to past respondents...\n", "yellow"))
     while cell_index <= number_of_rows:
         SURVEY.update_cell(cell_index, next_question_column, 3)
         # print(f"put 3 in {cell_index} {next_question_column}")
         cell_index += 1
-    print("The question has successfully been added to the survey.\n")
+    print(colored("The question has successfully been added to the survey.\n",
+                  "yellow"))
 
 
 def get_potential_question_coordinates():
@@ -541,11 +550,11 @@ def delete_row(name):
     Takes the validated name input by the user and deletes the corresponding
     row in the spreadsheet.
     """
-    print(f"Deleting {name}'s data...\n")
+    print(colored(f"Deleting {name}'s data...\n", "yellow"))
     name_cell = SURVEY.find(name)
     SURVEY.delete_rows(name_cell.row)
-    print(f"Deletion complete. {name}'s entry has been removed from the "
-          "survey.\n")
+    print(colored(f"Deletion complete. {name}'s entry has been removed from "
+                  f"the survey.\n", "yellow"))
 
 
 def delete_question():
@@ -568,16 +577,18 @@ def delete_question():
                                     "delete?: ")
             main_menu_check(question_number)
             if int(question_number) in range(1, SURVEY.col_count):
-                print(f"Deleting question {question_number} from survey...\n")
+                print(colored(f"Deleting question {question_number} from "
+                              f"survey...\n", "yellow"))
                 SURVEY.delete_columns(int(question_number) + 1)
-                print("Deletion complete.\n")
+                print(colored("Deletion complete.\n", "yellow"))
                 return int(question_number)
             else:
-                print(f"Not a valid question number. Please enter a value "
-                      f"between 1 and {SURVEY.col_count - 1}.")
+                print(colored(f"Not a valid question number. Please enter a "
+                              f"value between 1 and {SURVEY.col_count - 1}.",
+                              "yellow"))
         except ValueError:
-            print(f"Not a valid question number. Please enter a value between "
-                  f"1 and {SURVEY.col_count - 1}.")
+            print(colored(f"Not a valid question number. Please enter a value "
+                          f"between 1 and {SURVEY.col_count - 1}.", "yellow"))
 
 
 def update_question_cells(number_of_deleted_question):
@@ -587,7 +598,7 @@ def update_question_cells(number_of_deleted_question):
     versions of questions to the right of the deleted question to keep in
     numerical ascending order.
     """
-    print("Updating question headings...\n")
+    print(colored("Updating question headings...\n", "yellow"))
     potential_coordinates = get_potential_question_coordinates()
     full_questions = get_questions("full")
     position_index = number_of_deleted_question
@@ -616,7 +627,7 @@ def update_question_cells(number_of_deleted_question):
         SURVEY.insert_note(cell_coordinate, new_full_question)
         position_index += 1
         question_index += 1
-    print("Updating complete.\n")
+    print(colored("Updating complete.\n", "yellow"))
 
 
 def get_questions(question_type):
@@ -654,7 +665,7 @@ def analyse_survey():
     information for each question, overall statistics, highlighting questions
     with low scores i.e. areas to work on
     """
-    print("Analysing survey data...\n")
+    print(colored("Analysing survey data...\n", "yellow"))
     survey_data = SURVEY.get_all_values()
     print(get_border())
     question_averages = get_averages(survey_data, True)
@@ -732,7 +743,7 @@ def make_recommendations(analysed_data):
     for heading in low_scores_headings:
         print(f"{heading}")
     print(get_border())
-    print("Analysis complete. Returning to main menu...\n")
+    print(colored("Analysis complete. Returning to main menu...\n", "yellow"))
 
 
 def main():
@@ -768,8 +779,8 @@ def main():
                 update_data(validated_name_to_update, update_command)
             case 'delete':
                 name_to_delete = input("Enter the exact name of the respondent"
-                                       "you wish to delete survey results for:"
-                                       " \n")
+                                       " you wish to delete survey results "
+                                       "for: \n")
                 main_menu_check(name_to_delete)
                 validated_name_to_delete = validate_name(name_to_delete)
                 delete_row(validated_name_to_delete)
@@ -796,7 +807,7 @@ def main():
                 analysed_data = analyse_survey()
                 make_recommendations(analysed_data)
             case 'exit':
-                print("The application will now close.")
+                print(colored("The application will now close.", "yellow"))
                 quit()
 
 
