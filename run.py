@@ -419,7 +419,6 @@ def analyse_respondent_data(respondent_data):
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
           f"their scores. This is a {variance_string}")
     print(get_border())
-    # print("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON")
     print(colored("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON",
                   'green', attrs=['bold']))
     question_index = 0
@@ -440,11 +439,9 @@ def analyse_respondent_data(respondent_data):
     print(get_border())
     min_score = min(converted_scores)
     max_score = max(converted_scores)
-    # print(f"Min score: {min_score}")  # TESTING
     lowest_scored_questions = []
     highest_scored_questions = []
     count_index = 0
-    # print(f"Converted scores for each Q: {converted_scores}")
     while count_index < SURVEY.col_count - 1:
         if converted_scores[count_index] == min_score:
             lowest_scored_questions.append(
