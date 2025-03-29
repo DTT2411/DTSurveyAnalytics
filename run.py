@@ -148,8 +148,9 @@ def process_update_command():
 
 def validate_command(command, menu):
     """
-    Checks that the initial command passed by user to perform on data set is
-    valid.
+    Validates input entered by user in various menus to ensure this matches a
+    valid command available to their permission level. Returns True if the
+    command is validated, False if not.
     """
     print(colored("Validating command...", "yellow"))
     main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
@@ -197,8 +198,8 @@ def main_menu_check(user_input):
 
 def list_respondents():
     """
-    Reads the first column of data from the spreadsheet. Removes heading ("Name").
-    Prints the list of names with a corresponding counter.
+    Reads the first column of data from the spreadsheet. Removes heading
+    ("Name"). Prints the list of names with a corresponding counter.
     """
     respondent_column = SHEET.worksheet("survey_results").col_values(1)
     respondent_names = respondent_column[1:]
