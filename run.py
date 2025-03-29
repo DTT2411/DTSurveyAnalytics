@@ -323,6 +323,8 @@ def read_question_data(question_number):
     print(colored(f"LISTING RESULTS FOR {summarised_question}:\n", 'green',
                   attrs=['bold']))
     name_index = 0
+    print(colored("Name", "green").ljust(longest_name+12)+colored("Score",
+                                                                  "green"))
     for response in responses:
         print(f"{existing_names[name_index].ljust(longest_name+5)}{response}")
         name_index += 1
