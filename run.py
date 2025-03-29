@@ -390,9 +390,9 @@ def analyse_respondent_data(respondent_data):
     summarised_questions = get_questions("summarised")
     # converts scores to integers so that numerical analysis can be performed
     converted_scores = [int(x) for x in respondent_data]
-    # calculates the mean score from the list
+    # calculates the mean score from the list rounded to 1 decimal
     average_score = round(statistics.mean(converted_scores), 1)
-    # calculates the variance from the list
+    # calculates the variance from the list rounded to 1 decimal place
     score_variance = round(statistics.variance(converted_scores), 1)
     survey_data = SURVEY.get_all_values()
     survey_averages = get_averages(survey_data, "False")
@@ -719,7 +719,7 @@ def analyse_survey():
     print(get_border())
     print(colored('AVERAGE SCORES\n', 'green', attrs=['bold']))
     q_index = 0
-    # prints all summarised Qs and avergae organisational score
+    # prints all summarised Qs and average organisational score
     longest_q = len(max(summarised_questions, key=len))
     for average_score in question_averages:
         print(f"{summarised_questions[q_index].ljust(longest_q + 5)} "
