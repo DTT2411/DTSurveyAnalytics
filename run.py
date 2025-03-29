@@ -262,10 +262,10 @@ def update_survey_sheet(new_data):
 
 def validate_name(name):
     """
-    Takes the name input by user following "read" command and checks whether
-    it matches any of the names in the spreadsheet. If no match is found, user
-    will be prompted until a match is detected, then the valid name is passed
-    back to the main() function.
+    Takes the name input by user and checks whether it matches any of the names
+    in the spreadsheet. If no match is found, user will be prompted until a
+    match is detected, then the valid name is passedback to the main()
+    function.
     """
     print(colored("Validating name...\n", "yellow"))
     existing_names = SURVEY.col_values(1)
@@ -278,9 +278,9 @@ def validate_name(name):
 
 def validate_question():
     """
-    Requests question number input by user following "read q" command and
-    checks it is valid i.e. is a number between 1 and the number of the last
-    column in the spreadsheet.
+    Requests question number input by user following and checks it is valid
+    i.e. is a number between 1 and the number of the last column in the
+    spreadsheet.
     """
     print(colored("Validating question...\n", "yellow"))
     full_questions = get_questions("full")
