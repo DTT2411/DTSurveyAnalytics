@@ -32,7 +32,7 @@ def process_main_command(user_type):
     Admin level users have access to all functions.
     Respondent level users can only access 'add', 'update' and 'exit'
     """
-    #print(f"PROCESS_MAIN_COMMAND - user type is: {user_type}")
+    # print(f"PROCESS_MAIN_COMMAND - user type is: {user_type}")
     if user_type == "admin":
         while True:
             print("Please enter a command to perform on the survey:\n")
@@ -49,7 +49,7 @@ def process_main_command(user_type):
             print("- 'analyse' to conduct general analysis over all survey "
                   "data")
             print("- 'exit' to exit the application\n")
-            main_command = input("Enter your command here: \n")
+            main_command = input("Enter your command here: ")
             validity_check = validate_command(main_command, "main admin")
             if validity_check:
                 return main_command
@@ -63,7 +63,7 @@ def process_main_command(user_type):
             print("- 'update' to update existing survey data within the "
                   "spreadsheet")
             print("- 'exit' to exit the application\n")
-            main_command = input("Enter your command here: \n")
+            main_command = input("Enter your command here: ")
             validity_check = validate_command(main_command, "main respondent")
             if validity_check:
                 return main_command
@@ -79,10 +79,11 @@ def process_update_command():
     - 'all' updates a full survey response
     """
     while True:
-        print("Please enter a command to perform on the survey\n")
+        print("Please enter a command to perform on the survey:\n")
         print("- 'one' to update the response to a single question")
         print("- 'all' to update the full list of survey responses")
-        update_command = input("Enter your command here: \n")
+        update_command = input("Enter your command here: ")
+        home_menu_check(update_command)
         validity_check = validate_command(update_command, "update")
         if validity_check:
             return update_command
@@ -130,6 +131,16 @@ def validate_command(command, menu):
                 return False
 
 
+def home_menu_check(user_input):
+    """
+    If the user has entered "home" into any input field, return to the
+    main menu.
+    """
+    if user_input == "home":
+        print("Returning to main menu...\n")
+        main()
+
+
 def list_respondents():
     """
     Returns a list of the names of all survey respondents
@@ -167,8 +178,9 @@ def get_respondent_data():
             print(question + ": \n")
             while True:
                 try:
-                    response = int(input("Answer: "))
-                    if response in range(1, 6):
+                    response = input("Answer: ")
+                    home_menu_check(response)
+                    if int(response) in range(1, 6):
                         responses.append(response)
                         break
                     else:
@@ -219,9 +231,10 @@ def validate_question():
     print("")
     while True:
         try:
-            question_number = int(input("Which question would you like to "
-                                        "read the values for?: "))
-            if question_number in range(1, SURVEY.col_count):
+            question_number = input("Which question would you like to read "
+                                    "the values for?: ")
+            home_menu_check(question_number)
+            if int(question_number) in range(1, SURVEY.col_count):
                 break
             else:
                 print(f"Not a valid question number. Please enter a value "
@@ -229,7 +242,7 @@ def validate_question():
         except ValueError:
             print(f"Not a valid question number. Please enter a value "
                   f"between 1 and {SURVEY.col_count - 1}.")
-    return question_number
+    return int(question_number)
 
 
 def check_existing_names(name):
@@ -239,6 +252,7 @@ def check_existing_names(name):
     be prompted until a new name is submitted, then the valid name is passed
     back to the main() function.
     """
+    home_menu_check(name)
     print("Checking existing names...\n")
     existing_names = SURVEY.col_values(1)
     existing_names.pop(0)  # removes "Name" column header from list
@@ -274,7 +288,7 @@ def read_question_data(question_number):
     for response in responses:
         print(f"{existing_names[name_index].ljust(longest_name+5)}{response}")
         name_index += 1
-    print("END SO FAR")
+    print("\n")
 
 
 def analyse_respondent_data(respondent_data):
@@ -364,11 +378,12 @@ def update_data(name_to_update, update_command):
                             f"{read_respondent_data(name_to_update)[1:]}. "
                             "Are you sure you wish to amend this data? "
                             "(Y/N): ")
+            home_menu_check(confirm)
             if confirm in ["Y", "y"]:
                 break
             elif confirm in ["N", "n"]:
                 print("Update aborted. Returning to main menu.\n")
-                return
+                main()
             else:
                 print("Please respond with 'Y' to proceed or 'N' to cancel.")
         except ValueError:
@@ -387,9 +402,10 @@ def update_data(name_to_update, update_command):
     elif update_command == 'one':
         while True:
             try:
-                question_number = int(input("Which question would you like to "
-                                            "update the value for?: "))
-                if question_number in range(1, SURVEY.col_count):
+                question_number = input("Which question would you like to "
+                                        "update the value for?: ")
+                home_menu_check(question_number)
+                if int(question_number) in range(1, SURVEY.col_count):
                     break
                 else:
                     print(f"Not a valid question number. Please enter a value "
@@ -399,13 +415,14 @@ def update_data(name_to_update, update_command):
                       f"between 1 and {SURVEY.col_count - 1}.")
         while True:
             try:
-                update_value = int(input("Please enter the value you wish to "
-                                         "add: "))
-                if update_value in range(1, 6):
+                update_value = input("Please enter the value you wish to "
+                                     "add: ")
+                home_menu_check(update_value)
+                if int(update_value) in range(1, 6):
                     print(f"A score of {update_value} will now be updated to "
                           f"Q{question_number} for {name_to_update}...")
                     SURVEY.update_cell(row_to_update, question_number + 1,
-                                       update_value)
+                                       int(update_value))
                     print("Update complete. Returning to main menu...\n")
                     return
                 else:
@@ -429,29 +446,31 @@ def add_question():
           "from the main menu.\n")
     new_question = input("Please enter the full text question you wish to "
                          "add: \n")
+    home_menu_check(new_question)
     new_summarised_question = input("Please enter the a summarised version "
                                     "(1 to 2 words): \n")
+    home_menu_check(new_summarised_question)
     SURVEY.add_cols(1)
     next_question_column = SURVEY.col_count
-    #print(next_question_column)
+    # print(next_question_column)
     potential_coordinates = get_potential_question_coordinates()
     cell_coordinate = f"{potential_coordinates[next_question_column - 2]}"
-    #print(f"Column to insert to: {cell_coordinate[0]}")
-    #print(f"Cell coordinate being passed: {cell_coordinate}")
+    # print(f"Column to insert to: {cell_coordinate[0]}")
+    # print(f"Cell coordinate being passed: {cell_coordinate}")
     SURVEY.insert_note(cell_coordinate, f"Q{next_question_column - 1} - "
                        f"{new_question}")
-    #print(f"column length to put in cell add {next_question_column}")
+    # print(f"column length to put in cell add {next_question_column}")
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
                        f" - {new_summarised_question}")
     print("Adding question heading...\n")
     col_values = SURVEY.col_values(1)
     number_of_rows = len(col_values)
-    #print(number_of_rows)
+    # print(number_of_rows)
     cell_index = 2
     print("Adding default value to past respondents...\n")
     while cell_index <= number_of_rows:
         SURVEY.update_cell(cell_index, next_question_column, 3)
-        #print(f"put 3 in {cell_index} {next_question_column}")
+        # print(f"put 3 in {cell_index} {next_question_column}")
         cell_index += 1
     print("The question has successfully been added to the survey.\n")
 
@@ -472,7 +491,7 @@ def get_potential_question_coordinates():
     for letter in column_ids:
         potential_coordinates.append(letter + "1")
         index += 1
-    #print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): "
+    # print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): "
     #      f"{potential_coordinates}")
     return potential_coordinates
 
@@ -505,13 +524,14 @@ def delete_question():
     # print(q for q in full_questions)
     while True:
         try:
-            question_number = int(input("Which question would you like to "
-                                        "delete?: "))
-            if question_number in range(1, SURVEY.col_count):
+            question_number = input("Which question would you like to "
+                                    "delete?: ")
+            home_menu_check(question_number)
+            if int(question_number) in range(1, SURVEY.col_count):
                 print(f"Deleting question {question_number} from survey...\n")
-                SURVEY.delete_columns(question_number + 1)
+                SURVEY.delete_columns(int(question_number) + 1)
                 print("Deletion complete.\n")
-                return question_number
+                return int(question_number)
             else:
                 print(f"Not a valid question number. Please enter a value "
                       f"between 1 and {SURVEY.col_count - 1}.")
@@ -543,16 +563,15 @@ def update_question_cells(number_of_deleted_question):
         split_question_string[0] = f"Q{new_question_number}"
         new_summarised_question = ' '.join(split_summary_string)
         new_full_question = ' '.join(split_question_string)
-        #print(f"New summary q string: {new_summarised_question}")
-        #print(f"New full q string: {new_full_question}")
-        #print(f"{new_summarised_question} will be added to Row 1, column "
-        #      f"{position_index + 1}")
-        #print(f"{new_full_question} will be added to Row 1, column "
-        #      f"{position_index + 1}")
-        #print(f"Potential coords: {potential_coordinates}")
-        #print(f"Current: {potential_coordinates[SURVEY.col_count]}")
+        # print(f"New summary q string: {new_summarised_question}")
+        # print(f"New full q string: {new_full_question}")
+        # print(f"{new_summarised_question} will be added to Row 1, column "
+        #       f"{position_index + 1}")
+        # print(f"{new_full_question} will be added to Row 1, column "
+        #       f"{position_index + 1}")
+        # print(f"Potential coords: {potential_coordinates}")
+        # print(f"Current: {potential_coordinates[SURVEY.col_count]}")
         cell_coordinate = f"{potential_coordinates[position_index - 1]}"
-        #print(f"Cell coordinate the note will be added to: {cell_coordinate}")
         SURVEY.update_cell(1, position_index + 1, new_summarised_question)
         SURVEY.insert_note(cell_coordinate, new_full_question)
         position_index += 1
@@ -702,6 +721,7 @@ def main():
                                             "wish to add data for: ")
                 elif user_type == "respondent":
                     respondent_name = input("Please enter your full name: ")
+                home_menu_check(respondent_name)
                 respondent_name_checked = check_existing_names(respondent_name)
                 responses = get_respondent_data()
                 responses.insert(0, respondent_name_checked)
@@ -713,6 +733,7 @@ def main():
                                            " ")
                 elif user_type == "respondent":
                     name_to_update = input("Please enter your full name: ")
+                home_menu_check(name_to_update)
                 validated_name_to_update = validate_name(name_to_update)
                 update_command = process_update_command()
                 update_data(validated_name_to_update, update_command)
@@ -720,6 +741,7 @@ def main():
                 name_to_delete = input("Enter the exact name of the respondent"
                                        "you wish to delete survey results for:"
                                        " \n")
+                home_menu_check(name_to_delete)
                 validated_name_to_delete = validate_name(name_to_delete)
                 delete_row(validated_name_to_delete)
             case 'list':
@@ -727,6 +749,7 @@ def main():
             case 'read':
                 read_name = input("Enter the exact name of the respondent you "
                                   "wish to see survey results for: \n")
+                home_menu_check(read_name)
                 validated_read_name = validate_name(read_name)
                 respondent_data = read_respondent_data(validated_read_name)
                 analyse_respondent_data(respondent_data)
@@ -746,6 +769,7 @@ def main():
             case 'exit':
                 print("The application will now close.")
                 quit()
+
 
 print("")
 print("Welcome to DT Survey Analytics.\n")
