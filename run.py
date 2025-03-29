@@ -452,15 +452,13 @@ def update_data(name_to_update, update_command):
     confirmation that the user wishes to proceed. Updates the relevant cell
     or row of cells before returning to the main menu.
     """
-    print("Updating data...\n")
-    # print(f"UPDATE_DATA: Name {name_to_update}\n")
-    # print(f"UPDATE_DATA: Command {update_command}\n")
+    print(colored("Updating data...\n", "yellow"))
     name_cell = SURVEY.find(name_to_update)
     row_to_update = name_cell.row
     while True:
         try:
             confirm = input(f"{name_to_update}'s responses are currently "
-                            f"{read_respondent_data(name_to_update)[1:]}. "
+                            f"{read_respondent_data(name_to_update)[1:]}.\n"
                             "Are you sure you wish to amend this data? "
                             "(Y/N): ")
             main_menu_check(confirm)
@@ -480,7 +478,7 @@ def update_data(name_to_update, update_command):
         update_data_list = get_respondent_data()
         print(colored(f"Value responses {update_data_list} will now be updated"
                       f" for {name_to_update}...", "yellow"))
-        # The values start from the 2nd column onwards and .update_cell
+        # The values start from the 2nd column onwards and .update_cell method
         # is 1-indexed, so the loop index must start at 2 to insert correctly
         column_index = 2
         for update_value in update_data_list:
@@ -509,11 +507,12 @@ def update_data(name_to_update, update_command):
                 update_value = input("Please enter the value you wish to "
                                      "add: ")
                 main_menu_check(update_value)
+                int_question_number = int(question_number)
                 if int(update_value) in range(1, 6):
                     print(colored(f"A score of {update_value} will now be "
                                   f"updated to Q{question_number} for "
                                   f"{name_to_update}...", "yellow"))
-                    SURVEY.update_cell(row_to_update, question_number + 1,
+                    SURVEY.update_cell(row_to_update, int_question_number + 1,
                                        int(update_value))
                     print(colored("Update complete. Returning to main menu... "
                                   "\n", "yellow"))
@@ -545,25 +544,19 @@ def add_question():
     main_menu_check(new_summarised_question)
     SURVEY.add_cols(1)
     next_question_column = SURVEY.col_count
-    # print(next_question_column)
     potential_coordinates = get_potential_question_coordinates()
     cell_coordinate = f"{potential_coordinates[next_question_column - 2]}"
-    # print(f"Column to insert to: {cell_coordinate[0]}")
-    # print(f"Cell coordinate being passed: {cell_coordinate}")
     SURVEY.insert_note(cell_coordinate, f"Q{next_question_column - 1} - "
                        f"{new_question}")
-    # print(f"column length to put in cell add {next_question_column}")
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
                        f" - {new_summarised_question}")
     print(colored("Adding question heading...\n", "yellow"))
     col_values = SURVEY.col_values(1)
     number_of_rows = len(col_values)
-    # print(number_of_rows)
     cell_index = 2
     print(colored("Adding default value to past respondents...\n", "yellow"))
     while cell_index <= number_of_rows:
         SURVEY.update_cell(cell_index, next_question_column, 3)
-        # print(f"put 3 in {cell_index} {next_question_column}")
         cell_index += 1
     print(colored("The question has successfully been added to the survey.\n",
                   "yellow"))
@@ -586,8 +579,6 @@ def get_potential_question_coordinates():
     for letter in column_ids:
         potential_coordinates.append(letter + "1")
         index += 1
-    # print(f"Potential coordinates (should be a list of A1, B1, C1, etc.): "
-    #      f"{potential_coordinates}")
     return potential_coordinates
 
 
@@ -616,7 +607,6 @@ def delete_question():
     for q in full_questions:
         print(q)
     print("")
-    # print(q for q in full_questions)
     while True:
         try:
             question_number = input("Which question would you like to "
@@ -660,14 +650,6 @@ def update_question_cells(number_of_deleted_question):
         split_question_string[0] = f"Q{new_question_number}"
         new_summarised_question = ' '.join(split_summary_string)
         new_full_question = ' '.join(split_question_string)
-        # print(f"New summary q string: {new_summarised_question}")
-        # print(f"New full q string: {new_full_question}")
-        # print(f"{new_summarised_question} will be added to Row 1, column "
-        #       f"{position_index + 1}")
-        # print(f"{new_full_question} will be added to Row 1, column "
-        #       f"{position_index + 1}")
-        # print(f"Potential coords: {potential_coordinates}")
-        # print(f"Current: {potential_coordinates[SURVEY.col_count]}")
         cell_coordinate = f"{potential_coordinates[position_index - 1]}"
         SURVEY.update_cell(1, position_index + 1, new_summarised_question)
         SURVEY.insert_note(cell_coordinate, new_full_question)
