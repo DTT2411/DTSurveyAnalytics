@@ -218,9 +218,9 @@ def list_respondents():
 def get_respondent_data():
     """
     Gets survey input from the user. Checks the user inputs an integer between
-    1 and 5,continues prompting until valid valid input is received. Individual
-    responses are added to a list variable which is passed back to the main()
-    function.
+    1 and 5, continues prompting until valid valid input is received.
+    Individual responses are added to a list variable which is passed back to
+    the main function.
     """
     print(colored("Adding survey data...\n", "yellow"))
     print("Please enter a value between 1 to 5 for the following questions, "
@@ -232,30 +232,29 @@ def get_respondent_data():
     print("1 - Very Poor\n")
     responses = []
     questions = get_questions("full")
-    while True:
-        for question in questions:
-            print(question + ": \n")
-            while True:
-                try:
-                    response = input("Answer: ")
-                    main_menu_check(response)
-                    if int(response) in range(1, 6):
-                        responses.append(response)
-                        break
-                    else:
-                        print(colored("Not a number between 1 and 5. Please "
-                                      "enter a valid value.", "yellow"))
-                except ValueError:
-                    print(colored("Not a number between 1 and 5. Please enter "
-                                  "a valid value.", "yellow"))
-        return responses
+    for question in questions:
+        print(question + ":")
+        while True:
+            try:
+                response = input("Answer: ")
+                main_menu_check(response)
+                if int(response) in range(1, 6):
+                    responses.append(response)
+                    break
+                else:
+                    print(colored("Not a number between 1 and 5. Please "
+                                  "enter a valid value.", "yellow"))
+            except ValueError:
+                print(colored("Not a number between 1 and 5. Please enter "
+                              "a valid value.", "yellow"))
+    return responses
 
 
 def update_survey_sheet(new_data):
     """
     Updates the survey spreadsheet with the list of new responses.
     """
-    print(colored("Updating survey results spreadsheet...\n,", "yellow"))
+    print(colored("Updating survey results spreadsheet...\n", "yellow"))
     SURVEY.append_row(new_data)
     print(colored("Update complete!\n", "yellow"))
 
