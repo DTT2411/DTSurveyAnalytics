@@ -395,7 +395,7 @@ def read_question_data(question_number):
     print(colored(f"LISTING RESULTS FOR {summarised_question}:\n", 'green',
                   attrs=['bold']))
     name_index = 0
-    print(colored("Name", "green").ljust(longest_name+12)+colored("Score",
+    print(colored("NAME", "green").ljust(longest_name+12)+colored("SCORE",
                                                                   "green"))
     for response in responses:
         #  prints name & score for each respondent, spaced with .ljust method
