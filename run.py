@@ -26,14 +26,15 @@ def get_user_type():
     """
     while True:
         print("Please enter your user type:")
-        print("- " + colored("'admin'", "light_cyan") + " can add or update "
+        print("- " + colored("'admin'", 'light_cyan') + " can add or update "
               "responses on behalf others, read individual or whole survey "
               "data, add and delete questions.")
-        print("- " + colored("'respondent'", 'cyan') + " can add and update "
-              "their own responses.")
-        print("- " + colored("'exit'", 'cyan') + " to exit the application.")
-        print("Enter " + colored("'home'", 'cyan') + " in any field to return "
-              "to this menu.")
+        print("- " + colored("'respondent'", 'light_cyan') + " can add and "
+              "update their own responses.")
+        print("- " + colored("'exit'", 'light_cyan') + " to exit the "
+              "application.")
+        print("Enter " + colored("'home'", 'light_cyan') + " in any field to "
+              "return to this menu.")
         user_type = input("Enter user type:\n")
         if user_type == "exit":
             quit()
@@ -88,25 +89,25 @@ def process_main_command(user_type):
     if user_type == "admin":
         while True:
             print("Please enter a command to perform on the survey:\n")
-            print("- " + colored("'add'", 'cyan') + " to add new survey data "
-                  "to existing spreadsheet.")
-            print("- " + colored("'update'", 'cyan') + " to update existing "
-                  "survey data within the spreadsheet")
-            print("- " + colored("'delete'", 'cyan') + " to delete a record "
-                  "based on an inputted name")
-            print("- " + colored("'list'", 'cyan') + " to see a list of names "
-                  "of individual respondents")
-            print("- " + colored("'read'", 'cyan') + " to read a specific "
-                  "individual's responses")
-            print("- " + colored("'add q'", 'cyan') + " to add a new question "
-                  "to the survey")
-            print("- " + colored("'read q'", 'cyan') + " to read all responses"
-                  " for a given question")
-            print("- " + colored("'delete q'", 'cyan') + " to delete a "
+            print("- " + colored("'add'", 'light_cyan') + " to add new survey "
+                  "data to existing spreadsheet.")
+            print("- " + colored("'update'", 'light_cyan') + " to update "
+                  "existing survey data within the spreadsheet")
+            print("- " + colored("'delete'", 'light_cyan') + " to delete a "
+                  "record based on an inputted name")
+            print("- " + colored("'list'", 'light_cyan') + " to see a list of "
+                  "names of individual respondents")
+            print("- " + colored("'read'", 'light_cyan') + " to read a "
+                  "specific individual's responses")
+            print("- " + colored("'add q'", 'light_cyan') + " to add a new "
+                  "question to the survey")
+            print("- " + colored("'read q'", 'light_cyan') + " to read all "
+                  "responses for a given question")
+            print("- " + colored("'delete q'", 'light_cyan') + " to delete a "
                   "question from the survey and all associated data")
-            print("- " + colored("'analyse'", 'cyan') + " to conduct general "
-                  "analysis over all survey data")
-            print("- " + colored("'exit'", 'cyan') + " to exit the "
+            print("- " + colored("'analyse'", 'light_cyan') + " to conduct "
+                  "general analysis over all survey data")
+            print("- " + colored("'exit'", 'light_cyan') + " to exit the "
                   "application\n")
             main_command = input("Enter your command here:\n")
             validity_check = validate_command(main_command, "main admin")
@@ -118,11 +119,11 @@ def process_main_command(user_type):
     elif user_type == "respondent":
         while True:
             print("Please enter a command to perform on the survey:\n")
-            print("- " + colored("'add'", 'cyan') + " to add new survey data "
-                  "to existing spreadsheet.")
-            print("- " + colored("'update'", 'cyan') + " to update existing "
-                  "survey data within the spreadsheet")
-            print("- " + colored("'exit'", 'cyan') + " to exit the "
+            print("- " + colored("'add'", 'light_cyan') + " to add new survey "
+                  "data to existing spreadsheet.")
+            print("- " + colored("'update'", 'light_cyan') + " to update "
+                  "existing survey data within the spreadsheet")
+            print("- " + colored("'exit'", 'light_cyan') + " to exit the "
                   "application\n")
             main_command = input("Enter your command here:\n")
             validity_check = validate_command(main_command, "main respondent")
@@ -599,7 +600,8 @@ def add_question():
           "have not\nanswered the new question will be set to the median "
           "value (3).")
     print("You can update the default values by using the " +
-          colored("'update'", 'cyan') + " function from the main menu.\n")
+          colored("'update'", 'light_cyan') + " function from the main "
+          "menu.\n")
     while True:
         new_question = input("Please enter the full text question you wish "
                              "to add.\n"
