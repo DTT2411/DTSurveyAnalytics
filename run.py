@@ -832,7 +832,8 @@ def get_data_insights(analysed_data):
 
 def main():
     """
-    Run all program functions.
+    Run all program functions. Gets the user permissions. Uses a case
+    statement to decide which functions to call.
     """
     user_type = get_user_type()
     if user_type == "admin":
