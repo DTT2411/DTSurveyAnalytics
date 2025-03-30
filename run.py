@@ -737,7 +737,7 @@ def get_border():
     Returns a string of hyphens to use as border when outputting results in
     different sections.
     """
-    table_border = "—"*100
+    table_border = "—"*80
     return table_border
 
 
