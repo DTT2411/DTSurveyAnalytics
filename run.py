@@ -600,15 +600,14 @@ def add_question():
           "have not\nanswered the new question will be set to the median "
           "value (3).")
     print("You can update the default values by using the " +
-          colored("'update'", 'light_cyan') + " function from the main "
-          "menu.\n")
+          colored("'update'", 'light_cyan') + " function.\n")
     while True:
         new_question = input("Please enter the full text question you wish "
                              "to add.\n"
-                             "Rules for question entry:"
-                             "-Text only, up to 74 characters"
+                             "Rules for question entry:\n"
+                             "-Text only, up to 74 characters\n"
                              "-No need to add question number (done "
-                             "automatically)"
+                             "automatically)\n"
                              "-The question should be formatted such that it "
                              "can be answered\nwith a value between 1 to 5 "
                              "(1 = Very Poor, 5 = Excellent):\n")
