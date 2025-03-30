@@ -119,10 +119,12 @@ def process_main_command(user_type):
     elif user_type == "respondent":
         while True:
             print("Please enter a command to perform on the survey:\n")
-            print("- " + colored("'add'", 'light_cyan') + " to add new survey "
-                  "data to existing spreadsheet.")
+            print("- " + colored("'add'", 'light_cyan') + " to add your "
+                  "responses to the survey")
             print("- " + colored("'update'", 'light_cyan') + " to update "
-                  "existing survey data within the spreadsheet")
+                  "your survey data")
+            print("- " + colored("'delete'", 'light_cyan') + " to delete "
+                  "your survey data")
             print("- " + colored("'exit'", 'light_cyan') + " to exit the "
                   "application\n")
             main_command = input("Enter your command here:\n")
@@ -167,7 +169,7 @@ def validate_command(command, menu):
     main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
                                'add q', 'read q', 'delete q', 'analyse',
                                'exit', 'home']
-    main_respondent_command_list = ['add', 'update', 'exit', 'home']
+    main_respondent_command_list = ['add', 'update', 'delete', 'exit', 'home']
     update_command_list = ['one', 'all', 'home']
     user_type_list = ['admin', 'respondent', 'exit', 'home']
     match menu:
@@ -235,6 +237,10 @@ def get_respondent_name(main_command, user_type):
                 return respondent_name
             case 'update':
                 respondent_name = input(f"{respondent_string}update your "
+                                        "data:\n")
+                return respondent_name
+            case 'delete':
+                respondent_name = input(f"{respondent_string}delete your "
                                         "data:\n")
                 return respondent_name
 
