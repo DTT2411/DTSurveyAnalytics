@@ -741,9 +741,8 @@ def get_border():
 
 def analyse_survey():
     """
-    Conducts analysis of the overall survey data set, returning summarised
-    information for each question, overall statistics, highlighting questions
-    with low scores i.e. areas to work on
+    Conducts analysis of the overall survey data set, returning average
+    response values for each question.
     """
     print(colored("Analysing survey data...\n", "yellow"))
     survey_data = SURVEY.get_all_values()
