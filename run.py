@@ -401,15 +401,15 @@ def read_question_data(question_number):
     print(get_border())
     if question_average > organisation_average + 0.4:
         print(f"The average score for this question was {question_average}, "
-              f"which is higher than the average\n score across all questions "
+              f"which is higher than the average\nscore across all questions "
               f"({organisation_average}).")
     elif question_average < organisation_average - 0.4:
         print(f"The average score for this question was {question_average}, "
-              f"which is lower than the average\n score across all questions "
+              f"which is lower than the average\nscore across all questions "
               f"({organisation_average}).")
     else:
         print(f"The average score for this question was {question_average}, "
-              f"which is close to the average\n score across all questions "
+              f"which is close to the average\nscore across all questions "
               f"({organisation_average}).")
     print(get_border())
     print(colored("Analysis complete. Returning to main menu...\n", "yellow"))
