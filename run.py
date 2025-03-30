@@ -605,11 +605,10 @@ def add_question():
                          "You only need to enter the text - question number "
                          "will be added automatically.\n"
                          "The question should be formatted such that it can "
-                         "be answered with a value between 1 to 5, with 1 = "
-                         "'Very Poor' and 5 = 'Excellent'\n"
+                         "be answered \n with a value between 1 to 5, with 1 ="
+                         " 'Very Poor' and 5 = 'Excellent'\n"
                          "There is a character limit of 74 for the "
                          "question:\n")
-
     main_menu_check(new_question)
     new_summarised_question = input("Please enter the a summarised version "
                                     "(1 to 2 words):\n")
