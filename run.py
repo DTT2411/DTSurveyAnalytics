@@ -596,19 +596,25 @@ def add_question():
         print(q)
     print("")
     print("Please note that the responses for all previous respondents who "
-          "have not\n answered the new question will be set to the median "
+          "have not\nanswered the new question will be set to the median "
           "value (3).")
     print("You can update the default values by using the " +
           colored("'update'", "blue") + " function from the main menu.\n")
-    new_question = input("Please enter the full text question you wish to "
-                         "add.\n"
-                         "You only need to enter the text - question number "
-                         "will be added automatically.\n"
-                         "The question should be formatted such that it can "
-                         "be answered \n with a value between 1 to 5, with 1 ="
-                         " 'Very Poor' and 5 = 'Excellent'\n"
-                         "There is a character limit of 74 for the "
-                         "question:\n")
+    while True:
+        new_question = input("Please enter the full text question you wish "
+                             "to add.\n"
+                             "Rules for question entry:"
+                             "-Text only, up to 74 characters"
+                             "-No need to add question number (done "
+                             "automatically)"
+                             "-The question should be formatted such that it "
+                             "can be answered\nwith a value between 1 to 5 "
+                             "(1 = Very Poor, 5 = Excellent):\n")
+        if len(new_question) <= 70:
+            break
+        else:
+            print(colored("Question too long. Please enter a question with a "
+                          "length under 70 characters."))
     main_menu_check(new_question)
     new_summarised_question = input("Please enter the a summarised version "
                                     "(1 to 2 words):\n")
