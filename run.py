@@ -593,15 +593,14 @@ def add_question():
     new_summarised_question = input("Please enter the a summarised version "
                                     "(1 to 2 words): \n")
     main_menu_check(new_summarised_question)
-    SURVEY.add_cols(1)
+    SURVEY.add_cols(1)  # adds a new empty column to the spreadsheet
     next_question_column = SURVEY.col_count
     SURVEY.insert_note(1, next_question_column, 1, next_question_column,
                        f"Q{next_question_column - 1} - {new_question}")
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
                        f" - {new_summarised_question}")
     print(colored("Adding question heading...\n", "yellow"))
-    col_values = SURVEY.col_values(1)
-    number_of_rows = len(col_values)
+    number_of_rows = len(SURVEY.col_values(1))
     cell_index = 2
     print(colored("Adding default value to past respondents...\n", "yellow"))
     while cell_index <= number_of_rows:
