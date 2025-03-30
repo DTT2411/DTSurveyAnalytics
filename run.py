@@ -461,20 +461,20 @@ def analyse_respondent_data(respondent_data):
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
           f"their scores. This is a {variance_string}")
     print(get_border())
-    print(colored("QUESTION".ljust(35) + "SCORE".ljust(8) + "COMPARISON WITH "
+    print(colored("QUESTION".ljust(32) + "SCORE".ljust(8) + "COMPARISON WITH "
                   "ORGANISATION", 'green', attrs=['bold']))
     question_index = 0
     for score in respondent_data:
         if float(score) < (float(survey_averages[question_index]) - 0.4):
-            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
+            print(f"{summarised_questions[question_index].ljust(32)}  {score} "
                   f"    Lower than organisation average "
                   f"({survey_averages[question_index]})")
         elif float(score) > (float(survey_averages[question_index]) + 0.4):
-            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
+            print(f"{summarised_questions[question_index].ljust(32)}  {score} "
                   f"    Higher than organisation average "
                   f"({survey_averages[question_index]})")
         else:
-            print(f"{summarised_questions[question_index].ljust(35)}  {score} "
+            print(f"{summarised_questions[question_index].ljust(32)}  {score} "
                   f"    Close to the organisation average "
                   f"({survey_averages[question_index]})")
         question_index += 1
