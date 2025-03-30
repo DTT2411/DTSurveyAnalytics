@@ -862,8 +862,8 @@ def get_data_insights(analysed_data):
 
 def main():
     """
-    Runs all program functions. Gets the user permissions. Uses a case
-    statement to decide which functions to call.
+    Runs all program functions. Gets the user permissions and runs a password
+    check if admin. Uses a case statement to decide which functions to call.
     """
     user_type = get_user_type()
     if user_type == "admin":
