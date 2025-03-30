@@ -712,7 +712,6 @@ def get_questions(question_type):
     a list of lists containing cell notes which needs to be unpacked before
     returning.
     """
-    # print(f"Reading questions from survey spreadsheet...\n")
     if question_type == "full":
         full_questions = SURVEY.get_notes()
         return full_questions[0][1:]
