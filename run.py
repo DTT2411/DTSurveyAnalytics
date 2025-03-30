@@ -645,7 +645,7 @@ def delete_respondent(name):
     name_cell = SURVEY.find(name)
     while True:
         try:
-            confirm = input(f"{name}'s responses are currently "
+            confirm = input(f"{name}'s responses are  "
                             f"{read_respondent_data(name)[1:]}.\n"
                             "Are you sure you wish to delete this data? "
                             "(Y/N):\n")
