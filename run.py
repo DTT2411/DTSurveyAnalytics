@@ -122,9 +122,9 @@ def process_main_command(user_type):
             print("- " + colored("'add'", 'light_cyan') + " to add your "
                   "responses to the survey")
             print("- " + colored("'update'", 'light_cyan') + " to update "
-                  "your survey data")
+                  "your survey responses")
             print("- " + colored("'delete'", 'light_cyan') + " to delete "
-                  "your survey data")
+                  "your survey responses")
             print("- " + colored("'exit'", 'light_cyan') + " to exit the "
                   "application\n")
             main_command = input("Enter your command here:\n")
