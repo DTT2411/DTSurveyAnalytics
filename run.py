@@ -145,8 +145,8 @@ def process_update_command():
         print("Please enter a command to perform on the survey:\n")
         print("- " + colored("'one'", "light_cyan") + "to update the response "
               "to a single question")
-        print("- " + colored("'all'", "light_cyan") + "to update the full list "
-              "of survey responses")
+        print("- " + colored("'all'", "light_cyan") + "to update the full list"
+              " of survey responses")
         update_command = input("Enter your command here:\n")
         main_menu_check(update_command)
         validity_check = validate_command(update_command, "update")
@@ -537,8 +537,8 @@ def update_data(name_to_update, update_command):
                           "cancel.", "yellow"))
     if update_command == 'all':
         update_data_list = add_respondent_data()
-        print(colored(f"Value responses {update_data_list} will now be updated"
-                      f" for {name_to_update}...", "yellow"))
+        print(colored(f"Value responses {update_data_list} will now "
+                      f"be\nupdated for {name_to_update}...", "yellow"))
         # The values start from the 2nd column onwards and .update_cell method
         # is 1-indexed, so the loop index must start at 2 to insert correctly
         column_index = 2
