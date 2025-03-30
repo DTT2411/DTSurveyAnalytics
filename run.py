@@ -790,10 +790,11 @@ def get_averages(survey_data, full_analysis):
     return question_averages_rounded
 
 
-def make_recommendations(analysed_data):
+def get_data_insights(analysed_data):
     """
-    Makes recommendations based on the average scores calculated across the
-    dataset.
+    Pulls out and displays low and high scoring questions based on average
+    responses. Makes recommendations on what the organisation needs to work
+    on based on lower scoring metrics.
     """
     print(colored('HIGHLIGHTS', 'green', attrs=['bold']))
     float_data = [float(x) for x in analysed_data]
@@ -874,7 +875,7 @@ def main():
                     update_question_cells(number_of_deleted_question)
             case 'analyse':
                 analysed_data = analyse_survey()
-                make_recommendations(analysed_data)
+                get_data_insights(analysed_data)
             case 'exit':
                 print(colored("The application will now close.", "yellow"))
                 quit()
