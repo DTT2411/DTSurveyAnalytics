@@ -796,7 +796,7 @@ def get_averages(survey_data, full_analysis):
 
 def get_data_insights(analysed_data):
     """
-    Pulls out and displays low and high scoring questions based on average
+    Extracts and displays low and high scoring questions based on average
     responses. Makes recommendations on what the organisation needs to work
     on based on lower scoring metrics.
     """
