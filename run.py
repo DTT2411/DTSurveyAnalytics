@@ -37,6 +37,9 @@ def get_user_type():
         user_type = input("Enter user type: ")
         if user_type == "exit":
             quit()
+        elif user_type == "home":
+            print("\n")
+            main()
         validated_user_type = validate_command(user_type, "user type")
         if validated_user_type is True:
             return user_type
