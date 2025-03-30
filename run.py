@@ -56,6 +56,7 @@ def validate_password():
     """
     admin_password = open('admin_password.txt', 'r').read()
     response = input("Please enter the administrator password: \n")
+    main_menu_check(response)
     if response == admin_password:
         print(colored("Password correct. Going to admin command menu...\n",
                       "yellow"))
