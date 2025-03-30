@@ -443,7 +443,7 @@ def analyse_respondent_data(respondent_data):
         variance_string = "moderate level of variance."
     else:
         variance_string = "low level of variance, suggesting the respondent " \
-            "has consistent perceptions about the qualities of the job."
+            "has consistent \nperceptions about the qualities of the job."
     print(get_border())
     print(colored('OVERALL RESULTS', 'green', attrs=['bold']))
     print(f"{respondent_name} gave an average score of "
