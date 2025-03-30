@@ -34,7 +34,7 @@ def get_user_type():
         print("- " + colored("'exit'", 'blue') + " to exit the application.")
         print("Enter " + colored("'home'", 'blue') + " in any field to return "
               "to this menu.")
-        user_type = input("Enter user type: ")
+        user_type = input("Enter user type:\n")
         if user_type == "exit":
             quit()
         elif user_type == "home":
@@ -55,7 +55,7 @@ def validate_password():
     in a text file named "admin_password.txt".
     """
     admin_password = open('admin_password.txt', 'r').read()
-    response = input("Please enter the administrator password: \n")
+    response = input("Please enter the administrator password:\n")
     main_menu_check(response)
     if response == admin_password:
         print(colored("Password correct. Going to admin command menu...\n",
@@ -108,7 +108,7 @@ def process_main_command(user_type):
                   "analysis over all survey data")
             print("- " + colored("'exit'", 'blue') + " to exit the "
                   "application\n")
-            main_command = input("Enter your command here: ")
+            main_command = input("Enter your command here:\n")
             validity_check = validate_command(main_command, "main admin")
             if validity_check:
                 return main_command
@@ -124,7 +124,7 @@ def process_main_command(user_type):
                   "survey data within the spreadsheet")
             print("- " + colored("'exit'", 'blue') + " to exit the "
                   "application\n")
-            main_command = input("Enter your command here: ")
+            main_command = input("Enter your command here:\n")
             validity_check = validate_command(main_command, "main respondent")
             if validity_check:
                 return main_command
@@ -144,7 +144,7 @@ def process_update_command():
         print("Please enter a command to perform on the survey:\n")
         print("- 'one' to update the response to a single question")
         print("- 'all' to update the full list of survey responses")
-        update_command = input("Enter your command here: ")
+        update_command = input("Enter your command here:\n")
         main_menu_check(update_command)
         validity_check = validate_command(update_command, "update")
         if validity_check:
@@ -214,24 +214,24 @@ def get_respondent_name(main_command, user_type):
     if user_type == "admin":
         match main_command:
             case 'add':
-                respondent_name = input(f"{admin_string}add data for: ")
+                respondent_name = input(f"{admin_string}add data for:\n")
                 return respondent_name
             case 'update':
-                respondent_name = input(f"{admin_string}update data for: ")
+                respondent_name = input(f"{admin_string}update data for:\n")
                 return respondent_name
             case 'delete':
-                respondent_name = input(f"{admin_string}delete data for: ")
+                respondent_name = input(f"{admin_string}delete data for:\n")
                 return respondent_name
             case 'read':
-                respondent_name = input(f"{admin_string}read data for: ")
+                respondent_name = input(f"{admin_string}read data for:\n")
     elif user_type == "respondent":
         match main_command:
             case 'add':
-                respondent_name = input(f"{respondent_string}add your data: ")
+                respondent_name = input(f"{respondent_string}add your data:\n")
                 return respondent_name
             case 'update':
                 respondent_name = input(f"{respondent_string}update your "
-                                        "data: ")
+                                        "data:\n")
                 return respondent_name
 
 
@@ -260,7 +260,7 @@ def add_respondent_data():
     """
     print(colored("Adding survey data...\n", "yellow"))
     print("Please enter a value between 1 to 5 for the following questions, "
-          "where appropriate.\n")
+          "\n")
     print("5 - Excellent")
     print("4 - Good")
     print("3 - Moderate")
@@ -269,10 +269,9 @@ def add_respondent_data():
     responses = []
     questions = get_questions("full")
     for question in questions:
-        print(question + ":")
         while True:
             try:
-                response = input("Answer: ")
+                response = input(f"{question}:\n")
                 main_menu_check(response)
                 if int(response) in range(1, 6):
                     responses.append(response)
@@ -326,7 +325,7 @@ def validate_question():
     while True:
         try:
             question_number = input("Which question would you like to read "
-                                    "the values for?: ")
+                                    "the values for?:\n")
             main_menu_check(question_number)
             if int(question_number) in range(1, SURVEY.col_count):
                 break
@@ -517,7 +516,7 @@ def update_data(name_to_update, update_command):
             confirm = input(f"{name_to_update}'s responses are currently "
                             f"{read_respondent_data(name_to_update)[1:]}.\n"
                             "Are you sure you wish to amend this data? "
-                            "(Y/N): ")
+                            "(Y/N):\n")
             main_menu_check(confirm)
             if confirm in ["Y", "y"]:
                 break
@@ -547,7 +546,7 @@ def update_data(name_to_update, update_command):
         while True:
             try:
                 question_number = input("Which question would you like to "
-                                        "update the value for?: ")
+                                        "update the value for?:\n")
                 main_menu_check(question_number)
                 if int(question_number) in range(1, SURVEY.col_count):
                     break
@@ -562,7 +561,7 @@ def update_data(name_to_update, update_command):
         while True:
             try:
                 update_value = input("Please enter the value you wish to "
-                                     "add: ")
+                                     "add:\n")
                 main_menu_check(update_value)
                 int_question_number = int(question_number)
                 if int(update_value) in range(1, 6):
@@ -596,10 +595,10 @@ def add_question():
     new_question = input("Please enter the full text question you wish to add."
                          "\nPlease note that the question should be formatted "
                          "such that it can be answered with a value between 1 "
-                         "to 5, with 1 = 'Very Poor' and 5 = 'Excellent': \n")
+                         "to 5, with 1 = 'Very Poor' and 5 = 'Excellent':\n")
     main_menu_check(new_question)
     new_summarised_question = input("Please enter the a summarised version "
-                                    "(1 to 2 words): \n")
+                                    "(1 to 2 words):\n")
     main_menu_check(new_summarised_question)
     SURVEY.add_cols(1)  # adds a new empty column to the spreadsheet
     next_question_column = SURVEY.col_count
@@ -629,7 +628,7 @@ def delete_respondent(name):
             confirm = input(f"{name}'s responses are currently "
                             f"{read_respondent_data(name)[1:]}.\n"
                             "Are you sure you wish to delete this data? "
-                            "(Y/N): ")
+                            "(Y/N):\n")
             main_menu_check(confirm)
             if confirm in ["Y", "y"]:
                 break
@@ -665,7 +664,7 @@ def delete_question():
     while True:
         try:
             question_number = input("Which question would you like to "
-                                    "delete?: ")
+                                    "delete?:\n")
             main_menu_check(question_number)
             if int(question_number) in range(1, SURVEY.col_count):
                 print(colored(f"Deleting question {question_number} from "
