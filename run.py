@@ -589,6 +589,12 @@ def add_question():
     heading and the full text question held within the cell's note.
     """
     print(colored("Adding new question to survey...\n", "yellow"))
+    # list all current Qs
+    full_questions = get_questions("full")
+    print(colored("List of existing Qs:", 'green', attrs=['bold']))
+    for q in full_questions:
+        print(q)
+    print("")
     print("Please note that the responses for all previous respondents who "
           "have not answered the new question will be set to the median value "
           "(3).")
