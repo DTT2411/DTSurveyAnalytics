@@ -525,7 +525,7 @@ def update_data(name_to_update, update_command):
     row_to_update = name_cell.row
     while True:
         try:
-            confirm = input(f"{name_to_update}'s responses are currently "
+            confirm = input(f"{name_to_update}'s responses are currently:\n"
                             f"{read_respondent_data(name_to_update)[1:]}.\n"
                             "Are you sure you wish to amend this data? "
                             "(Y/N):\n")
@@ -654,7 +654,7 @@ def delete_respondent(name):
     name_cell = SURVEY.find(name)
     while True:
         try:
-            confirm = input(f"{name}'s responses are "
+            confirm = input(f"{name}'s responses are currently:\n"
                             f"{read_respondent_data(name)[1:]}\n"
                             "Are you sure you wish to delete this data? "
                             "(Y/N):\n")
