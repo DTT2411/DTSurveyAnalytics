@@ -224,6 +224,7 @@ def get_respondent_name(main_command, user_type):
                 return respondent_name
             case 'read':
                 respondent_name = input(f"{admin_string}read data for:\n")
+                return respondent_name
     elif user_type == "respondent":
         match main_command:
             case 'add':
@@ -422,7 +423,8 @@ def analyse_respondent_data(respondent_data):
     print(colored("Analysing data...\n", "yellow"))
     # removes the name from the row, leaving just the scores
     respondent_name = respondent_data.pop(0)
-    print(f"Results for {respondent_name} are as follows:\n")
+    print(colored(f"Results for {respondent_name} are as follows:\n",
+                  "yellow"))
     summarised_questions = get_questions("summarised")
     # converts scores to integers so that numerical analysis can be performed
     converted_scores = [int(x) for x in respondent_data]
