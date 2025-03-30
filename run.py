@@ -605,7 +605,7 @@ def add_question():
         new_question = input("Please enter the full text question you wish "
                              "to add.\n"
                              "Rules for question entry:\n"
-                             "-Text only, up to 74 characters\n"
+                             "-Text only, up to 70 characters\n"
                              "-No need to add question number (done "
                              "automatically)\n"
                              "-The question should be formatted such that it "
