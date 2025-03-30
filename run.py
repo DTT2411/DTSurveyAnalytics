@@ -437,14 +437,13 @@ def analyse_respondent_data(respondent_data):
     float_averages = [float(x) for x in survey_averages]
     organisation_average = round(statistics.mean(float_averages), 1)
     if score_variance > 2:
-        variance_string = "high level of variance, indicating significant \n" \
+        variance_string = "high level of variance, indicating significant " \
             "disparity between the 'best' and 'worst' aspects of the job."
     elif score_variance > 1.3:
         variance_string = "moderate level of variance."
     else:
-        variance_string = "low level of variance, suggesting the \n" \
-            "respondent is very consistent in their perception about the " \
-            "qualities of the job."
+        variance_string = "low level of variance, suggesting the respondent " \
+            "has consistent perceptions about the qualities of the job."
     print(get_border())
     print(colored('OVERALL RESULTS', 'green', attrs=['bold']))
     print(f"{respondent_name} gave an average score of "
@@ -459,7 +458,8 @@ def analyse_respondent_data(respondent_data):
         print(f"This is close to the organisation average score of "
               f"{organisation_average}.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
-          f"their scores. This is a {variance_string}")
+          f"their scores.")  # This is a {variance_string}")
+    print(f"This is a {variance_string}")
     print(get_border())
     print(colored("QUESTION".ljust(32) + "SCORE".ljust(8) + "COMPARISON WITH "
                   "ORGANISATION", 'green', attrs=['bold']))
