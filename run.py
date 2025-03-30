@@ -830,7 +830,6 @@ def get_data_insights(analysed_data):
     responses. Makes recommendations on what the organisation needs to work
     on based on lower scoring metrics.
     """
-    print(colored('HIGHLIGHTS', 'green', attrs=['bold']))
     float_data = [float(x) for x in analysed_data]
     low_scores = []
     high_scores = []
@@ -842,6 +841,7 @@ def get_data_insights(analysed_data):
         elif score >= 3.5:  # If the average score is above 3.5 it is "High".
             high_scores.append(summarised_questions[question_index])
         question_index += 1
+    print(colored('HIGHLIGHTS', 'green', attrs=['bold']))
     print("Low scoring questions:")
     [print(question) for question in low_scores]
     print("")
