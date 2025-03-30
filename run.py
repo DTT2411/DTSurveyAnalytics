@@ -218,7 +218,7 @@ def get_respondent_name(main_command, user_type):
                 respondent_name = input(f"{admin_string}delete data for: ")
                 return respondent_name
             case 'read':
-                respondent_name = input(f"{admin_string}read data for:")
+                respondent_name = input(f"{admin_string}read data for: ")
     elif user_type == "respondent":
         match main_command:
             case 'add':
@@ -301,6 +301,7 @@ def validate_name(name):
     while name not in existing_names:
         name = input("The name you entered does not exist. Please submit the "
                      "name of a respondent who has completed the survey.\n")
+        main_menu_check(name)
     print(colored("Name validated.\n", "yellow"))
     return name
 
