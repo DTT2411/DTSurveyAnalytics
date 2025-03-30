@@ -438,7 +438,7 @@ def analyse_respondent_data(respondent_data):
     organisation_average = round(statistics.mean(float_averages), 1)
     if score_variance > 2:
         variance_string = "high level of variance, indicating significant " \
-            "disparity between the 'best' and 'worst' aspects of the job."
+            "disparity between the \n'best' and 'worst' aspects of the job."
     elif score_variance > 1.3:
         variance_string = "moderate level of variance."
     else:
