@@ -596,8 +596,8 @@ def add_question():
         print(q)
     print("")
     print("Please note that the responses for all previous respondents who "
-          "have not answered the new question will be set to the median value "
-          "(3).")
+          "have not\n answered the new question will be set to the median "
+          "value (3).")
     print("You can update the default values by using the " +
           colored("'update'", "blue") + " function from the main menu.\n")
     new_question = input("Please enter the full text question you wish to "
