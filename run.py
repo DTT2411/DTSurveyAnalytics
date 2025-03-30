@@ -143,8 +143,10 @@ def process_update_command():
     """
     while True:
         print("Please enter a command to perform on the survey:\n")
-        print("- 'one' to update the response to a single question")
-        print("- 'all' to update the full list of survey responses")
+        print("- " + colored("'one'", "light_cyan") + "to update the response "
+              "to a single question")
+        print("- " + colored("'all'", "light_cyan") + "to update the full list "
+              "of survey responses")
         update_command = input("Enter your command here:\n")
         main_menu_check(update_command)
         validity_check = validate_command(update_command, "update")
