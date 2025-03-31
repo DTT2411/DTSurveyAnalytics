@@ -511,16 +511,17 @@ To my knowledge there are no unresolved bugs remaining within the application.
 
 
 ## Deployment
+### Requirements
 ### How I deployed & set up API
 ### GitHub Repository
 
 ## Credits
 
 ### API and Libraries
-#### Google Sheets API - gspread
-#### Termcolor
-#### Statistics 
-### Concept
+- **Google Sheets API - gspread**: Version 6.2.0 installed and used to access the Google spreadsheet operated on by the application. Documentation for gspread: https://docs.gspread.org/en/latest/ 
+- **Termcolor**: Version 3.0.0 was installed and coloured module imported to style various elements (commands, headings, system messages) throughout the application. Documentation for termcolor: https://pypi.org/project/termcolor/
+- **Statistics**: Builtin Statistics module was imported to conduct mean and variance calculations on lists. Statistics module documentation: https://docs.python.org/3/library/statistics.html
+
 ### Concept
 - The idea for the project was inspired by Project Example Idea 1 - "Analyse Survey Data" recommended within Code Institute's Portfolio Project 3 Assessment Guide: https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+PE_PAGP+2021_Q2/courseware/40cd7850a24d454795ec611831b06b77/980b1952a3a64898ab4010759bd0bd6a/.
 - The project adhered to the stated goals of both the external user and site owner 
