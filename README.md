@@ -10,6 +10,7 @@ The purpose of the DTSA application is to provide users with a way to conduct an
 
 ### User Stories
 As an administrator, I want to...
+- ...be able to restrict respondents access to the application so that they can add, update and delete their data, but not have access to other functions
 - ...be able to add responses on behalf of employees as there may be cases in which employees cannot update themselves 
 - ...be able to update an employee's responses in case they wish to make changes after initial completion
 - ...be able to delete an employee's responses in case their data is no longer mean to be counted for any reason (e.g. left organisation, GDPR request)
@@ -114,8 +115,16 @@ Invalid password input:<br>
 ![Main Menu app screenshot](assets/images/invalid_password.png) 
 
 #### 3. Command Menu
-- Provides list of commands available to the user depending on their access level.
+- Provides list of commands available to the user depending on their access level, along with a brief description.
+    - Verified `admin` can use all functions.
+    - `respondent` can only use `add`, `update`, `delete`, and `exit`.
 - Prompts user to enter command. Repeats until valid input is provided.
+
+Admin view:<br>
+![Admin Command Menu screenshot](assets/images/admin_command_menu.png) 
+
+Respondent view: <br>
+![Respondent Command Menu screenshot](assets/images/respondent_command_menu.png) 
 
 ___________________________________________________
 
