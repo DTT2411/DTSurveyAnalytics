@@ -31,7 +31,7 @@ As a respondent, I want to...
 - ...be able to return to the main menu with a simple command in any input field to avoid getting stuck if I am unable to enter an appropriate value
 
 ### Process Flowchart
-A flowchart was designed at the outset of the project to conceptualise the structure and logical flow of the application, and which functions would be required at various decision points. Menus in which the user has to enter a command are differentiate with black colour. Further context about the validity checks between each stage will be provided in individual function sections of the readme. 
+A flowchart was designed at the outset of the project to conceptualise the structure and logical flow of the application, and to identify which functions would be required at various decision points. Menus in which the user has to enter a command are differentiate with black colour. Further context about the validity checks between each stage will be provided in individual function sections of the readme. 
 
 Please note that 2 features have not been included in the flowchart in order to improve readibility:
 1. Users automatically return to the main menu after completing the path through each function.
@@ -439,6 +439,60 @@ Changing to accept the addition of non-numerical questions would require:
 
 #### Develop to accept questions with longer character counts
 In the current application I have limited questions to a max character count of 70 (76 when the pre-question string e.g. "Q10 - ") so that questions can fit on one line within the terminal during reporting. This is not ideal as 70 characters is a relatively low limit, and organisations looking to glean very specific information from their survey or want to expand on anything within the question itself may be frustrated that they can't add more. For future development I would look toward alternative terminal sizes so that this limit can be raised, or think of ways to better tabulate print output so that it is coherent and tidy even when word-wrapping occurs.
+
+## Testing
+Rigorous testing was conducted throughout the development of the application. Given the variety of functions and frequent validation requirements, it was important to implement a structued method of testing various user journeys through the application.
+
+### Manual Testing 
+- Manually progressed through the application based on individual user stories, testing each individual feature.
+- Tested app outputs and interactions from both the perspective of the administrator and respondent user types, for all functions available to each.
+- Significant use of print statements combined with fstrings to indicate the status of variables being passed between various functions.
+- Riogorously testing all input variables for both invalid data (both extreme and marginally out of scope) and `home` entries
+- Iterative testing - for example, adding/deleting more than one question and/or respondent in the same session, ensuring that functions and flow are consistent after running and completing other functions.
+- Monitoring updates made to values within the spreadsheet.
+- Developed and tested new functions outside of the main function until working internally before adding functions to main, passing parameters and calling function.
+
+### Testing with Python Tutor
+Testing using the Python Tutor tool was particularly helpful for managing 1-out errors occuring with the `update_question_cells` function due to several indexes being used within the same loop and complex string reconstruction.
+
+### Code validation
+Utilised Code Institute's Python Linter (Flake8) for PEP8 validation. Errors reported by the linter were typically dealt with after adding and confirming the correct functionality of new functions. 
+
+Commonly reported PEP8 errors included:
+- "line too long (x > 79 characters)" - reported when line length exceeeds 79 characters. This was typically resolved by splitting code/strings and carefully indenting to the correct position on a new line below. This was extremely common due to line length and level of indentation on some rows of code, and the relatively low character limit.<br>
+![Code Validation Screenshot #1](assets/images/code_validation_screen1.png)
+- "trailing whitespace" - typically reported after resolving a 'line too long' error and forgetting to remove the residual whitespace from lines above. Resolved by removing the extra whitespace.<br>
+![Code Validation Screenshot #2](assets/images/code_validation_screen2.png)
+- "expected 2 blank lines, found 1" - reported when not leaving sufficient spacing between functions. Resolved by ensuring all functions are separated by 2 completely empty lines.<br>
+![Code Validation Screenshot #3](assets/images/code_validation_screen3.png)
+- "block comment should start with '#'" - reported spacing issue in comments. Resolves by adding a space between the `#` and the comment itself.<br>
+![Code Validation Screenshot #4](assets/images/code_validation_screen4.png)
+
+## Bug Fixes and Improvements
+
+### 1. Assigning cell parameters for updating notes
+I was initially under the impression that gspread's `insert_note` method specifically required cell notation in a letter/number format i.e. `A1`, `B2`. This was problematic as I was unable to find any method to interpret the letter value of a given column. I designed a work-around function to establish a finite set of `potential_coordinates` which could be used as the first parameter in the `insert_note` method:<br>
+![Resolved Bugs Screenshot #2](assets/images/resolved_bugs_screen2.png)<br>
+The coordinates were used for functions where writing full questions to cell notes was required.<br>
+
+After further research into gspread documentation I realised there was an alternative way of adding notes to specified cells, in the form of `insert_note(first row, first col, last row, last col, content)`. I was able to update one note at a time by passing a matching row and column values e.g. `insert_note(1, 3, 1, 3, "content")` would print `content` in in the note of the third column heading. This resolved the issue with having a limited number of coordinates for new questions, and removed the need for the work-around function which was then deleted.
+
+
+### 2. Issues with using gspread method "update_cell"
+Experienced issues when trying to use `update_cell()` on the `SHEET` global variable. Realised that `SHEET` related to the entire file, not the worksheet. Resolved by changing `SHEET` to `SURVEY` which was the variable instantiated with the worksheet. Thereafter the `update_cell()` method could be used without further issue.<br>
+![Resolved Bugs Screenshot #1](assets/images/resolved_bugs_screen1.png)
+
+
+
+## Deployment
+### How I deployed & set up API
+### GitHub Repository
+
+## Credits
+### Concept
+### Code
+### Content
+
 
 
 
