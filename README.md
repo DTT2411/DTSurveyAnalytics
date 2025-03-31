@@ -81,17 +81,17 @@ The main features of the application include:
 1. Main Menu
 2. Password validation
 3. Command Menu
-4. `add` function
-5. `update` function
-6. `delete` function
-7. `list` function
-8. `read` function
-9. `add q` function
-10. `read q` function
-11. `delete q` function
-12. `read all` function
-13. `analyse` function
-14. `exit` function
+4. `add` Function
+5. `update` Function
+6. `delete` Function
+7. `list` Function
+8. `read` Function
+9. `add q` Function
+10. `read q` Function
+11. `delete q` Function
+12. `read all` Function
+13. `analyse` Function
+14. `exit` Function
 
 See below for individual descriptions of the purpose for each feature, along with images of the function in operation.
 
@@ -120,11 +120,72 @@ Invalid password input:<br>
     - `respondent` can only use `add`, `update`, `delete`, and `exit`.
 - Prompts user to enter command. Repeats until valid input is provided.
 
-Admin view:<br>
+**Admin view:**<br>
 ![Admin Command Menu screenshot](assets/images/admin_command_menu.png) 
 
-Respondent view: <br>
+**Respondent view:** <br>
 ![Respondent Command Menu screenshot](assets/images/respondent_command_menu.png) 
+
+#### 4. `add` Function
+- Requests and validates name of respondent to add data for.
+- Prints out survey scale (1-5 Likert scale with 1=Very Poor to 5=Excellent).
+- Loops through the list of full questions, printing each question and requesting value input. 
+- Value input is validated before next question is raised.
+- Once all questions have received valid responses, the results are packed into a list and appended to a new row at the bottom of the survey sheet.
+- Returns user to command menu after completion.
+
+**Flowchart:**<br>
+![Add function flowchart](assets/images/add_function_flowchart.png) 
+
+**`add` function in terminal**
+
+If existing respondent name is entered:<br>
+![Add terminal screenshot #4](assets/images/add_function_screen4.png) 
+
+If new respondent name is entered:<br>
+![Add terminal screenshot #1](assets/images/add_function_screen1.png) 
+
+Note that respondent-level users will get a different input request string i.e. to enter their *own* name:<br>
+![Add terminal screenshot #5](assets/images/add_function_screen5.png) 
+
+Data entry with examples of invalid values attempting to be passed:<br>
+![Add terminal screenshot #2](assets/images/add_function_screen2.png) 
+
+Completed data entry with system confirmation that responses have been added to sheet:<br>
+![Add terminal screenshot #3](assets/images/add_function_screen3.png) 
+
+
+#### 5. `update` Function
+- Requests and validates name of respondent to add data for.
+- Prints out the respondent's existing responses for each question.
+- 
+- Loops through the list of full questions, printing each question and requesting value input. 
+- Value input is validated before next question is raised.
+- Once all questions have received valid responses, the results are packed into a list and appended to a new row at the bottom of the survey sheet.
+- Returns user to command menu after completion.
+
+**Flowchart:**<br>
+![Update function flowchart](assets/images/update_function_flowchart.png) 
+
+**`update` function in terminal**
+
+If existing respondent name is entered:<br>
+![Add terminal screenshot #4](assets/images/add_function_screen4.png) 
+
+If new respondent name is entered:<br>
+![Add terminal screenshot #1](assets/images/add_function_screen1.png) 
+
+Note that respondent-level users will get a different input request string i.e. to enter their *own* name:<br>
+![Add terminal screenshot #5](assets/images/add_function_screen5.png) 
+
+Data entry with examples of invalid values attempting to be passed:<br>
+![Add terminal screenshot #2](assets/images/add_function_screen2.png) 
+
+Completed data entry with system confirmation that responses have been added to sheet:<br>
+![Add terminal screenshot #3](assets/images/add_function_screen3.png) 
+
+
+
 
 ___________________________________________________
 

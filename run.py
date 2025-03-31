@@ -368,6 +368,7 @@ def check_existing_names(name):
         print(colored("The name you entered already exists - you have already "
               "completed the survey!\n", "yellow"))
         name = input("Please enter the name of a new respondent.\n")
+        main_menu_check(name)
     print(colored("New respondent confirmed.\n", "yellow"))
     return name
 
