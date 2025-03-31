@@ -158,6 +158,8 @@ Data entry with examples of invalid values attempting to be passed:<br>
 Completed data entry with system confirmation that responses have been added to sheet:<br>
 ![Add terminal screenshot #3](assets/images/add_function_screen3.png) 
 
+New row appended to bottom of survey sheet:<br>
+![Add spreadsheet screenshot #1](assets/images/add_function_spread1.png) 
 
 #### 5. `update` Function
 - Requests and validates name of respondent to add data for.
@@ -197,8 +199,17 @@ Printing current results and requesting confirmation:<br>
 After entering `one`, requests question number and value, both validated: <br>
 ![Update terminal screenshot #5](assets/images/update_function_screen5.png) 
 
+In example, new value of 4 added to Q6 for David Thomson in survey sheet:<br>
+![Update spreadsheet screenshot #1](assets/images/update_function_spread1.png) 
+
 After entering `all`, prints and loops through all questions (similar to add function) requesting valid value inputs:<br>
 ![Update terminal screenshot #6](assets/images/update_function_screen6.png) 
+
+In example, David Thomson's row before:<br>
+![Update spreadsheet screenshot #2](assets/images/update_function_spread2.png) 
+
+In example, David Thomson's row after:<br>
+![Update spreadsheet screenshot #3](assets/images/update_function_spread3.png) 
 
 #### 6. `delete` Function
 - Requests and validates name of respondent to delete data for.
@@ -219,6 +230,14 @@ Note that respondent-level users will get a different input request string i.e. 
 
 Existing data output, confirmation check and deletion:<br>
 ![Delete terminal screenshot #2](assets/images/delete_function_screen2.png) 
+
+Sheet before removal:<br>
+![Delete spreadsheet screenshot #1](assets/images/delete_function_spread1.png) 
+
+Sheet after removal:<br>
+![Delete spreadsheet screenshot #1](assets/images/delete_function_spread2.png) 
+
+Note that if the record of one of the non-last respondents in the survey is deleted (e.g. Andy Hammond above), the rows below are shifted up i.e. doesn't leave an empty row.
 
 #### 7. `list` Function
 - Reads respondent names from corresponding column (#1) in spreadsheet.
@@ -256,6 +275,24 @@ Individual question scores and comparisons:<br>
 
 Highlighting low & high scores:<br>
 ![Read terminal screenshot #4](assets/images/read_function_screen4.png) 
+
+#### 9. `add q` Function
+- Prints out guidance for question format and requests user to enter a full text question.
+- Requests user to enter a summarised (1-2 words) version of the question to be used as column headings.
+- Adds a new column to the sheet.
+- Fills the value of the first cell in the column with the summarised question.
+- Fills the note value of the first cell in the column with the full text question
+- Fills the empty cells under the new question with a default value of 3.
+- Returns user to command menu after completion.
+
+**Flowchart:**<br>
+![Add q function flowchart](assets/images/add_q_function_flowchart.png) 
+
+**`add q` function in terminal**
+
+List output:<br>
+![List terminal screenshot #1](assets/images/list_function_screen1.png) 
+
 ___________________________________________________
 
 # OLD STUFF UNDER HERE
