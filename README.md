@@ -76,6 +76,10 @@ The following types of validation are managed by the application:
 
 ## Design
 
+### Appearance
+TERMCOLOR USAGE
+WHAT DO DIFF COLOURS MEAN?
+
 ### Features
 The main features of the application include:
 1. Main Menu
@@ -157,19 +161,21 @@ Completed data entry with system confirmation that responses have been added to 
 
 #### 5. `update` Function
 - Requests and validates name of respondent to add data for.
-- Provides command options `one` and `all`
-- Prints out the respondent's existing responses for each question and confirms that user wishes to proceed with update.<br>
+- Provides command options `one` and `all`. <br>
 
 If `one` was selected:
-- Print out the respondent's current responses, confirm if user wishes to proceed with update.
-- Loops through the list of full questions, printing each question and requesting value input. 
-- Value input is validated before next question is raised.
-- Once all questions have received valid responses, the results are packed into a list and appended to a new row at the bottom of the survey sheet.
+- Prints out the respondent's existing responses for each question and confirms that user wishes to proceed with update.
+- Requests and validates the question number the user wishes to update data for.
+- Requests and validates the value to be amended.
+- Targets the corresponding cell in the survey sheet and updates with new value.
 - Returns user to command menu after completion.
 
 If `all` was selected:
-- Print out the respondent's current responses, confirm if user wishes to proceed with update.
+- Prints out the respondent's existing responses for each question and confirms that user wishes to proceed with update.
 - Loops through the list of full questions, printing each question and requesting value input. 
+- Value input is validated before next question is raised.
+- Once all questions have received valid responses, the results are packed into a list and added to the respondent's corresponding row in the survey sheet
+- Returns user to command menu after completion.
 
 **Flowchart:**<br>
 ![Update function flowchart](assets/images/update_function_flowchart.png) 
@@ -193,6 +199,23 @@ After entering `one`, requests question number and value, both validated: <br>
 
 After entering `all`, prints and loops through all questions (similar to add function) requesting valid value inputs:<br>
 ![Update terminal screenshot #6](assets/images/update_function_screen6.png) 
+
+#### 6. `delete` Function
+- Requests and validates name of respondent to delete data for.
+- Prints out the respondent's existing responses for each question and confirms that user wishes to proceed with update.
+- Identifies and deletes the row of data containing the respondent's name with confirmatory system messages.
+- Returns user to command menu after completion.
+
+**Flowchart:**<br>
+![Delete function flowchart](assets/images/delete_function_flowchart.png) 
+
+**`delete` function in terminal**
+
+Name validation:<br>
+![Delete terminal screenshot #1](assets/images/delete_function_screen1.png) 
+
+Existing data output, confirmation check and deletion:<br>
+![Delete terminal screenshot #2](assets/images/delete_function_screen2.png) 
 
 
 ___________________________________________________
