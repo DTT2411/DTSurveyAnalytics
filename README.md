@@ -214,10 +214,48 @@ After entering `all`, prints and loops through all questions (similar to add fun
 Name validation:<br>
 ![Delete terminal screenshot #1](assets/images/delete_function_screen1.png) 
 
+Note that respondent-level users will get a different input request string i.e. to enter their *own* name:<br>
+![Delete terminal screenshot #3](assets/images/delete_function_screen3.png) 
+
 Existing data output, confirmation check and deletion:<br>
 ![Delete terminal screenshot #2](assets/images/delete_function_screen2.png) 
 
+#### 7. `list` Function
+- Reads respondent names from corresponding column (#1) in spreadsheet.
+- Prints out a list of the identified respondent names.
+- Returns user to command menu after completion.
 
+**Flowchart:**<br>
+![List function flowchart](assets/images/list_function_flowchart.png) 
+
+**`list` function in terminal**
+
+List output:<br>
+![List terminal screenshot #1](assets/images/list_function_screen1.png) 
+
+#### 8. `read` Function
+- Requests and validates name of respondent to read data for.
+- Analyses and prints out overall average score and variance with relevant comparisons and information. 
+- Analyses and prints out a list of all scores compared with organisation averages.
+- Highlights low and high scoring metrics.
+- Returns user to command menu after completion.
+
+**Flowchart:**<br>
+![Read function flowchart](assets/images/read_function_flowchart.png) 
+
+**`read` function in terminal**
+
+Name validation:<br>
+![Read terminal screenshot #1](assets/images/read_function_screen1.png) 
+
+Overall data report:<br>
+![Read terminal screenshot #2](assets/images/read_function_screen2.png) 
+
+Individual question scores and comparisons:<br>
+![Read terminal screenshot #3](assets/images/read_function_screen3.png) 
+
+Highlighting low & high scores:<br>
+![Read terminal screenshot #4](assets/images/read_function_screen4.png) 
 ___________________________________________________
 
 # OLD STUFF UNDER HERE
