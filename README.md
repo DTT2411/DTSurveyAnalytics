@@ -303,6 +303,32 @@ Sheet before addition:<br>
 Sheet after addition (cell value & note have been updated and default values added in cells below):<br>
 ![Add q spreadsheet screenshot #1](assets/images/add_q_function_spread2.png) 
 
+#### 9. `read q` Function
+- Prints list of existing questions in full.
+- Requests user to enter the number of the question they wish to read data for, which is then validated.
+- Prints out a list of respondents and their scores to the specific question.
+- Prints out a summary of the overall question score, and compares to the overall average score across all questions.
+- Returns user to command menu after completion.
+
+**Flowchart:**<br>
+![Read q function flowchart](assets/images/read_q_function_flowchart.png) 
+
+**`read q` function in terminal**
+
+List of questions & request to input question number:<br>
+![Read q terminal screenshot #1](assets/images/read_q_function_screen1.png) 
+
+Question number input validation:<br>
+![Read q terminal screenshot #2](assets/images/read_q_function_screen2.png) 
+
+Question reporting:<br>
+![Read q terminal screenshot #3](assets/images/read_q_function_screen3.png) 
+
+read q Function
+delete q Function
+read all Function
+analyse Function
+exit Function
 ___________________________________________________
 
 # OLD STUFF UNDER HERE
