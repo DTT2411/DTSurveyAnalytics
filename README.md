@@ -27,8 +27,16 @@ As a respondent, I want to...
 - ...be able to add my own responses to the survey so I can have my voice heard and adhere to my responsibility to complete this as a staff member
 - ...be able to update my existing responses to the survey in case I made a mistake during data entry
 - ...be able to delete my existing responses in case I decide not to participate, wish to delay completion, or have some other concern
+- ...be able to return to the main menu with a simple command in any input field to avoid getting stuck if I am unable to enter an appropriate value
 
+### Process Flowchart
+A flowchart was designed at the outset of the project to conceptualise the structure and logical flow of the application, and which functions would be required at various decision points. Menus in which the user has to enter a command are differentiate with black colour. Further context about the validity checks between each stage will be provided in individual function sections of the readme. 
 
+Please note that 2 features have not been included in the flowchart in order to improve readibility:
+1. Users automatically return to the main menu after completing the path through each function.
+2. Users can opt to return to the main menu from any input field by entering the command "home".
+
+![Full Flowchart](assets/images/full_flowchart.png) 
 
 The project is linked via API to a Google Sheet which is used as the 
 
