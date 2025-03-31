@@ -518,7 +518,44 @@ The application was deployed via Heroku. The dedicated page for the application 
 Required modules are stored in the `requirements.txt` file in the repository.<br>
 ![Requirements Screenshot #1](assets/images/requirements_screen1.png)
 
-### How to deploy & set up API
+### How to set up API, link up workspace and deploy application
+I took the following steps to set up my application with Google Sheets API and deploying this with Heroku:
+1. Create [Google Sheet](https://docs.google.com/spreadsheets/u/0/) named "DT_survey_analytics" with a sheet named "survey_results". You can set your sheet and worksheet names to whatever you prefer, as long as you maintain these names while progressing through the next steps.
+2. Create new project on [Google Cloud platform](https://console.cloud.google.com/) by clicking "New Project" from "Select a project" drop-down menu on Dashboard. I named project "DTSurveyAnalytics", again this can be amended according to your requirements.
+3. From project Dashboard, select "APIs & Services" from left side menu after expanding the burger icon. Then select "Library".
+4. From the API Library, search for "Google Drive". The relevant API should appear at the top of results - click through, then click "Enable".
+5. From the API Overview page, click "Create Credentials" button on the top right of the screen.
+6. In credentials form, respond to "Which API are you using?" with "Google Drive API".
+7. In credentials form, respond to "What data will you be accessing?" with "Application Data".
+8. In credentials form, respond to "Are you planning to use this API with Compute Engine...?" with "No, I'm not using them.". Click "Next".
+9. In credentials form, in service account details enter project name - I entered "DTSurveyAnalytics".
+10. In credentials form, in the Role dropdown box, select Basic > Editor then press continue.
+11. In credentials form, skip "Grant users access to this service account" and click "Done".
+12. On the next page, click on the newly created service account.
+13. On the next page, click on the "Keys" tab, then click on the "Add Key" dropdown and select "Create New Key".
+14. For "key type" select "JSON", then click "Create". The JSON file will then be downloaded to your default downloads folder. 
+15. Go back to API Library, search for "Google Sheets". The relevant API should appear at the top of results - click through, then click "Enable".
+16. Create new [repository](https://github.com/DTT2411/DTSurveyAnalytics) and virtual environment workspace in local IDEA for the project.
+17. Once your workspace is set up, locate the JSON credentials file and copy it into workspace. Rename the file `creds.json`.
+18. Add `creds.json` to `.gitignore`.
+19. Open `creds.json` and copy the `client_email` value without quotes.
+20. On the Google sheet, click "Share" on the top right and paste the `client_email` value, then select "Editor" access.
+21. Ensure "Notify people" is unchecked then click "Share". 
+22. To connect your new workspace with the API you must install latest versions of gspread and google-auth.
+23. Add the following imports and global variable settings to the top of your file, amended as required for your sheet names:<br>
+![Deployment Instructions Screenshot #1](assets/images/deployment_instructions_screen1.png)
+24. From [Heroku Dashboard](https://dashboard.heroku.com/apps), click "Create New App".
+25. Enter app name - I used "dt-survey-analytics". Confirm region, then click "Create App".
+26. From the app overview page, click "Settings".
+27. On the Settings screen, click "Reveal Config Vars".
+28. Add `PORT` for key and `8000` for value. Click Add.
+29. Add `CREDS` for key, copy entire `creds.json` file and paste the contents into the value box. Click "Add".
+30. Click "Add buildpack". Click "python" and save changes. Click "Add buildpack" again, and click "nodejs". Note that python should be above nodejs in order.
+31. Click "Deploy" tab. 
+32. Select "GitHub" for deployment method and confirm "Connect to GitHub".
+33. Enter repository name - mine was "DTSurveyAnalytics". Select the correct repository then click "Connect".
+34. Scroll to bottom and click "Deploy Branch" to manually build the application. 
+35. The application will take a small amount of time to build, after which you can click the "View" tab to open the app in a new tab.
 
 ### GitHub Repository
 The GitHub repository for the project can be accssed at: https://github.com/DTT2411/DTSurveyAnalytics
@@ -542,6 +579,6 @@ The GitHub repository for the project can be accssed at: https://github.com/DTT2
 
 ### Content
 - **Heroku**: Cloud application platform used to host the project. Link to Heroku: https://www.heroku.com/.
-- **Code Institute**: Providing credits to allow the application to be hosted at no charge to myself. 
+- **Code Institute**: I have copied the steps in the Love Sandwiches "Getting Set Up" and "Deployment" for setting up the Google Sheet APIs and application on Heroku, which is heavily referenced in the "How to deploy and set up API" section.
 - **EvitaKnits Cashflow Companion readme**: Was recommended as an exemplary example of a project and readme by my Code Institute mentor. I took inspiration for the structure of my readme document from this, and also was inspired to use the Mermaidchart application for creating my flowcharts after being impressed by the design and layout of her charts. Link to relevant readme: https://github.com/EvitaKnits/Cashflow-Companion/blob/main/README.md
 - **Mermaidchart**: (free version) was used to develop flowchart images during the design stage and helped to inform the logical flow of the whole application. Link to Mermaid: https://www.mermaidchart.com/
