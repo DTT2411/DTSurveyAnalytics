@@ -277,6 +277,7 @@ Highlighting low & high scores:<br>
 ![Read terminal screenshot #4](assets/images/read_function_screen4.png) 
 
 #### 9. `add q` Function
+- Prints list of existing questions in full.
 - Prints out guidance for question format and requests user to enter a full text question.
 - Requests user to enter a summarised (1-2 words) version of the question to be used as column headings.
 - Adds a new column to the sheet.
@@ -290,8 +291,17 @@ Highlighting low & high scores:<br>
 
 **`add q` function in terminal**
 
-List output:<br>
-![List terminal screenshot #1](assets/images/list_function_screen1.png) 
+List of questions and guidance on question format:<br>
+![Add q terminal screenshot #1](assets/images/add_q_function_screen1.png) 
+
+Question & summary version submission and system confirmations:<br>
+![Add q terminal screenshot #2](assets/images/add_q_function_screen2.png) 
+
+Sheet before addition:<br>
+![Add q spreadsheet screenshot #1](assets/images/add_q_function_spread1.png) 
+
+Sheet after addition (cell value & note have been updated and default values added in cells below):<br>
+![Add q spreadsheet screenshot #1](assets/images/add_q_function_spread2.png) 
 
 ___________________________________________________
 
