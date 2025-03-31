@@ -1,13 +1,13 @@
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 # DT Survey Analytics - A staff survey management application
-'DT Survey Analytics' (DTSA) is a Command-Line Interface (CLI) survey management system hosted as an application on Heroku and written using Python. 
+'DT Survey Analytics' is a Command-Line Interface (CLI) survey management system hosted as an application on Heroku and written using Python. 
 
 ## Link to application
 The application can be accessed directly at this dedicated link: ADD FINAL DEPLOYED LINK
 
 ## Project Purpose
-The purpose of the DTSA application is to provide users with a way to conduct and manage results for a simple staff survey for their organisation. The app will allow users, who may be either staff respondents to the survey or administrators conducting analysis, to conduct functions on the current survey dataset based on various commands (e.g. "add", "read", "analyse"), with differential permissions depending on access level. In addition to reading raw data, administrators will also be able to conduct analysis over the dataset in order to identify key areas of improvement for the organisation based on low-scoring metrics in the survey.
+The purpose of the application is to provide users with a way to conduct and manage results for a simple staff survey for their organisation. The app will allow users, who may be either staff respondents to the survey or administrators conducting analysis, to conduct functions on the current survey dataset based on various commands (e.g. "add", "read", "analyse"), with differential permissions depending on access level. In addition to reading raw data, administrators will also be able to conduct analysis over the dataset in order to identify key areas of improvement for the organisation based on low-scoring metrics in the survey.
 
 ## Project Planning
 
