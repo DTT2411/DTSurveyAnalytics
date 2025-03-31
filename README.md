@@ -361,10 +361,32 @@ Sheet after deletion (questions after the one deleted have had their question nu
 
 
 #### 12. `read all` Function
+- Prints list of existing questions in full.
+- Prints list of respondent names and all their results in a summarised format.
+- Returns user to command menu after completion.
+
+**Flowchart:**<br>
+![Read all function flowchart](assets/images/read_all_function_flowchart.png) 
+
+Question list:<br>
+![Read all terminal screenshot #1](assets/images/read_all_function_screen1.png) 
+
+Respondent list with values:<br>
+![Delete q terminal screenshot #2](assets/images/read_all_function_screen2.png) 
+
+
+
 
 #### 13. `analyse` Function
 
 #### 14. `exit` Function
+- Simple function which runs `quit()` upon receiving the command to exit the application.
+
+**Flowchart:**<br>
+![Exit function flowchart](assets/images/exit_function_flowchart.png) 
+
+Terminal output upon exitting: <br>
+![Exit terminal screenshot #1](assets/images/exit_function_screen1.png) 
 
 ___________________________________________________
 
