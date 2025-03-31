@@ -780,7 +780,6 @@ def read_all_data():
     """
     print(colored("Reading all survey data...\n", "yellow"))
     survey_data = SURVEY.get_all_values()
-    summarised_questions = get_questions('summarised')
     full_questions = get_questions('full')
     print(colored("QUESTION LIST:", "green"))
     for question in full_questions:
@@ -792,7 +791,7 @@ def read_all_data():
     names.pop(0)
     longest_name = len(max(names, key=len))
     print(colored("NAME", "green").ljust(longest_name+19) +
-          colored(f"RESPONSES TO Q1 - {len(summarised_questions)}", "green"))
+          colored(f"RESPONSES TO Q1 - {len(full_questions)}", "green"))
     name_counter = 0
     survey_data.pop(0)
     for row in survey_data:
