@@ -781,10 +781,11 @@ def read_all_data():
     print(colored("Reading all survey data...\n", "yellow"))
     survey_data = SURVEY.get_all_values()
     full_questions = get_questions('full')
+    print(get_border())
     print(colored("QUESTION LIST:", "green"))
     for question in full_questions:
         print(question)
-    print("")
+    print(get_border())
     names = []
     for row in survey_data:
         names.append(row[0])
@@ -797,7 +798,7 @@ def read_all_data():
     for row in survey_data:
         print(f"{names[name_counter].ljust(longest_name+10)}{row[1:]} ")
         name_counter += 1
-    print("")
+    print(get_border())
     print(colored("Data output complete. Returning to main menu...\n", "yellow"
                   ))
 
