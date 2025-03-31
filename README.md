@@ -41,7 +41,9 @@ Please note that 2 features have not been included in the flowchart in order to 
 ## Data Management
 
 ### Google Sheet Data Structure
-The application is linked up to a Google spreadsheet containing all survey values including names of respondents (head column), survey questions (head row) and response values in cells. A set of exemplar data has been included in the Google sheet to work with however this can be fully updated and replaced as per the organisation's requirements using app functions. Only one worksheet ('survey_results') is utilised within the current model.
+The application is linked up to a Google spreadsheet containing all survey values including names of respondents (head column), survey questions (head row) and response values in cells. A set of exemplar data has been included in the Google sheet to work with however this can be fully updated and replaced as per the organisation's requirements using app functions. Only one worksheet ('survey_results') is utilised within the current model. <br>
+
+**It is important for users to note that the Google sheet is intended to be a read-only repository for survey values, and should not be directly interacted with by administrators**. The functions within the application are sufficient to enact any desired changes to the worksheet, and directly changing the sheet may cause errors when running the application - for example, manually adding an empty column to the Google sheet will cause reporting errors, as the extra column will be counted as an additional question by some variables. In a realistic usage scenario, this is a limitation of the current application concept and it would be important for survey administrators to maintain strict security on access priveleges to the Google sheet.
 
 ### Data Manipulation
 Data transfer between the application and Google Sheet is primarily manipulated (i.e. found, read, written) using 'gspread' API. Specific gspread functions used include:
