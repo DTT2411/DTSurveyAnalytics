@@ -490,12 +490,24 @@ I waited with deploying the application on heroku until I had most of my functio
 - I had initially set command strings (e.g. `add`, `update`) to blue. Whilst this looked fine in my IDE, the contrast when using the heroku app was much lower, to the extent that the colouring hindered readibility rather than aiding it. This was resolved by amending the colouring of commands to `light-cyan`. Other colours (e.g. green, yellow) were checked and remained at sufficient contrast in the heroku terminal.
 
 ### 4. 'Read' function stopped working after refactoring
-I initially had user inputs for respondent name in the main() function, and decided to refactror this into a separate function to declutter main() and ensure consistency across checks. The `get_respondent_name` function was the result of this refactoring. I did not complete a comprehensive test of all functions following the refactoring, and later discovered that the `read` function was no longer working correctly and was not able to return any data.<br>
+I initially had user inputs for respondent name in the main() function, and decided to refactror this into a separate function to declutter main() and ensure consistency across checks. The `get_respondent_name()` function was the result of this refactoring. I did not complete a comprehensive test of all functions following the refactoring, and later discovered that the `read` function was no longer working correctly and was not able to return any data.<br>
 
-After some manual testing I discovered that I had ommited the `return respondent_name` statement specifically from the `read` case inside the `get_respondent_name` function. This was resolved and the `read` function resumed normal functionality.<br>
+After some manual testing I discovered that I had ommited the `return respondent_name()` statement specifically from the `read` case inside the `get_respondent_name()` function. This was resolved and the `read` function resumed normal functionality.<br>
 ![Resolved Bugs Screenshot #3](assets/images/resolved_bugs_screen3.png)
 
+### 5. Missing 'home' checks on input fields
+The functionality for the user to return to the main menu by entering `home` into any input field was only added mid-way during development and had to be updated retrospectively in many functions. During manual testing with user stories, there were multiple instances where this validation was not being conducted. In all cases this was a relatively simple fix by adding an additional line to call the `main_menu_check()` function and passing in the input value.
 
+### 6. Question cell notes not updating correctly after deleting a question below
+Part of the `delete` function's process is to update heading cells after a question from the middle of the spreadsheet has been deleted (i.e. if question 5 of 10 is deleted, questions 6-10 need to be amended with a new number which is one lower.) This takes place in the `update_question_cells()` function. I noticed, during final manual testing, that this functionality wasn't working properly as the spreadsheet notes were being assigned incorrect strings.
+
+Due to the complexity of the function and many variables & counters being used to extract, split and rebuild string, I utilised the Python Tutor tool to step through the process. I discovered that one of the variables (`column_to_update`) used to indicate the position of the column for the note to be inserted was not being incremented within the loop, which meant that the same value was being copied to all notes. 
+
+This was resolved by adding a simple `column_to_update += 1` increment to the loop.
+
+
+## Unresolved Bugs
+To my knowledge there are no unresolved bugs remaining within the application. 
 
 
 ## Deployment
@@ -503,7 +515,17 @@ After some manual testing I discovered that I had ommited the `return respondent
 ### GitHub Repository
 
 ## Credits
+
+### API and Libraries
+#### Google Sheets API - gspread
+#### Termcolor
+#### Statistics 
 ### Concept
+### Concept
+- The idea for the project was inspired by Project Example Idea 1 - "Analyse Survey Data" recommended within Code Institute's Portfolio Project 3 Assessment Guide: https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+PE_PAGP+2021_Q2/courseware/40cd7850a24d454795ec611831b06b77/980b1952a3a64898ab4010759bd0bd6a/.
+- The project adhered to the stated goals of both the external user and site owner 
+- The project adhered strictly to the first two suggested features: importing survey results and parsing & analysing the data. 
+- Regarding the last suggested feature, I decided to develop functionality to output the results to the terminal itself via commands rather than exporting to an external file.
 ### Code
 ### Content
 
