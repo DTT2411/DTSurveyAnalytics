@@ -77,8 +77,19 @@ The following types of validation are managed by the application:
 ## Design
 
 ### Appearance
-TERMCOLOR USAGE
-WHAT DO DIFF COLOURS MEAN?
+The `termcolor` package was imported for styling of certain printed elements. This was generally used to increase the salience and distinction of the following:
+- Commands: any terms which are used to navigate through menus are coloured light-cyan. 
+- Headings: any headings for list or table output are capitalised and coloured green.
+- System Messages: messages from the application informing the user about what it is doing or requesting are printed in yellow.
+
+#### Command example 
+![Appearance screenshot #1](assets/images/appearance_screen1.png) 
+
+#### Headings example
+![Appearance screenshot #3](assets/images/appearance_screen3.png) 
+
+#### System Messages example
+![Appearance screenshot #2](assets/images/appearance_screen2.png) 
 
 ### Features
 The main features of the application include:
@@ -117,10 +128,10 @@ If password is invalid:
 - User is returned to main menu.
 
 Valid password input:<br>
-![Main Menu app screenshot](assets/images/valid_password.png) 
+![Password validation screenshot #1](assets/images/valid_password.png) 
 
 Invalid password input:<br>
-![Main Menu app screenshot](assets/images/invalid_password.png) 
+![Password validation screenshot #2](assets/images/invalid_password.png) 
 
 #### 3. Command Menu
 - Provides list of commands available to the user depending on their access level, along with a brief description.
@@ -359,8 +370,8 @@ Sheet before deletion:<br>
 Sheet after deletion (questions after the one deleted have had their question number updated):<br>
 ![Delete q spreadsheet screenshot #1](assets/images/delete_q_function_spread2.png) 
 
-
 #### 12. `read all` Function
+- Reads all values from sheet.
 - Prints list of existing questions in full.
 - Prints list of respondent names and all their results in a summarised format.
 - Returns user to command menu after completion.
@@ -374,10 +385,25 @@ Question list:<br>
 Respondent list with values:<br>
 ![Delete q terminal screenshot #2](assets/images/read_all_function_screen2.png) 
 
-
-
-
 #### 13. `analyse` Function
+- Reads all values from sheet.
+- Calculates and prints out the overall average score for the organisation.
+- Calculates and prints out average scores for each question.
+- Based on averages, identifies and prints out which questions were scored highly/lowly and makes recommendations about what the organisation needs to focus on.
+- Returns user to command menu after completion. 
+
+**Flowchart:**<br>
+![Analyse function flowchart](assets/images/analyse_function_flowchart.png) 
+
+Overall score output: <br>
+![Analyse terminal screenshot #1](assets/images/analyse_function_screen1.png) 
+
+Question averages output: <br>
+![Analyse terminal screenshot #2](assets/images/analyse_function_screen2.png) 
+
+Highlights output <br>
+![Analyse terminal screenshot #3](assets/images/analyse_function_screen3.png) 
+
 
 #### 14. `exit` Function
 - Simple function which runs `quit()` upon receiving the command to exit the application.
@@ -387,6 +413,34 @@ Respondent list with values:<br>
 
 Terminal output upon exitting: <br>
 ![Exit terminal screenshot #1](assets/images/exit_function_screen1.png) 
+
+### Potential Features to develop in future
+
+#### Replace name system with unique ID system
+The use of names as keys to read, update and delete data is a risky and imperfect way to manage a system for a number of reasons. Currently:
+- A respondent could potentially delete/update someone else’s data if they know the person’s name as there was no way to check for this given the current functionality. They are very likely to know the names of other individuals in their organisation who has filled out a survey.
+- Typing out full names can be slow, especially if names are long, middle names included etc. Having a set length unique ID would make this more manageable.
+- There is potential for name duplication, particularly in larger organisations. With the current app set-up, duplicate name entries to the survey are not permitted as this would interfere with gspread functions like `find()` which identify cells based on unique value matches. Allowing names to be duplicated and conducting searches based on unique IDs would resolve this issue.
+
+Changing to a unique ID system would require:
+- Additional column in sheet (likely to the right of Name column) for unique IDs for each respondent
+- Additional functionality to generate and add unique IDs upon adding a new respondent to the survey. Most likely generated after getting the respondent’s name. This would likely be some form of string method pulling out first letter from forename & surname and appending to a symbol and 4 randomised numbers.
+- Overhaul of functions reading data - current code would have significant number of 1-out errors if an additional, non-survey responses column was appended next to names.
+- Overhaul of inputs and functions which currently request name as key to add/update/delete records. These would need to be changed to work with the unique ID instead. 
+- Further improvements down the line - i.e. outputting IDs along with names with list_respondents function
+
+#### Expand functionality to allow other types of questions e.g. text, boolean
+The current model is restrictive in that it only permits the use of questions which prompt responses complying with a 5-point Likert scale. In real-world scenarios, organisations using survey management software are likely to want to be able to apprehend non-numerical data as well.
+
+Changing to accept the addition of non-numerical questions would require:
+- Overhaul of functions reading/writing data, would need to be passed parameters on question type. 
+- Likely need to partition survey data between different types and have functions for managing these separately. E.g. current analyse_respondent_data could still do numerical analysis, but would need another function to print, for example, the user's text responses to qualitative questions.
+- Additional parameters passed between question-editing functions
+
+#### Develop to accept questions with longer character counts
+In the current application I have limited questions to a max character count of 70 (76 when the pre-question string e.g. "Q10 - ") so that questions can fit on one line within the terminal during reporting. This is not ideal as 70 characters is a relatively low limit, and organisations looking to glean very specific information from their survey or want to expand on anything within the question itself may be frustrated that they can't add more. For future development I would look toward alternative terminal sizes so that this limit can be raised, or think of ways to better tabulate print output so that it is coherent and tidy even when word-wrapping occurs.
+
+
 
 ___________________________________________________
 
