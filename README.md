@@ -157,34 +157,42 @@ Completed data entry with system confirmation that responses have been added to 
 
 #### 5. `update` Function
 - Requests and validates name of respondent to add data for.
-- Prints out the respondent's existing responses for each question.
-- 
+- Provides command options `one` and `all`
+- Prints out the respondent's existing responses for each question and confirms that user wishes to proceed with update.<br>
+
+If `one` was selected:
+- Print out the respondent's current responses, confirm if user wishes to proceed with update.
 - Loops through the list of full questions, printing each question and requesting value input. 
 - Value input is validated before next question is raised.
 - Once all questions have received valid responses, the results are packed into a list and appended to a new row at the bottom of the survey sheet.
 - Returns user to command menu after completion.
+
+If `all` was selected:
+- Print out the respondent's current responses, confirm if user wishes to proceed with update.
+- Loops through the list of full questions, printing each question and requesting value input. 
 
 **Flowchart:**<br>
 ![Update function flowchart](assets/images/update_function_flowchart.png) 
 
 **`update` function in terminal**
 
-If existing respondent name is entered:<br>
-![Add terminal screenshot #4](assets/images/add_function_screen4.png) 
-
-If new respondent name is entered:<br>
-![Add terminal screenshot #1](assets/images/add_function_screen1.png) 
+Name validation:<br>
+![Update terminal screenshot #1](assets/images/update_function_screen1.png) 
 
 Note that respondent-level users will get a different input request string i.e. to enter their *own* name:<br>
-![Add terminal screenshot #5](assets/images/add_function_screen5.png) 
+![Update terminal screenshot #2](assets/images/update_function_screen2.png) 
 
-Data entry with examples of invalid values attempting to be passed:<br>
-![Add terminal screenshot #2](assets/images/add_function_screen2.png) 
+Update command menu:<br>
+![Update terminal screenshot #3](assets/images/update_function_screen3.png) 
 
-Completed data entry with system confirmation that responses have been added to sheet:<br>
-![Add terminal screenshot #3](assets/images/add_function_screen3.png) 
+Printing current results and requesting confirmation:<br>
+![Update terminal screenshot #4](assets/images/update_function_screen4.png) 
 
+After entering `one`, requests question number and value, both validated: <br>
+![Update terminal screenshot #5](assets/images/update_function_screen5.png) 
 
+After entering `all`, prints and loops through all questions (similar to add function) requesting valid value inputs:<br>
+![Update terminal screenshot #6](assets/images/update_function_screen6.png) 
 
 
 ___________________________________________________
