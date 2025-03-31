@@ -74,8 +74,46 @@ The following types of validation are managed by the application:
 ## Design
 
 ### Features
-The features of the application 
+The main features of the application include:
+1. Main Menu
+2. Password validation
+3. Command Menu
+4. `add` function
+5. `update` function
+6. `delete` function
+7. `list` function
+8. `read` function
+9. `add q` function
+10. `read q` function
+11. `delete q` function
+12. `read all` function
+13. `analyse` function
+14. `exit` function
 
+See below for individual descriptions of the purpose for each feature, along with images of the function in operation.
+
+#### 1. Main Menu
+- Provides introductory message indicating application has commenced running.
+- Provides list of user types which the user can select from by entering the associated command.
+- Prompts user to enter their user type. Repeats until valid input is provided.
+
+![Main Menu app screenshot](assets/images/main_menu_app.png) 
+
+#### 2. Password Validation
+- Requests user to input the administrator password.
+- Reads admin password from external file (admin_password.txt) and compares user response.
+- *If password is valid* user is allowed to proceed to the Command Menu with admin level access.
+- *If password is invalid* user is returned to main menu.
+
+Valid password input:<br>
+![Main Menu app screenshot](assets/images/valid_password.png) 
+
+Invalid password input:<br>
+![Main Menu app screenshot](assets/images/invalid_password.png) 
+
+#### 3. Command Menu
+- Provides list of commands available to the user depending on their access level.
+- Prompts user to enter command. Repeats until valid input is provided.
 
 ___________________________________________________
 
