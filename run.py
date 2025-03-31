@@ -724,7 +724,6 @@ def update_question_cells(number_of_deleted_question):
     print(colored("Updating question headings...\n", "yellow"))
     full_questions = get_questions("full")
     position_index = number_of_deleted_question
-    print(f"NUMBER OF DELETED QUESTION: {number_of_deleted_question}")
     column_to_update = number_of_deleted_question + 1
     question_index = 0
     while position_index < SURVEY.col_count:
@@ -743,6 +742,7 @@ def update_question_cells(number_of_deleted_question):
                            new_full_question)
         position_index += 1
         question_index += 1
+        column_to_update += 1
     print(colored("Updating complete.\n", "yellow"))
 
 

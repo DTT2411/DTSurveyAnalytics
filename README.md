@@ -109,8 +109,12 @@ See below for individual descriptions of the purpose for each feature, along wit
 #### 2. Password Validation
 - Requests user to input the administrator password.
 - Reads admin password from external file (admin_password.txt) and compares user response.
-- *If password is valid* user is allowed to proceed to the Command Menu with admin level access.
-- *If password is invalid* user is returned to main menu.
+
+If password is valid:
+- User is allowed to proceed to the Command Menu with admin level access.
+
+If password is invalid:
+- User is returned to main menu.
 
 Valid password input:<br>
 ![Main Menu app screenshot](assets/images/valid_password.png) 
@@ -303,7 +307,7 @@ Sheet before addition:<br>
 Sheet after addition (cell value & note have been updated and default values added in cells below):<br>
 ![Add q spreadsheet screenshot #1](assets/images/add_q_function_spread2.png) 
 
-#### 9. `read q` Function
+#### 10. `read q` Function
 - Prints list of existing questions in full.
 - Requests user to enter the number of the question they wish to read data for, which is then validated.
 - Prints out a list of respondents and their scores to the specific question.
@@ -324,11 +328,44 @@ Question number input validation:<br>
 Question reporting:<br>
 ![Read q terminal screenshot #3](assets/images/read_q_function_screen3.png) 
 
-read q Function
-delete q Function
-read all Function
-analyse Function
-exit Function
+#### 11. `delete q` Function
+- Prints list of existing questions in full.
+- Requests user to enter the number of the question they wish to delete for, which is then validated.
+- Deletes the column from the spreadsheet.
+
+If the deleted column was not the last column in the sheet (i.e. one of the "middle" questions was deleted):
+- Loops through all remainining questions to the right of the deleted question, extracting the values from cell and notes.
+- Rebuilds full question and question summary strings.
+- Updates the question cells.
+
+Note: the functionality to update the question numbers automatically is crucial for keeping the output coherent when reporting full survey results.
+
+**Flowchart:**<br>
+![Delete q function flowchart](assets/images/delete_q_function_flowchart.png) 
+
+**`delete q` function in terminal**
+List of questions & request to input question number:<br>
+![Delete q terminal screenshot #1](assets/images/delete_q_function_screen1.png) 
+
+Question number input validation:<br>
+![Delete q terminal screenshot #2](assets/images/delete_q_function_screen2.png) 
+
+Deletion confirmation and related system messages:<br>
+![Delete q terminal screenshot #3](assets/images/delete_q_function_screen3.png) 
+
+Sheet before deletion:<br>
+![Delete q spreadsheet screenshot #1](assets/images/delete_q_function_spread1.png) 
+
+Sheet after deletion (questions after the one deleted have had their question number updated):<br>
+![Delete q spreadsheet screenshot #1](assets/images/delete_q_function_spread2.png) 
+
+
+#### 12. `read all` Function
+
+#### 13. `analyse` Function
+
+#### 14. `exit` Function
+
 ___________________________________________________
 
 # OLD STUFF UNDER HERE
