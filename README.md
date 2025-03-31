@@ -45,7 +45,7 @@ Please note that 2 features have not been included in the flowchart in order to 
 ## Data Management
 
 ### Google Sheet Data Structure
-The application is linked up to a Google spreadsheet containing all survey values including names of respondents (head column), survey questions (head row) and response values in cells. A set of exemplar data has been included in the Google sheet to work with however this can be fully updated and replaced as per the organisation's requirements using app functions. Only one worksheet ('survey_results') is utilised within the current model. <br>
+The application is linked up to a Google spreadsheet containing all survey values including names of respondents (head column), survey questions (head row) and response values in cells. A set of exemplar data has been included in the Google sheet for the purposes of testing and demonstration, however this can be fully updated and replaced as per the organisation's requirements entirely using app functions. Only one worksheet ('survey_results') is utilised within the current model.<br>
 
 **It is important for users to note that the Google sheet is intended to be a read-only repository for survey values, and should not be directly interacted with by administrators**. The functions within the application are sufficient to enact any desired changes to the worksheet, and directly changing the sheet may cause errors when running the application - for example, manually adding an empty column to the Google sheet will cause reporting errors, as the extra column will be counted as an additional question by some variables. In a realistic usage scenario, this is a limitation of the current application concept and it would be important for survey administrators to maintain strict security on access priveleges to the Google sheet.
 
@@ -431,6 +431,9 @@ Changing to a unique ID system would require:
 - Overhaul of functions reading data - current code would have significant number of 1-out errors if an additional, non-survey responses column was appended next to names.
 - Overhaul of inputs and functions which currently request name as key to add/update/delete records. These would need to be changed to work with the unique ID instead. 
 - Further improvements down the line - i.e. outputting IDs along with names with list_respondents function
+
+#### Improve tabulation of 'read all' output
+In response to a `read all` command the application prints out a list of questions followed by a list of the respondents and their responses. My intial goal with the second section for responses was to print out the question numbers in the top row rather than the current `"RESPONSES TO Q1 - XX"` however I struggled to find a way to align the question strings after they reached Q10 and above, since those strings would be 1 character longer. With additional time to develop the project, I would try to identify a better way to tabulate this data so that it is immediately clear which question the lists of values relate to.
 
 #### Expand functionality to allow other types of questions e.g. text, boolean
 The current model is restrictive in that it only permits the use of questions which prompt responses complying with a 5-point Likert scale. In real-world scenarios, organisations using survey management software are likely to want to be able to apprehend non-numerical data as well.
