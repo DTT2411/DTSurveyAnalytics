@@ -511,9 +511,13 @@ To my knowledge there are no unresolved bugs remaining within the application.
 
 
 ## Deployment
+
 ### Requirements
+Required modules are stored in the `requirements.txt` file in the repository: 
+
 ### How I deployed & set up API
 ### GitHub Repository
+The GitHub repository for the project can be accssed at: https://github.com/DTT2411/DTSurveyAnalytics
 
 ## Credits
 
@@ -523,12 +527,24 @@ To my knowledge there are no unresolved bugs remaining within the application.
 - **Statistics**: Builtin Statistics module was imported to conduct mean and variance calculations on lists. Statistics module documentation: https://docs.python.org/3/library/statistics.html
 
 ### Concept
-- The idea for the project was inspired by Project Example Idea 1 - "Analyse Survey Data" recommended within Code Institute's Portfolio Project 3 Assessment Guide: https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+PE_PAGP+2021_Q2/courseware/40cd7850a24d454795ec611831b06b77/980b1952a3a64898ab4010759bd0bd6a/.
-- The project adhered to the stated goals of both the external user and site owner 
+- The idea for the project was inspired by **Project Example Idea 1 - "Analyse Survey Data"** recommended within Code Institute's Portfolio Project 3 Assessment Guide: https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+PE_PAGP+2021_Q2/courseware/40cd7850a24d454795ec611831b06b77/980b1952a3a64898ab4010759bd0bd6a/.
+- The project adhered to the stated goals of both the external user and site owner.
 - The project adhered strictly to the first two suggested features: importing survey results and parsing & analysing the data. 
-- Regarding the last suggested feature, I decided to develop functionality to output the results to the terminal itself via commands rather than exporting to an external file.
-### Code
+- The project also adheres tot he suggested feature of exporting results to an appropriate file in the sense that results and questions can be added/updated to the Google sheet. 
+- I decided that analysis and reporting output would be displayed on the terminal, rather than exporting these to external files.
+
+### Debugging & Troubleshooting
+- **Python Tutor** was used to visualise execution of code during development and debugging, particularly in more logic-dense areas of code. Link to Python Tutor: https://pythontutor.com/cp/composingprograms.html#mode=edit 
+
 ### Content
+- **Heroku**: Cloud application platform used to host the project. Link to Heroku: https://www.heroku.com/.
+- **Code Institute**: Providing credits to allow the application to be hosted at no charge to myself. 
+- **EvitaKnits Cashflow Companion readme**: Was recommended as an exemplary example of a project and readme by my Code Institute mentor. I took inspiration for the structure of my readme document from this, and also was inspired to use the Mermaidchart application for creating my flowcharts after being impressed by the design and layout of her charts. Link to relevant readme: https://github.com/EvitaKnits/Cashflow-Companion/blob/main/README.md
+- **Mermaidchart**: (free version) was used to develop flowchart images during the design stage and helped to inform the logical flow of the whole application. Link to Mermaid: https://www.mermaidchart.com/
+
+
+
+
 
 
 
