@@ -80,6 +80,7 @@ def process_main_command(user_type):
     - 'add q' adds a new question to the survey
     - 'read q' returns a list of responses for a given question
     - 'delete q' deletes an exiting question within the survey
+    - 'read all' returns a list of all questions, names and response values
     - 'analyse' returns general analysis over all survey data
     - 'exit' exits the program
     Admin level users have access to all functions.
@@ -105,6 +106,8 @@ def process_main_command(user_type):
                   "responses for a given question")
             print("- " + colored("'delete q'", 'light_cyan') + " to delete a "
                   "question from the survey and all associated data")
+            print("- " + colored("'read all'", 'light_cyan') + " to read a "
+                  "summary of all survey data")
             print("- " + colored("'analyse'", 'light_cyan') + " to conduct "
                   "general analysis over all survey data")
             print("- " + colored("'exit'", 'light_cyan') + " to exit the "
@@ -168,8 +171,8 @@ def validate_command(command, menu):
     """
     print(colored("Validating command...", "yellow"))
     main_admin_command_list = ['add', 'update', 'delete', 'list', 'read',
-                               'add q', 'read q', 'delete q', 'analyse',
-                               'exit', 'home']
+                               'add q', 'read q', 'delete q', 'read all',
+                               'analyse', 'exit', 'home']
     main_respondent_command_list = ['add', 'update', 'delete', 'exit', 'home']
     update_command_list = ['one', 'all', 'home']
     user_type_list = ['admin', 'respondent', 'exit', 'home']
@@ -770,6 +773,36 @@ def get_border():
     return table_border
 
 
+def read_all_data():
+    """
+    Outputs full survey data including a list of all questions and a list of
+    respondents and all values.
+    """
+    print(colored("Reading all survey data...\n", "yellow"))
+    survey_data = SURVEY.get_all_values()
+    summarised_questions = get_questions('summarised')
+    full_questions = get_questions('full')
+    print(colored("QUESTION LIST:", "green"))
+    for question in full_questions:
+        print(question)
+    print("")
+    names = []
+    for row in survey_data:
+        names.append(row[0])
+    names.pop(0)
+    longest_name = len(max(names, key=len))
+    print(colored("NAME", "green").ljust(longest_name+19) +
+          colored(f"RESPONSES TO Q1 - {len(summarised_questions)}", "green"))
+    name_counter = 0
+    survey_data.pop(0)
+    for row in survey_data:
+        print(f"{names[name_counter].ljust(longest_name+10)}{row[1:]} ")
+        name_counter += 1
+    print("")
+    print(colored("Data output complete. Returning to main menu...\n", "yellow"
+                  ))
+
+
 def analyse_survey():
     """
     Conducts analysis of the overall survey data set, returning average
@@ -909,6 +942,8 @@ def main():
                 # Skips if the last question was deleted, no need to update
                 if number_of_deleted_question < SURVEY.col_count:
                     update_question_cells(number_of_deleted_question)
+            case 'read all':
+                read_all_data()
             case 'analyse':
                 analysed_data = analyse_survey()
                 get_data_insights(analysed_data)
