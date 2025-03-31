@@ -477,10 +477,24 @@ The coordinates were used for functions where writing full questions to cell not
 
 After further research into gspread documentation I realised there was an alternative way of adding notes to specified cells, in the form of `insert_note(first row, first col, last row, last col, content)`. I was able to update one note at a time by passing a matching row and column values e.g. `insert_note(1, 3, 1, 3, "content")` would print `content` in in the note of the third column heading. This resolved the issue with having a limited number of coordinates for new questions, and removed the need for the work-around function which was then deleted.
 
-
 ### 2. Issues with using gspread method "update_cell"
 Experienced issues when trying to use `update_cell()` on the `SHEET` global variable. Realised that `SHEET` related to the entire file, not the worksheet. Resolved by changing `SHEET` to `SURVEY` which was the variable instantiated with the worksheet. Thereafter the `update_cell()` method could be used without further issue.<br>
 ![Resolved Bugs Screenshot #1](assets/images/resolved_bugs_screen1.png)
+
+### 3. Spacing & colouring issues stemming from late deployment to heroku app
+I waited with deploying the application on heroku until I had most of my functions working, which was familiar to the approach taken during the Love Sandwiches essentials project. I had not realised that the terminal window of the heroku app was limited to 80 characters and this caused a significant number of spacing issues throughout the project. Examples:
+- `get_border` function, used for printing borders between sections in reporting functions, originally printed a string of 100 hyphens which had to be reduced to 80 to fit the screen
+- Had to significantly shorten output strings in `analyse_respondent_data`.
+- Addition of `\n` elements to multiple strings so that words not fitting on the line would start on the next line, rather than wrapping mid-word
+- Had to limit question length to 70 characters to ensure they fit onto one line and are properly spaced when reporting or listing questions.
+- I had initially set command strings (e.g. `add`, `update`) to blue. Whilst this looked fine in my IDE, the contrast when using the heroku app was much lower, to the extent that the colouring hindered readibility rather than aiding it. This was resolved by amending the colouring of commands to `light-cyan`. Other colours (e.g. green, yellow) were checked and remained at sufficient contrast in the heroku terminal.
+
+### 4. 'Read' function stopped working after refactoring
+I initially had user inputs for respondent name in the main() function, and decided to refactror this into a separate function to declutter main() and ensure consistency across checks. The `get_respondent_name` function was the result of this refactoring. I did not complete a comprehensive test of all functions following the refactoring, and later discovered that the `read` function was no longer working correctly and was not able to return any data.<br>
+
+After some manual testing I discovered that I had ommited the `return respondent_name` statement specifically from the `read` case inside the `get_respondent_name` function. This was resolved and the `read` function resumed normal functionality.<br>
+![Resolved Bugs Screenshot #3](assets/images/resolved_bugs_screen3.png)
+
 
 
 
