@@ -66,7 +66,9 @@ Data transfer between the application and Google Sheet is primarily manipulated 
 Since the application is a CLI, significant data input validation is required throughout the various processes. In most cases where the user is being asked to enter survey-related data (e.g. quetion numbers, response values, names), the user will be repeatedly prompted to enter a valid value until one has been submitted, or used decides to exit the function using `home`.
 
 ### Password security
-The administrator access password for the project is read from a file external to the `run.py` file - this is a simple text document named `admin_password.txt` containing only one line with the password. The application reads the content of the line in the `validate_password()` function. The password file has been added to `.gitignore` in order to prevent the password being uploaded to the repository as this would make it publically available. In realistic usage scenarios, it would be very important for data controllers to strictly manage access to the password file. 
+The administrator access password for the project is read from a file external to the `run.py` file - this is a simple text document named `admin_password.txt` containing only one line with the password. The application reads the content of the line in the `validate_password()` function. As per the Project Assessment Guide distinction-level recommendations, I intially tried to keep the password file on `.gitignore` in order to prevent the password being uploaded to the repository as this would make it publically available. This worked while I was managing the project in IDE, but I quickly realised that this caused the deployed vesion of the application on Heroku to break. I therefore had to remove the filename from `.gitignore`. Further detail on this issue will be described in the Unresolved Bugs section of the readme.
+
+In realistic usage scenarios, it would be very important for data controllers to strictly manage access to the password file. 
 
 The following types of validation are managed by the application:
 1. **User type validation**: At the first menu (main menu), the user will be prompted to enter `admin` or `respondent` depending on their access level. The user type is validated against a list of user types before the app proceeds to the next menu.
@@ -523,7 +525,18 @@ Due to the complexity of the function and many variables & counters being used t
 This was resolved by adding a simple `column_to_update += 1` increment to the loop.
 
 ## Unresolved Bugs
-To my knowledge there are no unresolved bugs remaining within the application. 
+
+### Issue when adding password file to .gitignore
+The CI Assessment Guide for Project 3 recommends that "any passwords and security-sensitive information created are stored in environment variables or in files that are in `.gitignore` and are never committed to the repository". I only noticed that my project did not comply with this recommendation late into development. To resolve this, I tried adding `admin_password.txt` to `.gitignore`. However, while the project still working in my IDE after pushing changes, it no longer worked on the deployed version of the Heroku. I therefore had to remove the file from `.gitignore` and allow this to be updated on GitHub, which is not ideal as it contravenes distinction-level assessment criteria for the project - however, I have not been able to find a working solution to fix this issue whilst also adhering to the criteria.
+
+Relevant CI assessment guidance:<br>
+![Unesolved Bugs Screenshot #1](assets/images/unresolved_bugs_screen1.png)
+
+Running app in IDE after adding password file to `.gitignore` - runs normally:<br>
+![Unesolved Bugs Screenshot #2](assets/images/unresolved_bugs_screen2.png)
+
+Running deployed Heroku app after adding password file to `.gitignore` - fails immediately when trying to read password:<br>
+![Unesolved Bugs Screenshot #3](assets/images/unresolved_bugs_screen3.png)
 
 ## Deployment
 The application was deployed via Heroku. The dedicated page for the application is here: https://dt-survey-analytics-703eb2156e77.herokuapp.com/
