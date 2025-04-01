@@ -65,6 +65,9 @@ Data transfer between the application and Google Sheet is primarily manipulated 
 ### Data Validation
 Since the application is a CLI, significant data input validation is required throughout the various processes. In most cases where the user is being asked to enter survey-related data (e.g. quetion numbers, response values, names), the user will be repeatedly prompted to enter a valid value until one has been submitted, or used decides to exit the function using `home`.
 
+### Password security
+The administrator access password for the project is read from a file external to the `run.py` file - this is a simple text document named `admin_password.txt` containing only one line with the password. The application reads the content of the line in the `validate_password()` function. The password file has been added to `.gitignore` in order to prevent the password being uploaded to the repository as this would make it publically available. In realistic usage scenarios, it would be very important for data controllers to strictly manage access to the password file. 
+
 The following types of validation are managed by the application:
 1. **User type validation**: At the first menu (main menu), the user will be prompted to enter `admin` or `respondent` depending on their access level. The user type is validated against a list of user types before the app proceeds to the next menu.
 2. **Password validation**: After entering `admin` to main menu, the user will be prompted to provide the admin password, which is held on an external file. The user will be returned to the main menu unless they can provide input matching the password, after which they will be able to proceed with access to admin-level commands.
