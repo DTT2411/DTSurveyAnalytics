@@ -467,11 +467,13 @@ Rigorous testing was conducted throughout the development of the application. Gi
 - Monitoring updates made to values within the spreadsheet.
 - Developed and tested new functions outside of the main function until working internally before adding functions to main, passing parameters and calling function.
 
-### Testing with Python Tutor
+### Automated testing
+
+#### Testing with Python Tutor
 Testing using the Python Tutor tool was particularly helpful for managing 1-out errors occuring with the `update_question_cells` function due to several indexes being used within the same loop and complex string reconstruction.
 
-### Code validation
-Utilised Code Institute's Python Linter (Flake8) for PEP8 validation. Errors reported by the linter were typically dealt with after adding and confirming the correct functionality of new functions. 
+#### CI Python Linter
+Utilised Code Institute's Python Linter (https://pep8ci.herokuapp.com/) for PEP8 adherence & validation. Errors reported by the linter were typically dealt with after adding and confirming the correct functionality of new functions. 
 
 Commonly reported PEP8 errors included:
 - "line too long (x > 79 characters)" - reported when line length exceeeds 79 characters. This was typically resolved by splitting code/strings and carefully indenting to the correct position on a new line below. This was extremely common due to line length and level of indentation on some rows of code, and the relatively low character limit.<br>
@@ -587,6 +589,7 @@ The GitHub repository for the project can be accssed at: https://github.com/DTT2
 - I decided that analysis and reporting output would be displayed on the terminal, rather than exporting these to external files.
 
 ### Debugging & Troubleshooting
+- **CI Python Linter** was used throughout the development process to ensure code adhered to PEP8 rules: https://pep8ci.herokuapp.com/
 - **Python Tutor** was used to visualise execution of code during development and debugging, particularly in more logic-dense areas of code. Link to Python Tutor: https://pythontutor.com/cp/composingprograms.html#mode=edit 
 
 ### Content
