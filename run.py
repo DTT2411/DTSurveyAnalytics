@@ -450,6 +450,7 @@ def analyse_respondent_data(respondent_data):
     survey_averages = get_averages(survey_data, "False")
     float_averages = [float(x) for x in survey_averages]
     organisation_average = round(statistics.mean(float_averages), 1)
+    # Sets output strings based on variance level
     if score_variance > 2:
         variance_string = "high level of variance, indicating significant " \
             "disparity between the \n'best' and 'worst' aspects of the job."
@@ -462,6 +463,7 @@ def analyse_respondent_data(respondent_data):
     print(colored('OVERALL RESULTS', 'green', attrs=['bold']))
     print(f"{respondent_name} gave an average score of "
           f"{average_score} across all questions.")
+    # Prints comparison of respondent's overall score with organisation's
     if average_score > organisation_average + 0.4:
         print(f"This is significantly higher than the overall organisation "
               f"average score of {organisation_average}.")
@@ -472,12 +474,13 @@ def analyse_respondent_data(respondent_data):
         print(f"This is close to the organisation average score of "
               f"{organisation_average}.")
     print(f"{respondent_name} had a variance of {round(score_variance, 1)} in "
-          f"their scores.")  # This is a {variance_string}")
+          f"their scores.")
     print(f"This is a {variance_string}")
     print(get_border())
     print(colored("QUESTION".ljust(32) + "SCORE".ljust(8) + "COMPARISON WITH "
                   "ORGANISATION", 'green', attrs=['bold']))
     question_index = 0
+    # Prints a table of individual scores and comparisons to organisation
     for score in respondent_data:
         if float(score) < (float(survey_averages[question_index]) - 0.4):
             print(f"{summarised_questions[question_index].ljust(32)}  {score} "
@@ -498,6 +501,7 @@ def analyse_respondent_data(respondent_data):
     lowest_scored_questions = []
     highest_scored_questions = []
     count_index = 0
+    # Adds questions the person scored lowest and highest to separate lists
     while count_index < SURVEY.col_count - 1:
         if converted_scores[count_index] == min_score:
             lowest_scored_questions.append(
