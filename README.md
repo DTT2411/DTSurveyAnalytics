@@ -4,7 +4,7 @@
 'DT Survey Analytics' is a Command-Line Interface (CLI) survey management system hosted as an application on Heroku and written using Python. 
 
 ## Link to application
-The application can be accessed directly at this dedicated link: ADD FINAL DEPLOYED LINK
+The application can be accessed directly at this dedicated link: https://dt-survey-analytics-703eb2156e77.herokuapp.com/
 
 ## Project Purpose
 The purpose of the application is to provide users with a way to conduct and manage results for a simple staff survey for their organisation. The app will allow users, who may be either staff respondents to the survey or administrators conducting analysis, to conduct functions on the current survey dataset based on various commands (e.g. "add", "read", "analyse"), with differential permissions depending on access level. In addition to reading raw data, administrators will also be able to conduct analysis over the dataset in order to identify key areas of improvement for the organisation based on low-scoring metrics in the survey.
@@ -524,7 +524,7 @@ This was resolved by adding a simple `column_to_update += 1` increment to the lo
 To my knowledge there are no unresolved bugs remaining within the application. 
 
 ## Deployment
-The application was deployed via Heroku. The dedicated page for the application is here: INSERT FINAL LINK
+The application was deployed via Heroku. The dedicated page for the application is here: https://dt-survey-analytics-703eb2156e77.herokuapp.com/
 
 ### Requirements
 Required modules are stored in the `requirements.txt` file in the repository.<br>
