@@ -7,7 +7,7 @@
 The application can be accessed directly at this dedicated link: https://dt-survey-analytics-703eb2156e77.herokuapp.com/
 
 ## Project Purpose
-The purpose of the application is to provide users with a way to conduct and manage results for a simple staff survey for their organisation. The app will allow users, who may be either staff respondents to the survey or administrators conducting analysis, to conduct functions on the current survey dataset based on various commands (e.g. "add", "read", "analyse"), with differential permissions depending on access level. In addition to reading raw data, administrators will also be able to conduct analysis over the dataset in order to identify key areas of improvement for the organisation based on low-scoring metrics in the survey.
+The purpose of the application is to provide users with a way to conduct and manage results for a simple staff survey for their employing organisation. The app will allow users, who may be either staff respondents to the survey or administrators conducting analysis, to conduct functions on the current survey dataset based on various commands (e.g. "add", "read", "analyse"), with differential permissions depending on access level. In addition to reading raw data, administrators will also be able to conduct analysis over the dataset in order to identify key areas of improvement for the organisation based on low-scoring metrics in the survey. Administrators for this type of application would usually be working in the HR department where managing staff surveys would be part of their remit. 
 
 ## Project Planning
 
