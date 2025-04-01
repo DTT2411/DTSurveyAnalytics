@@ -529,7 +529,7 @@ The CI Assessment Guide for Project 3 recommends that "any passwords and securit
 
 However, after implementing this, I noticed that, while the application performed as expected in my IDE, the deployed version of the Heroku stopped functioning as it raised a "FileNotFound error" when trying to read the file. I therefore had to remove the file from `.gitignore` and allow this to be updated on GitHub in order to proceed with development and testing, which is not ideal as it contravenes distinction-level assessment criteria for the project. 
 
-Fortunately I found a workaround by instead adding the password to the survey spreadsheet and reading it from there - this seemed like a better solution since at least the sheet would have restricted access. This is the method described in the "Password Security" subsection in the Data Management section of this readme.
+Fortunately I found a workaround by instead adding the password to the survey spreadsheet (in the note of the first cell, A1) and reading it from there - this seemed like a better solution since the sheet would have restricted access and would not be included in pushes to GitHub. This is the method described in the "Password Security" subsection in the Data Management section of this readme.
 
 Relevant CI assessment guidance:<br>
 ![Resolved Bugs Screenshot #1](assets/images/resolved_bugs_screen4.png)
