@@ -524,7 +524,10 @@ Due to the complexity of the function and many variables & counters being used t
 
 This was resolved by adding a simple `column_to_update += 1` increment to the loop.
 
-### 7. Issue when adding password file to .gitignore
+### 7. Using 'ljust' for spacing of fields in tables
+I intially used print statements separated by a set number of spaces for the tables in my application, being output from functions like `analyse_survey()` and `read_all_data()`, however this proved to be cumbersome and would become misaligned when names reach over a certain length. To resolve this, I calculated the length of the longest string being printed in the row (e.g. longest name) and calling the `.ljust()` with this length as the parameter, which ensured strings had consistent spacing and allowed the column width to adapt to the longest name. 
+
+### 8. Issue when adding password file to .gitignore
 The CI Assessment Guide for Project 3 recommends that "any passwords and security-sensitive information created are stored in environment variables or in files that are in `.gitignore` and are never committed to the repository". Initially, I intended to have an `admin_password.txt` file outside of `run.py` and a function which reads the content of the file (i.e. password) into a variable, then compares to user input. The text file would be added to `.gitignore` so that it would not be uploaded to GitHub and made publically available.
 
 However, after implementing this, I noticed that, while the application performed as expected in my IDE, the deployed version of the Heroku stopped functioning as it raised a "FileNotFound error" when trying to read the file. I therefore had to remove the file from `.gitignore` and allow this to be updated on GitHub in order to proceed with development and testing, which is not ideal as it contravenes distinction-level assessment criteria for the project. 
