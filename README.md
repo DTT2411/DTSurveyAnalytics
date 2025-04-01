@@ -34,7 +34,7 @@ As a respondent, I want to...
 - ...be able to return to the main menu with a simple command in any input field to avoid getting stuck if I am unable to enter an appropriate value
 
 ### Process Flowchart
-A flowchart was designed at the outset of the project to conceptualise the structure and logical flow of the application, and to identify which functions would be required at various decision points. Menus in which the user has to enter a command are differentiate with black colour. Further context about the validity checks between each stage will be provided in individual function sections of the readme. 
+A flowchart was designed at the outset of the project to conceptualise the structure and logical flow of the application, and to identify which functions would be required at various decision points. Menus in which the user has to enter a command are differentiated with black colour. Further context about the validity checks between each stage will be provided in individual function sections of the readme. 
 
 Please note that 2 features have not been included in the flowchart in order to improve readibility:
 1. Users automatically return to the main menu after completing the path through each function.
