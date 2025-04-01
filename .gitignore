@@ -8,4 +8,3 @@ node_modules/
 .github/
 .venv
 creds.json
-admin_password.txt
