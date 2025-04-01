@@ -607,7 +607,6 @@ def add_question():
     heading and the full text question held within the cell's note.
     """
     print(colored("Adding new question to survey...\n", "yellow"))
-    # list all current Qs
     full_questions = get_questions("full")
     print(colored("List of existing Qs:", 'green', attrs=['bold']))
     for q in full_questions:
@@ -637,16 +636,19 @@ def add_question():
     new_summarised_question = input("Please enter the a summarised version "
                                     "(1 to 2 words):\n")
     main_menu_check(new_summarised_question)
-    SURVEY.add_cols(1)  # adds a new empty column to the spreadsheet
+    SURVEY.add_cols(1)  # adds a new empty column to the right of the sheet
     next_question_column = SURVEY.col_count
+    # inserts the full question into the column's top cell note
     SURVEY.insert_note(1, next_question_column, 1, next_question_column,
                        f"Q{next_question_column - 1} - {new_question}")
+    # inserts the summarised question into the column's top cell value
     SURVEY.update_cell(1, next_question_column, f"Q{next_question_column - 1}"
                        f" - {new_summarised_question}")
     print(colored("Adding question heading...\n", "yellow"))
     number_of_rows = len(SURVEY.col_values(1))
     cell_index = 2
     print(colored("Adding default value to past respondents...\n", "yellow"))
+    # updates all the empty rows below with default value of 3
     while cell_index <= number_of_rows:
         SURVEY.update_cell(cell_index, next_question_column, 3)
         cell_index += 1
