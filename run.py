@@ -52,10 +52,10 @@ def get_user_type():
 def validate_password():
     """
     Checks that the user has administrator priveleges by requesting them to
-    enter the admin password, which is contained outside of the application
-    in a text file named "admin_password.txt".
+    enter the admin password, which is contained in the note of the first
+    cell (A1) of the survey spreadsheet.
     """
-    admin_password = open('admin_password.txt', 'r').read()
+    admin_password = SURVEY.get_note('A1')
     response = input("Please enter the administrator password:\n")
     main_menu_check(response)
     if response == admin_password:

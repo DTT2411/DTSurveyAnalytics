@@ -65,11 +65,6 @@ Data transfer between the application and Google Sheet is primarily manipulated 
 ### Data Validation
 Since the application is a CLI, significant data input validation is required throughout the various processes. In most cases where the user is being asked to enter survey-related data (e.g. quetion numbers, response values, names), the user will be repeatedly prompted to enter a valid value until one has been submitted, or used decides to exit the function using `home`.
 
-### Password security
-The administrator access password for the project is read from a file external to the `run.py` file - this is a simple text document named `admin_password.txt` containing only one line with the password. The application reads the content of the line in the `validate_password()` function. As per the Project Assessment Guide distinction-level recommendations, I intially tried to keep the password file on `.gitignore` in order to prevent the password being uploaded to the repository as this would make it publically available. This worked while I was managing the project in IDE, but I quickly realised that this caused the deployed vesion of the application on Heroku to break. I therefore had to remove the filename from `.gitignore`. Further detail on this issue will be described in the Unresolved Bugs section of the readme.
-
-In realistic usage scenarios, it would be very important for data controllers to strictly manage access to the password file. 
-
 The following types of validation are managed by the application:
 1. **User type validation**: At the first menu (main menu), the user will be prompted to enter `admin` or `respondent` depending on their access level. The user type is validated against a list of user types before the app proceeds to the next menu.
 2. **Password validation**: After entering `admin` to main menu, the user will be prompted to provide the admin password, which is held on an external file. The user will be returned to the main menu unless they can provide input matching the password, after which they will be able to proceed with access to admin-level commands.
@@ -81,6 +76,11 @@ The following types of validation are managed by the application:
 8. **Name validation**: When reading data for specific respondents, the users name is requested then used to check for existing responses. Similar validation is required when writing new respondent data to spreadsheet to check whether they already have an entry against their name i.e. have already completed the survey.
 9. **Upate type validation**: When updating data, the user is prompted to enter whether they wish to update `one` value or `all` values for a respondent, and their response is validated against a list of these commands.
 9. **Confirmation validation**: When user is about to update/delete data, the app prints out the existing data for the respondent and performs a Y/N check to confirm whether or not the user wishes to proceed with update/deletion.
+
+### Password security
+The administrator access password for the project is read from the google survey sheet since this will not be publically accessible. The password is contained in the note of the first cell (A1) in the sheet, which is read and compared against user input by the `validate_password()` function. The user must provide a valid password to progress to the admin command menu, otherwise they are returned to the main menu.
+
+In realistic usage scenarios, it would be very important for data controllers to strictly manage access to the surey sheet in order to keep the password private. 
 
 ## Design
 
@@ -524,19 +524,26 @@ Due to the complexity of the function and many variables & counters being used t
 
 This was resolved by adding a simple `column_to_update += 1` increment to the loop.
 
-## Unresolved Bugs
+### 7. Issue when adding password file to .gitignore
+The CI Assessment Guide for Project 3 recommends that "any passwords and security-sensitive information created are stored in environment variables or in files that are in `.gitignore` and are never committed to the repository". Initially, I intended to have an `admin_password.txt` file outside of `run.py` and a function which reads the content of the file (i.e. password) into a variable, then compares to user input. The text file would be added to `.gitignore` so that it would not be uploaded to GitHub and made publically available.
 
-### Issue when adding password file to .gitignore
-The CI Assessment Guide for Project 3 recommends that "any passwords and security-sensitive information created are stored in environment variables or in files that are in `.gitignore` and are never committed to the repository". I only noticed that my project did not comply with this recommendation late into development. To resolve this, I tried adding `admin_password.txt` to `.gitignore`. However, while the project still working in my IDE after pushing changes, it no longer worked on the deployed version of the Heroku. I therefore had to remove the file from `.gitignore` and allow this to be updated on GitHub, which is not ideal as it contravenes distinction-level assessment criteria for the project - however, I have not been able to find a working solution to fix this issue whilst also adhering to the criteria.
+However, after implementing this, I noticed that, while the application performed as expected in my IDE, the deployed version of the Heroku stopped functioning as it raised a "FileNotFound error" when trying to read the file. I therefore had to remove the file from `.gitignore` and allow this to be updated on GitHub in order to proceed with development and testing, which is not ideal as it contravenes distinction-level assessment criteria for the project. 
+
+Fortunately I found a workaround by instead adding the password to the survey spreadsheet and reading it from there - this seemed like a better solution since at least the sheet would have restricted access. This is the method described in the "Password Security" subsection in the Data Management section of this readme.
 
 Relevant CI assessment guidance:<br>
-![Unesolved Bugs Screenshot #1](assets/images/unresolved_bugs_screen1.png)
+![Resolved Bugs Screenshot #1](assets/images/resolved_bugs_screen4.png)
 
 Running app in IDE after adding password file to `.gitignore` - runs normally:<br>
-![Unesolved Bugs Screenshot #2](assets/images/unresolved_bugs_screen2.png)
+![Resolved Bugs Screenshot #2](assets/images/resolved_bugs_screen5.png)
 
 Running deployed Heroku app after adding password file to `.gitignore` - fails immediately when trying to read password:<br>
-![Unesolved Bugs Screenshot #3](assets/images/unresolved_bugs_screen3.png)
+![Resolved Bugs Screenshot #3](assets/images/resolved_bugs_screen6.png)
+
+
+## Unresolved Bugs
+To my knowledge, no bugs remain unresolved within the application.
+
 
 ## Deployment
 The application was deployed via Heroku. The dedicated page for the application is here: https://dt-survey-analytics-703eb2156e77.herokuapp.com/
